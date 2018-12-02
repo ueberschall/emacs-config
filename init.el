@@ -33,16 +33,17 @@
 ;; C-u C-x C-e: Einen Lisp-Ausdruck ausführen und Rückgabewert in *scratch* ausgeben
 ;; C-x n n: Buffer auf Region eingrenzen (Narrowing)
 ;; C-x n w: Eingrenzung aufheben
-
+;;
 ;; *** Wichtige Funktionen ***
-;; M-x revert-buffer: Buffer aktualisieren.
-;; M-x check-parens: Finde alle Klammern, die nicht geschlossen sind
-;; M-x load-file: Alle Lisp-Kommandos einer Datei ausführen.
+;; revert-buffer: Buffer aktualisieren.
+;; check-parens: Finde alle Klammern, die nicht geschlossen sind
+;; load-file: Alle Lisp-Kommandos einer Datei ausführen.
 ;;		  Nützlich um .emacs neu einzulesen
-;; M-x fill-paragraph: Formatiert Text in Region auf eingestellte
+;; fill-paragraph: Formatiert Text in Region auf eingestellte
 ;; 		       Zeilelänge um.
-;; M-x delete-desktop: Lösche den Desktop ohne desktop-dirname auf nil zu setzen
-;; M-x buffer-file-name: Gibt den Pfad der zum aktuellen Buffer gehörigen Datei aus
+;; delete-desktop: Lösche den Desktop ohne desktop-dirname auf nil zu setzen
+;; buffer-file-name: Gibt den Pfad der zum aktuellen Buffer gehörigen Datei aus
+;; sr-speedbar-toggle: Öffnen der frame-losen Speedbar
 
 ;; *** Laden eigener Funktionsdefinitionen ***
 (load "~/.emacs.d/ana_func.el")
@@ -147,18 +148,25 @@
   '(better-defaults
     exec-path-from-shell
     magit
-    ace-window))
+    ace-window
+    sr-speedbar))
 
 (defvar pyPackages
   '(elpy
     flycheck
     ein
     pylint
-    py-autopep8))
+    py-autopep8
+    realgud))
 
 (install-necessary-packages (concat-multiple-lists (list
 						    myPackages
 						    pyPackages)))
+
+;; *** Konfiguriere die Speedbar ***
+(setq speedbar-show-unknown-files t)
+(require 'sr-speedbar)
+(sr-speedbar-refresh-turn-off)
 
 ;; *** Füge einen Pfad für Custom-Themes hinzu ***
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")

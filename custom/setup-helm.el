@@ -1,3 +1,14 @@
+;; ~/.emacs.d/custom/setup-helm.el
+;; Einstellungen für das Helm-Package
+;;
+;; *** Wichtige Tastenkombinationen ***
+;; C-o: In Helm-Kommando nächste Quelle auswählen
+;;
+;;
+;;
+;;
+;; *** Wichtige Funktionen ***
+
 (use-package helm
   :init
   (progn

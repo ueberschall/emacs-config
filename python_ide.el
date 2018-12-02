@@ -5,6 +5,11 @@
 ;; Führe darin den Befehl "%matplotlib" aus. Dann werden Plots auch ohne den
 ;; "matplotlib.pyplot.show()"-Befehl einfach gerendert. Ausführen von "matplotlib.pyplot.ioff()"
 ;; sorgt dafür, dass das nicht mehr so ist.
+;;
+;; *** Deuggen mit RealGUD ***
+;; Um zu mit RealGUD zu debuggen ist es notwendig den Befehl
+;; "realgud:pdb" zu aktivieren und dann das Kommando
+;; "python -m pdb <scriptname>.py" zu aktivieren.
 
 (elpy-enable)
 
@@ -24,3 +29,5 @@
 
 (pyvenv-activate "/media/zufall/inter/Python/play_env")
 (setq flycheck-flake8rc "/media/zufall/inter/Python/play_env/.flake8")
+
+(require 'realgud)

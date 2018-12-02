@@ -1,3 +1,16 @@
+;; ~/.emacs.d/cpp_ide.el
+;; Einstellungen für Emacs als C/C++ IDE werden hier vorgenommen
+;;
+;; *** Wichtige Tastenkombinationen ***
+;; M-.: Zur Definition springen
+;; M-,: Von Definition wieder zurückspringen
+;; C-j: Alle im Projekt befindlichen Tags durchsuchen
+;; C-c g r: Referenzen anzeigen
+;; <f5>: Kompilieren (Prefix ändert den Kompilier-Befehl (C-u <f5>))
+;;
+;; *** Wichtige Funktionen ***
+;; helm-gtags-show-stack: Zeige die Historie aller besuchten Tags an
+
 (require 'package)
 (add-to-list 'package-archives
          '("melpa" . "http://melpa.org/packages/") t)
@@ -26,8 +39,8 @@
 
 
 
-;; function-args
-;; (require 'function-args)
-;; (fa-config-default)
+;; *** function-args wird hier nur eingebunden um Zugriff auf moo-jump-local zu haben ***
+(require 'function-args)
+(fa-config-default)
 ;; (define-key c-mode-map  [(tab)] 'company-complete)
 ;; (define-key c++-mode-map  [(tab)] 'company-complete)
