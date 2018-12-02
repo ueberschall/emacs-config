@@ -1,4 +1,4 @@
-;; ~/.emacs file von Nasser Attar
+;; ~/.emacs.d/init.el file von Nasser Attar
 ;; Erstellt: 		14. April 2017
 ;; Aktualisiert: 	1. Dezember 2018
 ;;
@@ -82,6 +82,10 @@
 
 ;; *** Automatisches Schließen von Klammern ***
 (electric-pair-mode 1)
+
+;; *** Anzeigen von einander zugehörigen Klammern ***
+(show-paren-mode 1)
+(setq show-paren-delay 0)
 
 ;; *** Benutze Leerzeichen für Einrückungen ***
 (setq-default indent-tabs-mode nil)
