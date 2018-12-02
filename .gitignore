@@ -1,0 +1,7 @@
+*.lock
+*.eld
+*desktop
+auto-save-list/*
+elpa/*
+ede-projects*
+semanticdb/*
