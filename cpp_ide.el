@@ -40,7 +40,7 @@
 
 
 ;; *** function-args wird hier nur eingebunden um Zugriff auf moo-jump-local zu haben ***
-(require 'function-args)
-(fa-config-default)
+;; (require 'function-args)
+;; (fa-config-default)
 ;; (define-key c-mode-map  [(tab)] 'company-complete)
 ;; (define-key c++-mode-map  [(tab)] 'company-complete)
