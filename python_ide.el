@@ -6,7 +6,7 @@
 ;; "matplotlib.pyplot.show()"-Befehl einfach gerendert. Ausführen von "matplotlib.pyplot.ioff()"
 ;; sorgt dafür, dass das nicht mehr so ist.
 ;;
-;; *** Deuggen mit RealGUD ***
+;; *** Debuggen mit RealGUD ***
 ;; Um zu mit RealGUD zu debuggen ist es notwendig den Befehl
 ;; "realgud:pdb" zu aktivieren und dann das Kommando
 ;; "python -m pdb <scriptname>.py" zu aktivieren.
@@ -27,7 +27,7 @@
 (require 'py-autopep8)
 (add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save)
 
-(pyvenv-activate "/media/zufall/inter/Python/play_env")
-(setq flycheck-flake8rc "/media/zufall/inter/Python/play_env/.flake8")
+(pyvenv-activate "/home/IBEO.AS/naat/Python/play_env")
+(setq flycheck-flake8rc "/home/IBEO.AS/naat/Python/play_env/.flake8")
 
 (require 'realgud)
