@@ -5,3 +5,5 @@ auto-save-list/*
 elpa/*
 ede-projects*
 semanticdb/*
+bookmarks
+session.*

@@ -1,4 +1,3 @@
-(require 'cc-mode)
 ;; (require 'semantic)
 
 ;; (global-semanticdb-minor-mode 1)

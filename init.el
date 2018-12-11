@@ -149,7 +149,8 @@
     exec-path-from-shell
     magit
     ace-window
-    sr-speedbar))
+    sr-speedbar
+    company-c-headers))
 
 (defvar pyPackages
   '(elpy
