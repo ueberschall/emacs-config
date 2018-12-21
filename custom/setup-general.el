@@ -34,7 +34,7 @@
 ;; “python”: What Python developers use for extension modules
 ;; “java”: The default style for java-mode (see below)
 ;; “user”: When you want to define your own style
-(setq c-default-style "cc-mode") ;; set style to "linux"
+(setq c-default-style "gnu") ;; set style to "linux"
 
 
 ;; company
@@ -45,9 +45,11 @@
 ;; (define-key c-mode-map  [(control tab)] 'company-complete)
 ;; (define-key c++-mode-map  [(control tab)] 'company-complete)
 
+(require 'company-c-headers)
 (use-package company-c-headers
   :init
-  (add-to-list 'company-backends 'company-c-headers))
+  (add-to-list 'company-backends 'company-c-headers)
+  (add-to-list 'company-c-headers-path-system "/usr/include/c++/5.4.0/"))
 
 ;; Package: projejctile
 (use-package projectile

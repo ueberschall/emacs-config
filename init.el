@@ -44,6 +44,9 @@
 ;; delete-desktop: Lösche den Desktop ohne desktop-dirname auf nil zu setzen
 ;; buffer-file-name: Gibt den Pfad der zum aktuellen Buffer gehörigen Datei aus
 ;; sr-speedbar-toggle: Öffnen der frame-losen Speedbar
+;; profiler-start: Starten des Profilers
+;; profiler-report: Einen Statusbericht des Profilers anzeigen
+;; profiler-stop: Profiler stoppen
 
 ;; *** Laden eigener Funktionsdefinitionen ***
 (load "~/.emacs.d/ana_func.el")
