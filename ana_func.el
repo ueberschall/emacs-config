@@ -45,3 +45,55 @@ will be killed."
             (kill-buffer buf)
             (message "Killed non-existing/unreadable file buffer: %s" filename))))))
   (message "Finished reverting buffers containing unmodified files."))
+
+(defun session-save ()
+  "Save an emacs session."
+  (interactive)
+  (if (saved-session)
+      (if (y-or-n-p "Overwrite existing desktop? ")
+	  (desktop-save-in-desktop-dir)
+	(message "Session not saved."))
+  (desktop-save-in-desktop-dir)))
+
+(defun delete-desktop ()
+  "Delete desktop file without setting desktop-dirname to nil"
+  (interactive)
+  (setq desktop-dirname-tmp desktop-dirname)
+  (desktop-remove)
+  (setq desktop-dirname desktop-dirname-tmp))
+
+(defun saved-session ()
+  (file-exists-p (concat desktop-dirname "/" desktop-base-file-name)))
+
+(defun session-restore ()
+  "Restore a saved emacs session."
+  (interactive)
+  (if (saved-session)
+      (desktop-read)
+    (message "No desktop found.")))
+
+(defun load-python-ide-settings ()
+  "The settings are altered such that Emacs can be better used as Python IDE"
+  (interactive)
+  (load "~/.emacs.d/python_ide.el"))
+
+(defun load-cpp-ide-settings ()
+  "The settings are altered such that Emacs can be better used as Python IDE"
+  (interactive)
+  (load "~/.emacs.d/cpp_ide.el"))
+
+(require 'ido)
+(defun my-pick-one ()
+  "Prompt user to pick a choice from a list."
+  (interactive)
+  (let ((choices '("nil" "c/c++" "python")))
+    (setq chosen (message "%s" (ido-completing-read "Choose language: " choices )))
+    (cond ((equal chosen "c/c++")
+           (setq desktop-base-file-name "emacs-desktop-cpp")
+           (add-hook 'after-init-hook 'load-cpp-ide-settings))
+          ((equal chosen "python")
+           (setq desktop-base-file-name "emacs-desktop-python")
+           (add-hook 'after-init-hook 'load-python-ide-settings))))
+  (if (saved-session)
+		 (if (y-or-n-p "Restore desktop? ")
+		     (session-restore))))

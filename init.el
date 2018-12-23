@@ -88,6 +88,9 @@
 ;; *** Verhindere dass der Begrüßungsschirm angezeigt wird ***
 (setq inhibit-startup-screen t)
 
+;; *** Mache "Ja-oder-Nein"-Abfragen einfacher ***
+(defalias 'yes-or-no-p 'y-or-n-p)
+
 ;; *** Automatisches Schließen von Klammern ***
 (electric-pair-mode 1)
 
@@ -102,45 +105,24 @@
 (setq-default tab-width 4)
 
 ;; *** Speichern des Desktops (Quelle: https://www.emacswiki.org/emacs/Desktop)
-;; Use only one desktop
 (setq desktop-path '("~/.emacs.d/"))
 (setq desktop-dirname "~/.emacs.d/")
 (setq desktop-base-file-name "emacs-desktop")
 
-(defun delete-desktop ()
-  "Delete desktop file without setting desktop-dirname to nil"
-  (interactive)
-  (setq desktop-dirname-tmp desktop-dirname)
-  (desktop-remove)
-  (setq desktop-dirname desktop-dirname-tmp))
-
-;; remove desktop after it's been read
 (add-hook 'desktop-after-read-hook 'delete-desktop)
-
-(defun saved-session ()
-  (file-exists-p (concat desktop-dirname "/" desktop-base-file-name)))
-
-;; use session-restore to restore the desktop manually
-(defun session-restore ()
-  "Restore a saved emacs session."
-  (interactive)
-  (if (saved-session)
-      (desktop-read)
-    (message "No desktop found.")))
-
-;; use session-save to save the desktop manually
-(defun session-save ()
-  "Save an emacs session."
-  (interactive)
-  (if (saved-session)
-      (if (y-or-n-p "Overwrite existing desktop? ")
-	  (desktop-save-in-desktop-dir)
-	(message "Session not saved."))
-  (desktop-save-in-desktop-dir)))
-
 (add-hook 'kill-emacs-hook 'session-save)
 
 (setq desktop-load-locked-desktop t)
+
+;; *** Lege das Kompilier-Kommando auf <f5> ***
+;; Compilation
+(global-set-key (kbd "<f5>") (lambda ()
+                               (interactive)
+                               (setq-local compilation-read-command nil)
+                               (call-interactively 'compile)))
+
+;; *** Package-Such-Pfad anpassen ***
+(add-to-list 'load-path "~/.emacs.d/dired+")
 
 ;; *** Installieren der notwendigen Packages, falls dies noch nicht getan wurde ***
 (require 'package)
@@ -157,7 +139,7 @@
     magit
     ace-window
     sr-speedbar
-    company-c-headers))
+    function-args))
 
 (defvar pyPackages
   '(elpy
@@ -171,6 +153,9 @@
 						    myPackages
 						    pyPackages)))
 
+;; *** Lade "Dired+"-Package ***
+(require 'dired+)
+
 ;; *** Konfiguriere die Speedbar ***
 (setq speedbar-show-unknown-files t)
 (require 'sr-speedbar)
@@ -181,33 +166,7 @@
 (setq custom-safe-themes t)
 
 ;; *** Lade die Einstellungen für eine bestimmte Programmiersprache ***
-(defun load-python-ide-settings ()
-  "The settings are altered such that Emacs can be better used as Python IDE"
-  (interactive)
-  (load "~/.emacs.d/python_ide.el"))
-
-(defun load-cpp-ide-settings ()
-  "The settings are altered such that Emacs can be better used as Python IDE"
-  (interactive)
-  (load "~/.emacs.d/cpp_ide.el"))
-
-(require 'ido)
-(defun my-pick-one ()
-  "Prompt user to pick a choice from a list."
-  (interactive)
-  (let ((choices '("nil" "c/c++" "python" "all")))
-    (setq chosen (message "%s" (ido-completing-read "Choose language: " choices )))
-    (cond ((equal chosen "c/c++") (load-cpp-ide-settings))
-          ((equal chosen "python") (load-python-ide-settings)))))
-
-(add-hook 'after-init-hook 'my-pick-one)
-
-;; *** Abfrage ob der Desktop wieder hergestellt werden soll ***
-(add-hook 'after-init-hook
-	  '(lambda ()
-	     (if (saved-session)
-		 (if (y-or-n-p "Restore desktop? ")
-		     (session-restore)))))
+(my-pick-one)
 
 ;; *** Laden des "tron"-Themes, das aus den offiziellen Packetquellen stammt ***
 (add-hook 'after-init-hook (lambda () (load-theme 'tron)))
