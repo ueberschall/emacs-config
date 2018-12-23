@@ -156,6 +156,10 @@
 ;; *** Lade "Dired+"-Package ***
 (require 'dired+)
 
+;; *** Das Fenster kann jetzt mit C-c w gewechselt werden ***
+(require 'ace-window)
+(global-set-key (kbd "C-c w") 'ace-window)
+
 ;; *** Konfiguriere die Speedbar ***
 (setq speedbar-show-unknown-files t)
 (require 'sr-speedbar)
