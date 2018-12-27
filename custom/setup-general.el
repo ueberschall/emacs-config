@@ -16,8 +16,13 @@
 
 (use-package cc-mode
   :init
-  (setq c-default-style "linux"
-        c-basic-offset 4))
+  (c-add-style "ana_style"
+               '("bsd"
+                 (c-basic-offset . 4)
+                 (c-offset-alists
+                  (case-label . *))))
+  (setq c-default-style "ana_style"
+        c-set-style "ana_style"))
 
 (require 'cc-mode)
 (define-key c-mode-base-map (kbd "<C-tab>") 'company-complete)
