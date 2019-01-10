@@ -41,6 +41,7 @@
 (require 'setup-cedet)
 (require 'setup-editing)
 
+(setq c-set-style "ana_style")
 
 
 ;; *** function-args wird hier nur eingebunden um Zugriff auf moo-jump-local zu haben ***

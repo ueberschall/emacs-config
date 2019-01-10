@@ -15,17 +15,17 @@
  )
 
 (use-package cc-mode
-  :init
-  (c-add-style "ana_style"
-               '("bsd"
-                 (c-basic-offset . 4)
-                 (c-offset-alists
-                  (case-label . *))))
-  (setq c-default-style "ana_style"
-        c-set-style "ana_style"))
+  :init)
 
 (require 'cc-mode)
 (define-key c-mode-base-map (kbd "<C-tab>") 'company-complete)
+(c-add-style "ana_style"
+             '("bsd"
+               (c-basic-offset . 4)
+               (c-offset-alists
+                (case-label . *)
+                (innamespace . 0))))
+(setq c-default-style "ana_style")
 
 ;; company
 (use-package company

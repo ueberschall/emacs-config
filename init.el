@@ -174,3 +174,5 @@
 
 ;; *** Laden des "tron"-Themes, das aus den offiziellen Packetquellen stammt ***
 (add-hook 'after-init-hook (lambda () (load-theme 'tron)))
+
+(c-set-offset 'innamespace 0)
