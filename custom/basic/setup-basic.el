@@ -28,9 +28,10 @@
 ;; Setze das zeitliche Intervall zwischen automatischen Sicherungen
 (setq auto-save-timeout 180)
 
-;; *** Ausschalten der Werkzeug- und Menüleiste ***
+;; *** Ausschalten der Werkzeug-, Scrollbar- und Menüleiste ***
 (tool-bar-mode -1)
 (menu-bar-mode -1)
+(scroll-bar-mode -1)
 
 ;; *** Verhindere dass der Begrüßungsschirm angezeigt wird ***
 (setq inhibit-startup-screen t)
@@ -50,6 +51,9 @@
 
 ;; *** Einstellen der Tab-Weite ***
 (setq-default tab-width 4)
+
+;; *** Keine Tabs für Einrückungen benutzen ***
+(setq-default indent-tabs-mode nil)
 
 (require 'setup-desktop)
 (require 'setup-basic-package)

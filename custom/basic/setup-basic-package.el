@@ -12,7 +12,7 @@
 ;; *** Lade benötigte Packete und Dateien ***
 (require 'use-package)
 
-(use-package better-defaults)
+;;(use-package better-defaults)
 
 (use-package exec-path-from-shell)
 
