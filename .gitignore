@@ -8,3 +8,4 @@ semanticdb/*
 bookmarks
 session.*
 dired+/*
+backups/*

@@ -72,28 +72,41 @@ will be killed."
       (desktop-read)
     (message "No desktop found.")))
 
+(defun load-ide-desktop (base-name)
+  "Load the desktop file 'base-name'"
+  (setq desktop-base-file-name base-name)
+  (if (saved-session)
+	  (if (y-or-n-p "Restore desktop? ")
+		  (session-restore))))
+
 (defun load-python-ide-settings ()
   "The settings are altered such that Emacs can be better used as Python IDE"
   (interactive)
-  (load "~/.emacs.d/python_ide.el"))
+  (require 'setup-python))
 
 (defun load-cpp-ide-settings ()
-  "The settings are altered such that Emacs can be better used as Python IDE"
+  "The settings are altered such that Emacs can be better used as C/C++ IDE"
   (interactive)
-  (load "~/.emacs.d/cpp_ide.el"))
+  (require 'setup-cpp))
 
 (require 'ido)
-(defun my-pick-one ()
+(defun ide-mode-request ()
+  "The user is asked which IDE mode he wants"
+  (interactive)
+  (setq choices '("nil" "c/c++" "python"))
+  (setq chosen-ide-mode (message "%s" (ido-completing-read "Choose language: " choices ))))
+
+(defun load-ide-mode ()
   "Prompt user to pick a choice from a list."
   (interactive)
-  (let ((choices '("nil" "c/c++" "python")))
-    (setq chosen (message "%s" (ido-completing-read "Choose language: " choices )))
-    (cond ((equal chosen "c/c++")
-           (setq desktop-base-file-name "emacs-desktop-cpp")
-           (add-hook 'after-init-hook 'load-cpp-ide-settings))
-          ((equal chosen "python")
-           (setq desktop-base-file-name "emacs-desktop-python")
-           (add-hook 'after-init-hook 'load-python-ide-settings))))
-  (if (saved-session)
-		 (if (y-or-n-p "Restore desktop? ")
-		     (session-restore))))
+  (setq chosen (ide-mode-request))
+  (cond ((equal chosen "nil")
+         (load-ide-desktop "emacs-desktop"))
+        ((equal chosen "c/c++")
+         (load-cpp-ide-settings)
+         (load-ide-desktop "emacs-desktop-cpp"))
+        ((equal chosen "python")
+         (load-ide-desktop "emacs-desktop-python")
+         (load-python-ide-settings))))
+
+(provide 'ana-func)

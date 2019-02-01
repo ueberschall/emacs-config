@@ -1,6 +1,6 @@
 ;; ~/.emacs.d/init.el file von Nasser Attar
 ;; Erstellt: 		14. April 2017
-;; Aktualisiert: 	1. Dezember 2018
+;; Aktualisiert: 	31. Januar 2019
 ;;
 ;; *** Wichtige Tastenkombination ***
 ;; C-x z: Letztes Kommando wiederholen. Wenn "z" n-mal gedrückt wird,
@@ -48,131 +48,23 @@
 ;; profiler-report: Einen Statusbericht des Profilers anzeigen
 ;; profiler-stop: Profiler stoppen
 
-;; *** Laden eigener Funktionsdefinitionen ***
-(load "~/.emacs.d/ana_func.el")
-
-;; *** Maximieren des Emacs-Frames ***
-;; The bottom commands maximize the window to full size
-(setq frame-resize-pixelwise t)
-(dotimes (n 3)
-  (toggle-frame-maximized))
-
-;; *** Die Fensterleiste wird so eingestellt, dass der Name des aktuellen Buffers
-;; *** angezeigt wird ***
-(setq frame-title-format
-      (list (format "%s %%S: %%j " (system-name))
-            '(buffer-file-name "%f" (dired-directory dired-directory "%b"))))
-
-;; *** Zeilennummern aktivieren ***
-(global-linum-mode t)
-
-;; *** Die Schriftart auf Ubuntu-Mono einstellen ***
-(set-face-attribute 'default nil :font "Ubuntu Mono-12" )
-(set-frame-font "Ubuntu Mono-12" nil t)
-
-;; *** Sicherung von Buffern ***
-;; Setze das Verzeichnis für die Backups
-(setq
-   backup-by-copying t
-   backup-directory-alist
-   '(("." . "~/.backups"))
-)
-
-;; Setze das zeitliche Intervall zwischen automatischen Sicherungen
-(setq auto-save-timeout 180)
-
-;; *** Ausschalten der Werkzeug- und Menüleiste ***
-(tool-bar-mode -1)
-(menu-bar-mode -1)
-
-;; *** Verhindere dass der Begrüßungsschirm angezeigt wird ***
-(setq inhibit-startup-screen t)
-
-;; *** Mache "Ja-oder-Nein"-Abfragen einfacher ***
-(defalias 'yes-or-no-p 'y-or-n-p)
-
-;; *** Automatisches Schließen von Klammern ***
-(electric-pair-mode 1)
-
-;; *** Anzeigen von einander zugehörigen Klammern ***
-(show-paren-mode 1)
-(setq show-paren-delay 0)
-
-;; *** Benutze Leerzeichen für Einrückungen ***
-(setq-default indent-tabs-mode nil)
-
-;; *** Einstellen der Tab-Weite ***
-(setq-default tab-width 4)
-
-;; *** Speichern des Desktops (Quelle: https://www.emacswiki.org/emacs/Desktop)
-(setq desktop-path '("~/.emacs.d/"))
-(setq desktop-dirname "~/.emacs.d/")
-(setq desktop-base-file-name "emacs-desktop")
-
-(add-hook 'desktop-after-read-hook 'delete-desktop)
-(add-hook 'kill-emacs-hook 'session-save)
-
-(setq desktop-load-locked-desktop t)
-
-;; *** Lege das Kompilier-Kommando auf <f5> ***
-;; Compilation
-(global-set-key (kbd "<f5>") (lambda ()
-                               (interactive)
-                               (setq-local compilation-read-command nil)
-                               (call-interactively 'compile)))
-
-;; *** Package-Such-Pfad anpassen ***
+;; *** Ergänze die Suchpfade ***
 (add-to-list 'load-path "~/.emacs.d/dired+")
+(add-to-list 'load-path "~/.emacs.d/custom")
+(add-to-list 'load-path "~/.emacs.d/custom/basic")
+(add-to-list 'load-path "~/.emacs.d/custom/cpp_ide")
+(add-to-list 'load-path "~/.emacs.d/custom/python_ide")
+(add-to-list 'custom-theme-load-path "~/.emacs.d/custom/themes")
 
-;; *** Installieren der notwendigen Packages, falls dies noch nicht getan wurde ***
-(require 'package)
-(add-to-list 'package-archives
-       '("melpa" . "http://melpa.org/packages/") t)
+;; *** Laden eigener Funktionsdefinitionen ***
+(require 'ana-func)
 
-(package-initialize)
-(when (not package-archive-contents)
-  (package-refresh-contents))
-
-(defvar myPackages
-  '(better-defaults
-    exec-path-from-shell
-    magit
-    ace-window
-    sr-speedbar
-    function-args))
-
-(defvar pyPackages
-  '(elpy
-    flycheck
-    ein
-    pylint
-    py-autopep8
-    realgud))
-
-(install-necessary-packages (concat-multiple-lists (list
-						    myPackages
-						    pyPackages)))
-
-;; *** Lade "Dired+"-Package ***
-(require 'dired+)
-
-;; *** Das Fenster kann jetzt mit C-c w gewechselt werden ***
-(require 'ace-window)
-(global-set-key (kbd "C-c w") 'ace-window)
-
-;; *** Konfiguriere die Speedbar ***
-(setq speedbar-show-unknown-files t)
-(require 'sr-speedbar)
-(sr-speedbar-refresh-turn-off)
-
-;; *** Füge einen Pfad für Custom-Themes hinzu ***
-(add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
-(setq custom-safe-themes t)
+;; *** Laden der Basis-Konfiguration ***
+(require 'setup-basic)
 
 ;; *** Lade die Einstellungen für eine bestimmte Programmiersprache ***
-(my-pick-one)
+(load-ide-mode)
 
 ;; *** Laden des "tron"-Themes, das aus den offiziellen Packetquellen stammt ***
+(setq custom-safe-themes t)
 (add-hook 'after-init-hook (lambda () (load-theme 'tron)))
-
-(c-set-offset 'innamespace 0)

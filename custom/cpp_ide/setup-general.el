@@ -25,7 +25,12 @@
                (c-offset-alists
                 (case-label . *)
                 (innamespace . 0))))
+
 (setq c-default-style "ana_style")
+(add-hook 'c-mode-common-hook (lambda ()
+                               (c-set-style "ana_style")))
+(add-hook 'c++-mode-hook (lambda ()
+                          (c-set-offset 'innamespace 0)))
 
 ;; company
 (use-package company
