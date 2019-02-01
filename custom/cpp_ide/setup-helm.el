@@ -28,7 +28,7 @@
                                   `(:background ,bg-color :foreground ,bg-color)))
           (setq-local cursor-type nil))))
 
-    (add-hook 'helm-minibuffer-set-up-hook 'helm-hide-minibuffer-maybe)
+    (add-hook 'helm-minibuffer-set-up-hook 'helm-hide-minqibuffer-maybe)
     ;; The default "C-x c" is quite close to "C-x C-c", which quits Emacs.
     ;; Changed to "C-c h". Note: We must set "C-c h" globally, because we
     ;; cannot change `helm-command-prefix-key' once `helm-config' is loaded.
