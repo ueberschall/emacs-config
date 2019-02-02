@@ -26,6 +26,15 @@
   :init (setq speedbar-show-unknown-files t)
   :config (sr-speedbar-refresh-turn-off))
 
+(use-package company
+  :init
+  (global-company-mode 1)
+  (setq company-idle-delay 0)
+  (setq-default company-backends
+                '(company-bbdb company-cmake company-capf company-files
+              (company-dabbrev-code company-gtags company-etags company-keywords)
+              company-oddmuse company-dabbrev)))
+
 (use-package projectile
   :config (projectile-mode 1))
 
@@ -40,12 +49,29 @@
     (if (version< "26.0.50" emacs-version)
         (eval-when-compile (require 'helm-lib)))
 
+    (setq helm-echo-input-in-header-line t)
+    
+    (defun helm-hide-minibuffer-maybe ()
+      (when (with-helm-buffer helm-echo-input-in-header-line)
+        (let ((ov (make-overlay (point-min) (point-max) nil nil t)))
+          (overlay-put ov 'window (selected-window))
+          (overlay-put ov 'face (let ((bg-color (face-background 'default nil)))
+                                  `(:background ,bg-color :foreground ,bg-color)))
+          (setq-local cursor-type nil))))
+
+    (add-hook 'helm-minibuffer-set-up-hook 'helm-hide-minibuffer-maybe)
+
     (setq helm-split-window-in-side-p t
           setq helm-autoresize-max-height 40
           setq helm-autoresize-min-height 20
           helm-mode-fuzzy-match t
-          helm-buffers-fuzzy-matching t)
-    
+          helm-buffers-fuzzy-matching t
+          helm-M-x-fuzzy-match t
+          helm-imenu-fuzzy-match t
+          helm-lisp-fuzzy-completion t
+          helm-locate-fuzzy-match t
+          helm-display-header-line nil)
+
     (when (executable-find "curl")
       (setq helm-google-suggest-use-curl-p t))
 
@@ -63,6 +89,12 @@
       :init
       (helm-projectile-on)
       (setq projectile-completion-system 'helm)
-      (setq projectile-indexing-method 'alien))))
+      (setq projectile-indexing-method 'alien)))
+
+  :config
+  (set-face-attribute 'helm-source-header nil :foreground "dark magenta" :weight 'bold
+                      :background "black" :font "Ubuntu Mono-14")
+  (set-face-attribute 'helm-selection nil :foreground "black" :background "SpringGreen4")
+  (set-face-attribute 'helm-buffer-modified nil :foreground "RosyBrown"))
 
 (provide 'setup-basic-package)

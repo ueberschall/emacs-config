@@ -10,11 +10,20 @@
       (list (format "%s %%S: %%j " (system-name))
             '(buffer-file-name "%f" (dired-directory dired-directory "%b"))))
 
+;; *** Die Mode Line wird so angepasst, dass die Modes nicht mehr angezeit werden
+(setq-default mode-line-format
+              '("%e" mode-line-front-space mode-line-mule-info mode-line-client mode-line-modified
+               mode-line-remote mode-line-frame-identification mode-line-buffer-identification "  "
+               mode-line-position (vc-mode vc-mode) "  "
+               (:eval (substring (system-name) 0 (string-match "\\..+" (system-name))))
+               ":" default-directory
+               mode-line-end-spaces))
+
 ;; *** Zeilennummern aktivieren ***
 (global-linum-mode t)
 
 ;; *** Die Schriftart auf Ubuntu-Mono einstellen ***
-(set-face-attribute 'default nil :font "Ubuntu Mono-12" )
+(set-face-attribute 'default nil :font "Ubuntu Mono-12")
 (set-frame-font "Ubuntu Mono-12" nil t)
 
 ;; *** Sicherung von Buffern ***
