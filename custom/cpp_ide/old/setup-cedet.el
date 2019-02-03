@@ -4,7 +4,7 @@
 
 (require 'semantic)
 
-(setq semantic-default-submodes (cons 'global-semantic-stickyfunc-mode semantic-default-submodes))
+(add-to-list 'semantic-default-submodes 'global-semantic-stickyfunc-mode)
 (semantic-mode 1)
 
 ;; (global-semanticdb-minor-mode 1)

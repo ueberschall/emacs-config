@@ -31,8 +31,8 @@
   (global-company-mode 1)
   (setq company-idle-delay 0)
   (setq-default company-backends
-                '(company-bbdb company-cmake company-capf company-files
-              (company-dabbrev-code company-gtags company-etags company-keywords)
+                '(company-capf company-bbdb company-cmake company-files
+              (company-dabbrev-code company-keywords)
               company-oddmuse company-dabbrev)))
 
 (use-package projectile
@@ -62,20 +62,19 @@
     (add-hook 'helm-minibuffer-set-up-hook 'helm-hide-minibuffer-maybe)
 
     (setq helm-split-window-in-side-p t
-          setq helm-autoresize-max-height 40
-          setq helm-autoresize-min-height 20
+;;          helm-autoresize-max-height 40
+;;          helm-autoresize-min-height 20
           helm-mode-fuzzy-match t
           helm-buffers-fuzzy-matching t
           helm-M-x-fuzzy-match t
           helm-imenu-fuzzy-match t
           helm-lisp-fuzzy-completion t
-          helm-locate-fuzzy-match t
-          helm-display-header-line nil)
+          helm-locate-fuzzy-match t)
 
     (when (executable-find "curl")
       (setq helm-google-suggest-use-curl-p t))
 
-    (helm-autoresize-mode 1)
+    (helm-autoresize-mode -1)
 
     (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab to do persistent action
     (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB works in terminal

@@ -33,6 +33,7 @@
 (global-set-key (kbd "C-c h g") 'helm-google-suggest)
 
 (global-set-key (kbd "C-c h x") 'helm-register)
+(global-set-key (kbd "<C-tab>") 'company-complete)
 
 ;; *** Global Unset ***
 (global-unset-key (kbd "C-x c"))

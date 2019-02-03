@@ -9,16 +9,9 @@
 ;; <f5>: Kompilieren (Prefix ändert den Kompilier-Befehl (C-u <f5>))
 ;;
 ;; *** Wichtige Funktionen ***
-;; helm-gtags-show-stack: Zeige die Historie aller besuchten Tags an
 
-(add-to-list 'load-path "~/.emacs.d/custom")
+(require 'setup-cpp-packages)
+(require 'setup-cpp-general)
+(require 'setup-cpp-keymap)
 
-(require 'setup-general)
-(require 'setup-helm)
-(require 'setup-helm-gtags)
-;; (require 'setup-ggtags)
-;; (require 'setup-c)
-(require 'setup-cedet)
-;;(require 'setup-editing)
-
-;;(c-set-style "ana_style")
+(provide 'setup-cpp)

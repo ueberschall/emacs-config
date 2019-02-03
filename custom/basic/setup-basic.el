@@ -4,13 +4,7 @@
 (dotimes (n 3)
   (toggle-frame-maximized))
 
-;; *** Die Fensterleiste wird so eingestellt, dass der Name des aktuellen Buffers
-;; *** angezeigt wird ***
-(setq frame-title-format
-      (list (format "%s %%S: %%j " (system-name))
-            '(buffer-file-name "%f" (dired-directory dired-directory "%b"))))
-
-;; *** Die Mode Line wird so angepasst, dass die Modes nicht mehr angezeit werden
+;; *** Die Mode Line wird angepasst
 (setq-default mode-line-format
               '("%e" mode-line-front-space mode-line-mule-info mode-line-client mode-line-modified
                mode-line-remote mode-line-frame-identification mode-line-buffer-identification "  "

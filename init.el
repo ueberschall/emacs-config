@@ -63,7 +63,12 @@
 (require 'setup-basic)
 
 ;; *** Lade die Einstellungen für eine bestimmte Programmiersprache ***
-(load-ide-mode)
+(setq ide-mode (load-ide-mode))
+
+;; *** Die Fensterleiste wird so eingestellt, dass der Name des aktuellen Buffers
+;; *** angezeigt wird ***
+(setq frame-title-format
+      (list "Emacs " emacs-version "   -   IDE-Mode : " ide-mode))
 
 ;; *** Laden des "tron"-Themes, das aus den offiziellen Packetquellen stammt ***
 (setq custom-safe-themes t)
