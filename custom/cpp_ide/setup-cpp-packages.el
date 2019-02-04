@@ -39,15 +39,6 @@
   (progn
     (setq rtags-display-result-backend 'helm)))
 
-;; (use-package company-rtags
-;;   :requires company rtags
-;;   :config
-;;   (progn
-;;     (setq rtags-autostart-diagnostics t)
-;;     (rtags-diagnostics)
-;;     (setq rtags-completions-enabled t)
-;;     (add-to-list 'company-rtags company-backends)))
-
 (use-package company-rtags
   :requires company rtags
   :config
@@ -68,10 +59,10 @@
       (setq-local flycheck-highlighting-mode nil) ;; RTags creates more accurate overlays.
       (setq-local flycheck-check-syntax-automatically nil)
       (rtags-set-periodic-reparse-timeout 2.0)  ;; Run flycheck 2 seconds after being idle.
-      )
+      (flycheck-mode 1))
+    
     (add-hook 'c-mode-hook 'setup-flycheck-rtags)
-    (add-hook 'c++-mode-hook 'setup-flycheck-rtags)
-    (flycheck-mode 1)))
+    (add-hook 'c++-mode-hook 'setup-flycheck-rtags)))
 
 (use-package zygospore)
 
