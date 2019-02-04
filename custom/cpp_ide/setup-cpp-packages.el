@@ -48,21 +48,7 @@
   (push 'company-rtags company-backends)
   (setq rtags-completions-enabled t)))
 
-(use-package flycheck-rtags
-  :requires flycheck rtags
-  :config
-  (progn
-    ;; ensure that we use only rtags checking
-    ;; https://github.com/Andersbakken/rtags#optional-1
-    (defun setup-flycheck-rtags ()
-      (flycheck-select-checker 'rtags)
-      (setq-local flycheck-highlighting-mode nil) ;; RTags creates more accurate overlays.
-      (setq-local flycheck-check-syntax-automatically nil)
-      (rtags-set-periodic-reparse-timeout 2.0)  ;; Run flycheck 2 seconds after being idle.
-      (flycheck-mode 1))
-    
-    (add-hook 'c-mode-hook 'setup-flycheck-rtags)
-    (add-hook 'c++-mode-hook 'setup-flycheck-rtags)))
+(require 'flycheck-rtags)
 
 (use-package zygospore)
 
