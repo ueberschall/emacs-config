@@ -68,7 +68,7 @@
 ;; *** Die Fensterleiste wird so eingestellt, dass der Name des aktuellen Buffers
 ;; *** angezeigt wird ***
 (setq frame-title-format
-      (list "Emacs " emacs-version "   -   IDE-Mode : " ide-mode))
+      (list ide-mode "   -   Emacs " emacs-version))
 
 ;; *** Laden des "tron"-Themes, das aus den offiziellen Packetquellen stammt ***
 (setq custom-safe-themes t)
