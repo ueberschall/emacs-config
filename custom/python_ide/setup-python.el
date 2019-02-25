@@ -11,23 +11,20 @@
 ;; "realgud:pdb" zu aktivieren und dann das Kommando
 ;; "python -m pdb <scriptname>.py" zu aktivieren.
 
-(elpy-enable)
+(require 'setup-python-package)
 
-(setq python-shell-interpreter "jupyter"
-      python-shell-interpreter-args "console --simple-prompt"
-      python-shell-prompt-detect-failure-warning nil)
-(add-to-list 'python-shell-completion-native-disabled-interpreters
-             "jupyter")
-
-(when (require 'flycheck nil t)
-  (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
-  (add-hook 'elpy-mode-hook 'flycheck-mode))
+;; (pyvenv-activate pyvenv-name)
 
 
-(require 'py-autopep8)
-(add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save)
+;; (setq flake8-config-file (expand-file-name ".flake8" pyvenv-name))
+;; (if (file-exists-p flake8-config-file)
+;;     (setq flycheck-flake8rc flake8-config-file))
 
-(pyvenv-activate "/home/IBEO.AS/naat/Python/play_env")
-(setq flycheck-flake8rc "/home/IBEO.AS/naat/Python/play_env/.flake8")
+(flymake-mode-off)
+(flycheck-mode -1)
 
-(require 'realgud)
+;; (add-hook 'after-init-hook (lambda () (pyvenv-activate
+;;                                        (ido-read-directory-name
+;;                                         "Choose virtual environment: " "/" "/media/zufall/inter/Python/play_env" t))))
+
+(provide 'setup-python)
