@@ -112,4 +112,7 @@ will be killed."
          (load-python-ide-settings)
          (setq return "Python"))))
 
+;; (defun generate-getters-cpp ()
+;;   "Generate getter functions for all member variables in region")
+
 (provide 'ana-func)

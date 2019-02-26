@@ -35,6 +35,12 @@
 (global-set-key (kbd "C-c h x") 'helm-register)
 (global-set-key (kbd "<C-tab>") 'company-complete)
 
+;; *** Semantic Refactor ***
+(global-set-key (kbd "M-RET o") 'srefactor-lisp-one-line)
+(global-set-key (kbd "M-RET m") 'srefactor-lisp-format-sexp)
+(global-set-key (kbd "M-RET d") 'srefactor-lisp-format-defun)
+(global-set-key (kbd "M-RET b") 'srefactor-lisp-format-buffer)
+
 ;; *** Global Unset ***
 (global-unset-key (kbd "C-x c"))
 

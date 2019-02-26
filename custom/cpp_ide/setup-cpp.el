@@ -14,4 +14,6 @@
 (require 'setup-cpp-general)
 (require 'setup-cpp-keymap)
 
+(semantic-mode 1)
+
 (provide 'setup-cpp)

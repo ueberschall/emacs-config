@@ -52,4 +52,6 @@
 
 (use-package zygospore)
 
+(use-package srefactor)
+
 (provide 'setup-cpp-packages)

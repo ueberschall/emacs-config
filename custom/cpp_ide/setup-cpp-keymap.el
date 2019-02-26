@@ -15,4 +15,6 @@
 (define-key c-mode-base-map (kbd "RET") 'newline-and-indent)
 (define-key c-mode-base-map (kbd "C-x 1") 'zygospore-toggle-delete-other-windows)
 
+(define-key c-mode-base-map (kbd "M-RET") 'srefactor-refactor-at-point)
+
 (provide 'setup-cpp-keymap)
