@@ -45,6 +45,9 @@
 ;; *** Automatisches Schließen von Klammern ***
 (electric-pair-mode 1)
 
+;; *** Änderungen der Fenster-Konfiguration können rückgängig gemacht werden ***
+(winner-mode 1)
+
 ;; *** Anzeigen von einander zugehörigen Klammern ***
 (show-paren-mode 1)
 (setq show-paren-delay 0)
