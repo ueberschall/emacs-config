@@ -112,6 +112,22 @@ will be killed."
          (load-python-ide-settings)
          (setq return "Python"))))
 
+(defun generate-getters-cpp ()
+  "Generate setter functions for all member variables in region"
+  (interactive)
+  (save-excursion
+    (save-restriction
+      (if (use-region-p)
+          (progn
+            (narrow-to-region (region-beginning) (region-end))
+            (goto-char 1)
+            (while (search-forward-regexp "\\([a-zA-Z1-9_:<>]+\\)\\Wm_\\(\\w\\)\\([a-zA-Z1-9_]+\\)\\(?:{.*}\\)?;"
+                                          nil t)
+              (replace-match (concat (match-string 1) " get"
+                                     (upcase (match-string 2))
+                                     (match-string 3) "()"
+                                     " const { return m_" (match-string 2) (match-string 3) "; }"))))))))
+
 (defun generate-setters-cpp ()
   "Generate setter functions for all member variables in region"
   (interactive)
@@ -121,7 +137,7 @@ will be killed."
           (progn
             (narrow-to-region (region-beginning) (region-end))
             (goto-char 1)
-            (while (search-forward-regexp "\\([a-zA-Z1-9_]+\\)\\Wm_\\(\\w\\)\\([a-zA-Z1-9_]+\\)\\(?:{.*}\\);"
+            (while (search-forward-regexp "\\([a-zA-Z1-9_:<>]+\\)\\Wm_\\(\\w\\)\\([a-zA-Z1-9_]+\\)\\(?:{.*}\\)?;"
                                           nil t)
               (replace-match (concat "void set"
                                      (upcase (match-string 2))
