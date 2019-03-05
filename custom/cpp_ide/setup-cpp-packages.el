@@ -23,7 +23,7 @@
 (use-package rtags
   :config
   (progn
-    (setq rtags-path "~/RTags/rtags/build/bin")
+    (setq rtags-path "/usr/local/bin")
     (unless (rtags-executable-find "rc") (error "Binary rc is not installed!"))
     (unless (rtags-executable-find "rdm") (error "Binary rdm is not installed!"))
 
