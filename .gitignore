@@ -9,4 +9,5 @@ bookmarks
 session.*
 dired+/*
 backups/*
+transient/*
 srecode-map.el

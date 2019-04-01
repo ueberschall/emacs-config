@@ -61,6 +61,9 @@
 ;; *** Keine Tabs für Einrückungen benutzen ***
 (setq-default indent-tabs-mode nil)
 
+;; *** Aktiviere Compilation-Mode in Shell-Mode ***
+(add-hook 'shell-mode-hook 'compilation-shell-minor-mode)
+
 (require 'setup-desktop)
 (require 'setup-basic-package)
 (require 'setup-basic-keymap)
