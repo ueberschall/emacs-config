@@ -61,8 +61,8 @@
 ;; *** Keine Tabs für Einrückungen benutzen ***
 (setq-default indent-tabs-mode nil)
 
-;; *** Aktiviere Compilation-Mode in Shell-Mode ***
-(add-hook 'shell-mode-hook 'compilation-shell-minor-mode)
+;; *** Speichere die Annotationen der Lesezeichen wenn Emacs beendet wird ***
+(add-hook 'kill-emacs-hook 'bookmark-save)
 
 (require 'setup-desktop)
 (require 'setup-basic-package)
