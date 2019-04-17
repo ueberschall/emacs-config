@@ -1,8 +1,6 @@
 ;; *** Maximieren des Emacs-Frames ***
-;; The bottom commands maximize the window to full size
-(setq frame-resize-pixelwise t)
-(dotimes (n 3)
-  (toggle-frame-maximized))
+(add-to-list 'initial-frame-alist '(fullscreen . maximized))
+(add-to-list 'default-frame-alist '(fullscreen . fullboth))
 
 ;; *** Die Mode Line wird angepasst
 (setq-default mode-line-format
