@@ -13,8 +13,6 @@
 
 (require 'setup-python-package)
 
-;; (pyvenv-activate pyvenv-name)
-
 
 ;; (setq flake8-config-file (expand-file-name ".flake8" pyvenv-name))
 ;; (if (file-exists-p flake8-config-file)
@@ -22,9 +20,5 @@
 
 (flymake-mode-off)
 (flycheck-mode -1)
-
-;; (add-hook 'after-init-hook (lambda () (pyvenv-activate
-;;                                        (ido-read-directory-name
-;;                                         "Choose virtual environment: " "/" "/media/zufall/inter/Python/play_env" t))))
 
 (provide 'setup-python)
