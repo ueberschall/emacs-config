@@ -1,6 +1,6 @@
-;; *** Maximieren des Emacs-Frames ***
+;; *** Maximieren der Emacs-Frames ***
 (add-to-list 'initial-frame-alist '(fullscreen . maximized))
-(add-to-list 'default-frame-alist '(fullscreen . fullboth))
+(add-to-list 'default-frame-alist '(fullscreen . maximized))
 
 ;; *** Die Mode Line wird angepasst
 (setq-default mode-line-format
