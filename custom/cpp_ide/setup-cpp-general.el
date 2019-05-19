@@ -27,6 +27,9 @@
  gdb-many-windows t
 
  ;; Non-nil means display source file containing the main routine at startup
- gdb-show-main t)
+ gdb-show-main t
+
+ ;; Show tool tips
+ gud-tooltip-mode 1)
 
 (provide 'setup-cpp-general)

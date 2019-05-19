@@ -2,11 +2,22 @@
 (add-to-list 'initial-frame-alist '(fullscreen . maximized))
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 
+;; start emacs-server if not running
+;; Funktioniert irgendwie noch nicht. Anscheinend hat Emacs bei der Installation
+;; irgendwo einen Eintrag erstellt, der dafür sorgt, dass beim Doppelklicken auf eine Datei
+;; automatisch eine neue Emacs-Session gestartet wird, ohne dass Einträge in .emacs oder
+;; .bashrc beachtet werden
+;; (add-hook 'after-init-hook
+;;           (lambda ()
+;;             (require 'server)
+;;             (unless (server-running-p)
+;;               (server-start))))
+
 ;; *** Die Mode Line wird angepasst
 (setq-default mode-line-format
               '("%e" mode-line-front-space mode-line-mule-info mode-line-client mode-line-modified
-               mode-line-remote mode-line-frame-identification mode-line-buffer-identification "  "
-               mode-line-position (vc-mode vc-mode) "  "
+               mode-line-remote mode-line-frame-identification mode-line-buffer-identification " (" mode-name ") "
+               mode-line-position (vc-mode vc-mode) " "
                (:eval (substring (system-name) 0 (string-match "\\..+" (system-name))))
                ":" default-directory
                mode-line-end-spaces))
@@ -31,8 +42,8 @@
 
 ;; *** Ausschalten der Werkzeug-, Scrollbar- und Menüleiste ***
 (tool-bar-mode -1)
-(menu-bar-mode -1)
-(scroll-bar-mode -1)
+;;(menu-bar-mode -1)
+;;(scroll-bar-mode -1)
 
 ;; *** Verhindere dass der Begrüßungsschirm angezeigt wird ***
 (setq inhibit-startup-screen t)
