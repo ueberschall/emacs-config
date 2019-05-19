@@ -16,7 +16,7 @@
 (global-set-key (kbd "C-M-s") 'isearch-forward)
 (global-set-key (kbd "C-M-r") 'isearch-backward)
 
-(global-set-key (kbd "C-x C-b") 'ibuffer)
+(global-set-key (kbd "C-x C-b") 'ibuffer) ;; Stattdessen den entsprechenden Helm-Command wählen.
 (global-set-key (kbd "C-x g") 'magit-status)
 (global-set-key (kbd "C-x M-g") 'magit-dispatch-popup)
 
@@ -52,5 +52,17 @@
 ;; *** Mini Buffer ***
 (define-key minibuffer-local-map (kbd "M-p") 'helm-minibuffer-history)
 (define-key minibuffer-local-map (kbd "M-n") 'helm-minibuffer-history)
+
+;; *** Shell Mode ***
+(define-key shell-mode-map (kbd "<C-right>") 'windmove-right)
+(define-key shell-mode-map (kbd "<C-left>") 'windmove-left)
+(define-key shell-mode-map (kbd "<C-up>") 'windmove-up)
+(define-key shell-mode-map (kbd "<C-down>") 'windmove-down)
+
+;; *** Dired Mode ***
+(define-key dired-mode-map (kbd "<C-right>") 'windmove-right)
+(define-key dired-mode-map (kbd "<C-left>") 'windmove-left)
+(define-key dired-mode-map (kbd "<C-up>") 'windmove-up)
+(define-key dired-mode-map (kbd "<C-down>") 'windmove-down)
 
 (provide 'setup-basic-keymap)
