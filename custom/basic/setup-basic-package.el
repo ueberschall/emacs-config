@@ -96,7 +96,7 @@
   :config
   (set-face-attribute 'helm-source-header nil :foreground "dark magenta" :weight 'bold
                       :background "black" :font "Ubuntu Mono-14")
-  (set-face-attribute 'helm-selection nil :foreground "black" :background "SpringGreen4")
+  (set-face-attribute 'helm-selection nil :foreground "white" :background "SpringGreen4")
   (set-face-attribute 'helm-buffer-modified nil :foreground "RosyBrown"))
 
 (provide 'setup-basic-package)
