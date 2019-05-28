@@ -46,4 +46,8 @@
 
 (use-package zygospore)
 
+(use-package clang-format
+  :config
+  (setq clang-format-style-option "/btool/SDK/src/ref/common/.clang-format"))
+
 (provide 'setup-cpp-packages)

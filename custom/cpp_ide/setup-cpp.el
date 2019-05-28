@@ -11,6 +11,7 @@
 ;; *** Wichtige Funktionen ***
 
 (require 'setup-cpp-packages)
+(require 'setup-cpp-ana-func)
 (require 'setup-cpp-general)
 (require 'setup-cpp-keymap)
 

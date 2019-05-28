@@ -17,4 +17,8 @@
 
 (define-key c-mode-base-map (kbd "M-RET") 'srefactor-refactor-at-point)
 
+;; *** Clang format ***
+(define-key c-mode-base-map (kbd "C-c f r") 'clang-format-region)
+(define-key c-mode-base-map (kbd "C-c f b") 'clang-format-buffer)
+
 (provide 'setup-cpp-keymap)
