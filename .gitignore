@@ -11,3 +11,4 @@ dired+/*
 backups/*
 transient/*
 srecode-map.el
+irony/*
