@@ -18,9 +18,20 @@
               '("%e" mode-line-front-space mode-line-mule-info mode-line-client mode-line-modified
                mode-line-remote mode-line-frame-identification mode-line-buffer-identification " (" mode-name ") "
                mode-line-position (vc-mode vc-mode) " "
-               (:eval (substring (system-name) 0 (string-match "\\..+" (system-name))))
-               ":" default-directory
-               mode-line-end-spaces))
+               ;; (:eval (substring (system-name) 0 (string-match "\\..+" (system-name))))
+               ;; ":" default-directory
+               ;; mode-line-end-spaces)
+              ))
+
+(setq-default mode-line-buffer-identification
+              (list (propertize
+                     "%12b"
+                     'face 'mode-line-buffer-id
+                     'help-echo
+                     '(format "%s\nmouse-1: Previous buffer\nmouse-3: Next buffer"
+                              (buffer-file-name))
+                     'mouse-face 'mode-line-highlight
+                     'local-map mode-line-buffer-identification-keymap)))
 
 ;; *** Zeilennummern aktivieren ***
 (global-linum-mode t)
