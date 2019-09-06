@@ -21,7 +21,7 @@
 (add-hook 'c-mode-common-hook (lambda ()
                                 (flycheck-mode 1)))
 
-(add-hook 'before-save-hook 'clang-format-when-ibeo-sdk-active)
+(add-hook 'before-save-hook 'clang-format-buffer-smart)
 
 ;; setup GDB
 (setq
