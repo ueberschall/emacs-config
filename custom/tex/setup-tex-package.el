@@ -1,0 +1,3 @@
+
+
+(provide 'setup-tex-package)
