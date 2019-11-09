@@ -21,7 +21,7 @@
 (add-hook 'c-mode-common-hook (lambda ()
                                 (flycheck-mode 1)))
 
-(add-hook 'before-save-hook 'clang-format-buffer-smart)
+(add-hook 'c-mode-common-hook 'clang-format-buffer-smart-on-save)
 
 ;; setup GDB
 (setq
