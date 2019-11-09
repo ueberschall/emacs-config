@@ -1,4 +1,0 @@
-- Die Mode-Line ist zu überladen
-- Damit "Company" die Executable von "clang6.0" findet, muss man in "company-clang.el"
-  bei der Definition von "company-clang-executable" den String "clang" zu "clang6.0"
-  ändern
