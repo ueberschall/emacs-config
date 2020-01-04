@@ -37,8 +37,7 @@
 (global-linum-mode t)
 
 ;; *** Die Schriftart auf Ubuntu-Mono einstellen ***
-(set-face-attribute 'default nil :font "Ubuntu Mono-12")
-(set-frame-font "Ubuntu Mono-14" nil t)
+(set-face-attribute 'default nil :font "Ubuntu Mono-14")
 
 ;; *** Sicherung von Buffern ***
 ;; Setze das Verzeichnis für die Backups
