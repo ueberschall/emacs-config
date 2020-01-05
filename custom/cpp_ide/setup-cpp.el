@@ -1,17 +1,17 @@
 ;; ~/.emacs.d/cpp_ide.el
+;; Erstellt:            01.01.2019
+;; Aktualisiert:        04.01.2020
+;;
 ;; Einstellungen für Emacs als C/C++ IDE werden hier vorgenommen
 ;;
 ;; *** Wichtige Tastenkombinationen ***
 ;; M-.: Zur Definition springen
-;; M-,: Von Definition wieder zurückspringen
-;; C-j: Alle im Projekt befindlichen Tags durchsuchen
-;; C-c g r: Referenzen anzeigen
-;; <f5>: Kompilieren (Prefix ändert den Kompilier-Befehl (C-u <f5>))
+;; M-#: Von Definition wieder zurückspringen
 ;;
 ;; *** Wichtige Funktionen ***
 
 (require 'setup-cpp-packages)
-(require 'setup-cpp-ana-func)
+(require 'setup-cpp-func)
 (require 'setup-cpp-general)
 (require 'setup-cpp-keymap)
 

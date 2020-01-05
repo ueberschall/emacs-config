@@ -155,4 +155,4 @@ will be killed."
                                      "{ m_" (match-string 2) (match-string 3) " = "
                                      (match-string 2) (match-string 3) "; }"))))))))
 
-(provide 'ana-func)
+(provide 'setup-basic-func)

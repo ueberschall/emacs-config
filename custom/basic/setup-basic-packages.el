@@ -95,4 +95,4 @@
   (set-face-attribute 'helm-selection nil :foreground "white" :background "SpringGreen4")
   (set-face-attribute 'helm-buffer-modified nil :foreground "RosyBrown"))
 
-(provide 'setup-basic-package)
+(provide 'setup-basic-packages)
