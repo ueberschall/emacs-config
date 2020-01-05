@@ -33,6 +33,12 @@
 ;; C-u C-x C-e: Einen Lisp-Ausdruck ausführen und Rückgabewert in *scratch* ausgeben
 ;; C-x n n: Buffer auf Region eingrenzen (Narrowing)
 ;; C-x n w: Eingrenzung aufheben
+;; C-c h <key>: Das Kommando-Prefix für Helm. Wenn man <Key> durch eine
+;;              gültige Tastenkombination ersetzt, dann wird
+;;              ein Helm-Kommando ausgeführt
+;; C-h C-f: Ruft 'helm-apropos' auf, die Hilfsfunktion von Helm um
+;;          Kommandos, Funktionen, Variablen und Schriftarten zu
+;;          beschreiben.
 ;;
 ;; *** Wichtige Funktionen ***
 ;; revert-buffer: Buffer aktualisieren.

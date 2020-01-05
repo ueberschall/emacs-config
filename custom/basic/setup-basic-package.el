@@ -13,17 +13,13 @@
 (require 'use-package)
 
 ;;(use-package better-defaults)
-
+(use-package ace-window)
 (use-package exec-path-from-shell)
-
 (use-package magit)
+(use-package srefactor-lisp)
 
 (use-package dired+
   :config (diredp-toggle-find-file-reuse-dir 1))
-
-(use-package ace-window)
-
-(use-package srefactor-lisp)
 
 (use-package sr-speedbar
   :init (setq speedbar-show-unknown-files t)

@@ -65,4 +65,9 @@
 (define-key dired-mode-map (kbd "<C-up>") 'windmove-up)
 (define-key dired-mode-map (kbd "<C-down>") 'windmove-down)
 
+;; *** Org Mode ***
+(global-set-key (kbd "C-c l") 'org-store-link)
+(global-set-key (kbd "C-c a") 'org-agenda)
+(global-set-key (kbd "C-c c") 'org-capture)
+
 (provide 'setup-basic-keymap)
