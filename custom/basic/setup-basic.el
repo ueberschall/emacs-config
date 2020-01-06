@@ -55,8 +55,8 @@
 ;; profiler-report: Einen Statusbericht des Profilers anzeigen
 ;; profiler-stop: Profiler stoppen
 
-(require 'setup-basic-packages)
 (require 'setup-basic-func)
+(require 'setup-basic-packages)
 (require 'setup-basic-general)
 (require 'setup-basic-keymap)
 

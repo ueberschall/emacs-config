@@ -9,10 +9,25 @@
 (when (not package-archive-contents)
   (package-refresh-contents))
 
+;; *** Installiere fehlende Packete ***
+;; dired+ ist hier nicht aufgeführt weil,
+;; es nur manuell installiert werden kann und
+;; nicht aus den Emacs-Packetquellen
+(install-necessary-packages '(use-package
+                               ace-window
+                               exec-path-from-shell
+                               magit
+                               srefactor
+                               sr-speedbar
+                               company
+                               projectile
+                               helm
+                               helm-projectile
+                               ))
+
 ;; *** Lade benötigte Packete und Dateien ***
 (require 'use-package)
 
-;;(use-package better-defaults)
 (use-package ace-window)
 (use-package exec-path-from-shell)
 (use-package magit)
