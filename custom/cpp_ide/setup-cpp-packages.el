@@ -1,3 +1,9 @@
+;; *** Installiere fehlende Packete ***
+;; rtags und alle damit verbundenen Packete (helm-rtags, company-rtags usw)
+;; werden nicht aus den Emacs-Packetquellen installiert, sondern manuell
+(install-necessary-packages '(zygospore
+                              clang-format))
+
 (use-package cc-mode
   :init
   (c-add-style "ana_style"
