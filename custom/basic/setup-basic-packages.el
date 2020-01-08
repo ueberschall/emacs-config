@@ -23,6 +23,7 @@
                                projectile
                                helm
                                helm-projectile
+                               org
                                ))
 
 ;; *** Lade benötigte Packete und Dateien ***
@@ -32,6 +33,7 @@
 (use-package exec-path-from-shell)
 (use-package magit)
 (use-package srefactor-lisp)
+(use-package org)
 
 (use-package dired+
   :config (diredp-toggle-find-file-reuse-dir 1))
