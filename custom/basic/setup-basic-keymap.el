@@ -43,6 +43,7 @@
 
 ;; *** Global Unset ***
 (global-unset-key (kbd "C-x c"))
+(global-unset-key (kbd "C-x f"))
 
 ;; *** Help Commands ***
 (define-key 'help-command (kbd "C-f") 'helm-apropos)
