@@ -55,6 +55,9 @@
 ;;(menu-bar-mode -1)
 ;;(scroll-bar-mode -1)
 
+;; *** Anschalten der Spalten-Nummer in der Mode Line ***
+(column-number-mode 1)
+
 ;; *** Verhindere dass der Begrüßungsschirm angezeigt wird ***
 (setq inhibit-startup-screen t)
 

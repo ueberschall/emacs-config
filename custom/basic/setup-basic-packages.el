@@ -38,6 +38,10 @@
 (use-package dired+
   :config (diredp-toggle-find-file-reuse-dir 1))
 
+;; Das ist ein manuell kopiertes Package. "use-package" funktioniert
+;; irgendwie nicht.
+(require 'modeline-posn)
+
 (use-package sr-speedbar
   :init (setq speedbar-show-unknown-files t)
   :config (sr-speedbar-refresh-turn-off))
