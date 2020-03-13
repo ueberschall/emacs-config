@@ -6,6 +6,7 @@
 ;;
 ;; *** Ergänze die Suchpfade ***
 (add-to-list 'load-path "~/.emacs.d/dired+")
+(add-to-list 'load-path "~/.emacs.d/modeline-posn")
 (add-to-list 'load-path "~/.emacs.d/custom/basic")
 (add-to-list 'load-path "~/.emacs.d/custom/cpp")
 (add-to-list 'load-path "~/.emacs.d/custom/python")
