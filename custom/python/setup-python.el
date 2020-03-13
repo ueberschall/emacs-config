@@ -1,5 +1,3 @@
-;; python_ide.el
-
 ;; *** matplotlib in Elpy ***
 ;; Um in Elpy matplotlib-Figures auftauchen zu lassen, benutze am besten die Jupyter-Konsole.
 ;; Führe darin den Befehl "%matplotlib" aus. Dann werden Plots auch ohne den

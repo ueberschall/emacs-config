@@ -94,11 +94,16 @@ will be killed."
   (interactive)
   (require 'setup-tex))
 
+(defun load-rust-ide-settings ()
+  "The settings are altered such that Emacs can be better used as Rust IDE"
+  (interactive)
+  (require 'setup-rust))
+
 (require 'ido)
 (defun ide-mode-request ()
   "The user is asked which IDE mode he wants"
   (interactive)
-  (setq choices '("nil" "c/c++" "python" "tex"))
+  (setq choices '("nil" "c/c++" "python" "rust" "tex"))
   (setq chosen-ide-mode (message "%s" (ido-completing-read "Choose language: " choices ))))
 
 (defun load-ide-mode ()
@@ -116,6 +121,10 @@ will be killed."
          (load-ide-desktop "emacs-desktop-python")
          (load-python-ide-settings)
          (setq return "Python"))
+        ((equal chosen "rust")
+         (load-ide-desktop "emacs-desktop-rust")
+         (load-rust-ide-settings)
+         (setq return "Rust"))
         ((equal chosen "tex")
          (load-ide-desktop "emacs-desktop-tex")
          (load-tex-ide-settings)

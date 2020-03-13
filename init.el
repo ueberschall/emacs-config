@@ -7,8 +7,9 @@
 ;; *** Ergänze die Suchpfade ***
 (add-to-list 'load-path "~/.emacs.d/dired+")
 (add-to-list 'load-path "~/.emacs.d/custom/basic")
-(add-to-list 'load-path "~/.emacs.d/custom/cpp_ide")
-(add-to-list 'load-path "~/.emacs.d/custom/python_ide")
+(add-to-list 'load-path "~/.emacs.d/custom/cpp")
+(add-to-list 'load-path "~/.emacs.d/custom/python")
+(add-to-list 'load-path "~/.emacs.d/custom/rust")
 (add-to-list 'load-path "~/.emacs.d/custom/tex")
 (add-to-list 'custom-theme-load-path "~/.emacs.d/custom/themes")
 
