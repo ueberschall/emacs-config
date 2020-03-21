@@ -41,5 +41,38 @@
                                      "{ m_" (match-string 2) (match-string 3) " = "
                                      (match-string 2) (match-string 3) "; }"))))))))
 
+(defun replace-include-directives-in-file (file old-include new-include)
+  "Replaces all occurences of old-include with new-include in file"
+  (let ((extension (file-name-extension file)))
+    (when (or (equal extension "hpp")
+              (equal extension "cpp"))
+      (let ((work-buffer (find-file-noselect file))
+            (search-regexp (concat "\\(#include +<\\|\"\\)" old-include))
+            (replace-string (concat "\\1" new-include)))
+        (save-excursion
+          (set-buffer work-buffer)
+          (goto-char (point-min))
+          (while (re-search-forward search-regexp nil t)
+            (replace-match replace-string))
+          (save-buffer)
+          (kill-buffer)
+          )))))
+
+(defun replace-include-directives-in-directory (directory old-include new-include)
+  "Replaces all occurences of old-include with new-include in directory"
+  (dolist (element (directory-files directory t "^[^.].*"))
+    (if (eq (file-attribute-type (file-attributes element)) t)
+        (replace-include-paths-in-directory element old-include new-include)
+      (replace-include-paths-in-file element old-include new-include))))
+
+(defun replace-include-directive ()
+  "Replaces a include directive with a new one in a specified directory"
+  (interactive)
+  (let ((directory (read-directory-name "Directory: " default-directory nil t))
+        (old-include (read-string "Include directive to replace: " ))
+        (new-include (read-string "Include directive to insert: ")))
+    (replace-include-paths-in-directory directory old-include new-include)
+    ))
+
 
 (provide 'setup-cpp-func)
