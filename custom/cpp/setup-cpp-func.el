@@ -62,8 +62,8 @@
   "Replaces all occurences of old-include with new-include in directory"
   (dolist (element (directory-files directory t "^[^.].*"))
     (if (eq (file-attribute-type (file-attributes element)) t)
-        (replace-include-paths-in-directory element old-include new-include)
-      (replace-include-paths-in-file element old-include new-include))))
+        (replace-include-directives-in-directory element old-include new-include)
+      (replace-include-directives-in-file element old-include new-include))))
 
 (defun replace-include-directive ()
   "Replaces a include directive with a new one in a specified directory"
