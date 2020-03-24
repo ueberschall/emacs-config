@@ -47,7 +47,7 @@
     (when (or (equal extension "hpp")
               (equal extension "cpp"))
       (let ((work-buffer (find-file-noselect file))
-            (search-regexp (concat "\\(#include +<\\|\"\\)" old-include))
+            (search-regexp (concat "\\(# *include +<\\|\"\\)" old-include))
             (replace-string (concat "\\1" new-include)))
         (save-excursion
           (set-buffer work-buffer)
@@ -71,8 +71,7 @@
   (let ((directory (read-directory-name "Directory: " default-directory nil t))
         (old-include (read-string "Include directive to replace: " ))
         (new-include (read-string "Include directive to insert: ")))
-    (replace-include-paths-in-directory directory old-include new-include)
-    ))
+    (replace-include-directives-in-directory directory old-include new-include)))
 
 
 (provide 'setup-cpp-func)
