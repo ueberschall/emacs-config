@@ -46,6 +46,18 @@ will be killed."
             (message "Killed non-existing/unreadable file buffer: %s" filename))))))
   (message "Finished reverting buffers containing unmodified files."))
 
+(defun duplicate-line ()
+  "Duplicate the line up to cursor position on next line"
+  (interactive)
+  (set-mark-command nil)
+  (move-beginning-of-line nil)
+  (kill-ring-save nil nil t)
+  (move-end-of-line nil)
+  (open-line 1)
+  (next-line 1)
+  (yank)
+  (deactivate-mark))
+
 (defun session-save ()
   "Save an emacs session."
   (interactive)

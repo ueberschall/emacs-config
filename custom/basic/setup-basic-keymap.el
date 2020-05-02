@@ -35,6 +35,8 @@
 (global-set-key (kbd "C-c h x") 'helm-register)
 (global-set-key (kbd "<C-tab>") 'company-complete)
 
+(global-set-key (kbd "C-c C-d") 'duplicate-line)
+
 ;; *** Semantic Refactor ***
 (global-set-key (kbd "M-RET o") 'srefactor-lisp-one-line)
 (global-set-key (kbd "M-RET m") 'srefactor-lisp-format-sexp)
