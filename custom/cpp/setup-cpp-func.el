@@ -76,48 +76,68 @@
         (new-include (read-string "Include directive to insert: ")))
     (replace-include-directives-in-directory directory old-include new-include)))
 
-(defun insert-and-indent (&rest args)
+(defun insert-and-indent (args)
   "Insert args in buffer, adds new line and indents after that"
   (insert args)
   (newline-and-indent))
 
 (defun insert-doxygen-documentation-for-variable (variableName)
   "Inserts doxygen documentation for variableName"
-  (back-to-indentation)
-  (insert-and-indent "//==============================================================================")
-  (insert-and-indent "//! \\brief Short description of variable " variableName)
-  (insert-and-indent "//------------------------------------------------------------------------------"))
+  (save-excursion
+    (back-to-indentation)
+    (insert-and-indent "//==============================================================================")
+    (insert-and-indent (format "//! \\brief Short description of variable %s" variableName))
+    (insert-and-indent "//------------------------------------------------------------------------------")))
 
 (defun insert-doxygen-documentation-for-class (className)
   "Inserts doxygen documentation for className"
-  (back-to-indentation)
-  (insert-and-indent "//==============================================================================")
-  (insert-and-indent "//! \\brief Short description of class " className)
-  (insert-and-indent "//------------------------------------------------------------------------------"))
+  (save-excursion
+    (back-to-indentation)
+    (insert-and-indent "//==============================================================================")
+    (insert-and-indent (format "//! \\brief Short description of class %s" className))
+    (insert-and-indent "//------------------------------------------------------------------------------")))
 
 (defun insert-doxygen-documentation-for-parameter-list ()
   "Insert doxygen documentation for parameter list after point"
-  (setq end (save-excursion (search-forward ")")))
-  (setq isInputParameter nil)
-  (while (re-search-forward "\\_<[[:alpha:]][[:word:]_]*" end t)
-    (cond ((equal (match-string 0) "const")
-           (setq isInputParameter t))
-          ((looking-at-p ",\\|)")
-           (if isInputParameter
-               (insert-and-indent "//! \\param[in] " (match-string 0))
-             (insert-and-indent "//! \\param[in, out] " (match-string 0)))
-           (setq isInputParameter nil)))))
+  (save-excursion
+    (setq start (point))
+    (setq end (save-excursion (search-forward ")")))
+    (setq nbOfParameters 0)
+    (save-restriction
+      (narrow-to-region start end)
+      (setq isInputParameter nil)
+      (while (re-search-forward "\\_<[[:alpha:]][[:word:]_]*" nil t)
+        (cond ((equal (match-string-no-properties 0) "const")
+               (setq isInputParameter t))
+              ((looking-at-p ",\\|)")
+               (setq nbOfParameters (1+ nbOfParameters))
+               (if isInputParameter
+                   (kill-new (format "//! \\param[in]  %s" (match-string-no-properties 0)))
+                 (kill-new (format "//! \\param[in, out]  %s" (match-string-no-properties 0))))
+               (setq isInputParameter nil)))))
+    (rotate-yank-pointer nbOfParameters)
+    (setq nbOfLeftRotations nbOfParameters)
+    (goto-char start)
+    (back-to-indentation)
+    (while (> nbOfLeftRotations 0)
+      (rotate-yank-pointer -1)
+      (yank)
+      (newline-and-indent)
+      (setq nbOfLeftRotations (1- nbOfLeftRotations)))))
 
 (defun insert-doxygen-documentation-for-function (functionName)
   "Inserts doxygen documentation for functionName"
-  (back-to-indentation)
-  (insert-and-indent "//==============================================================================")
-  (insert-and-indent "//! \\brief Short description of function " functionName)
-  (insert-and-indent "//!")
+  (save-excursion
+    (back-to-indentation)
+    (insert-and-indent "//==============================================================================")
+    (insert-and-indent (format "//! \\brief Short description of function %s" functionName))
+    (insert-and-indent "//!"))
   (insert-doxygen-documentation-for-parameter-list)
-  (insert-and-indent "//!")
-  (insert-and-indent "//! \\returns void")
-  (insert-and-indent "//------------------------------------------------------------------------------"))
+  (save-excursion
+    (back-to-indentation)
+    (insert-and-indent "//!")
+    (insert-and-indent "//! \\returns void")
+    (insert-and-indent "//------------------------------------------------------------------------------")))
 
 (defun doxygen-documentation-for-region (start end)
   "Generate doxygen documentation for every relevant expression in the passed region"
@@ -125,48 +145,44 @@
     (save-restriction
       (narrow-to-region start end)
       (goto-char (point-min))
-      (while (re-search-forward "//\\|/\\*\\|\\_<[[:alpha:]][[:word:]_]*" end t)
-        (cond ((equal (match-string 0) "//")
+      (while (re-search-forward "//\\|/\\*\\|\\_<[[:alpha:]][[:word:]_]*" nil t)
+        (cond ((equal (match-string-no-properties 0) "//")
                (move-end-of-line 1))
-              ((equal (match-string 0) "/*")
-               (search-forward "*/" end))
-              ((or (equal (match-string 0) "class")
-                   (equal (match-string 0) "struct"))
-               (re-search-forward "\\_<[[:alpha:]][[:word:]_]*" end t)
-               (insert-doxygen-documentation-for-class (match-string 0))
-               (re-search-forward "{\\|;" end)
-               (when (equal (match-string 0) "{")
+              ((equal (match-string-no-properties 0) "/*")
+               (search-forward "*/"))
+              ((or (equal (match-string-no-properties 0) "class")
+                   (equal (match-string-no-properties 0) "struct"))
+               (re-search-forward "\\_<[[:alpha:]][[:word:]_]*")
+               (insert-doxygen-documentation-for-class (match-string-no-properties 0))
+               (re-search-forward "{\\|;")
+               (when (equal (match-string-no-properties 0) "{")
                  (setq subStart (point))
                  (backward-char)
                  (forward-list)
                  (doxygen-documentation-for-region subStart (1- (point)))))
               ((looking-at-p "(")
-               (insert-doxygen-documentation-for-function (match-string 0))
+               (insert-doxygen-documentation-for-function (match-string-no-properties 0))
                (forward-list)
-               (re-search-forward "{\\|;" end)
-               (when (equal (match-string 0) "{")
+               (re-search-forward "{\\|;")
+               (when (equal (match-string-no-properties 0) "{")
                  (backward-char)
                  (forward-list)))
               ((looking-at-p "{\\|;")
-               (insert-doxygen-documentation-for-variable (match-string 0))
+               (insert-doxygen-documentation-for-variable (match-string-no-properties 0))
                (when (looking-at-p "{")
                  (forward-list))))))))
 
 
 (defun doxygen-documentation-for-file (file)
   "Generate doxygen documentation for file"
-  (let ((keep (find-buffer-visiting file))
-        (work-buffer (find-file-noselect file)))
     (save-excursion
-      (set-buffer work-buffer)
-      (doxygen-documentation-for-region (point-min) (point-max))
-      (save-buffer)
-      (when keep
-        (kill-buffer)))))
+      (set-buffer (find-file-noselect file))
+      (doxygen-documentation-for-region (point-min) (point-max))))
 
 (defun doxygen-documentation-for-file-interactive ()
   "Interactive version of doxygen-documentation-for-file"
-  (setq file (read-file-name "File: " nil nil t nil 'is-cpp-file))
+  (interactive)
+  (setq file (read-file-name "File: " nil (buffer-file-name) t nil 'is-cpp-file))
   (doxygen-documentation-for-file file))
 
 
