@@ -185,17 +185,4 @@
   (setq file (read-file-name "File: " nil (buffer-file-name) t nil 'is-cpp-file))
   (doxygen-documentation-for-file file))
 
-(defun kill-all-buffers-with-parent-directory ()
-  "Kill all buffers which got a specific directory as root"
-  (interactive)
-  (save-excursion
-    (let ((directory (read-directory-name "Directory: " default-directory nil t))
-          (currentBuffers (buffer-list)))
-      (dolist (buffer currentBuffers)
-        (when (and (buffer-file-name buffer)
-                   (string-match-p (regexp-quote directory)
-                                   (buffer-file-name buffer)))
-          (kill-buffer buffer))))))
-
-
 (provide 'setup-cpp-func)

@@ -142,4 +142,16 @@ will be killed."
          (load-tex-ide-settings)
          (setq return "Tex"))))
 
+(defun kill-all-buffers-with-parent-directory ()
+  "Kill all buffers which got a specific directory as root"
+  (interactive)
+  (save-excursion
+    (let ((directory (read-directory-name "Directory: " (expand-file-name default-directory) nil t))
+          (currentBuffers (buffer-list)))
+      (dolist (buffer currentBuffers)
+        (when (and (buffer-file-name buffer)
+                   (string-match-p (regexp-quote directory)
+                                   (buffer-file-name buffer)))
+          (kill-buffer buffer))))))
+
 (provide 'setup-basic-func)
