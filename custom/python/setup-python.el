@@ -16,7 +16,7 @@
 ;; (if (file-exists-p flake8-config-file)
 ;;     (setq flycheck-flake8rc flake8-config-file))
 
-(flymake-mode-off)
+(flymake-mode -1)
 (flycheck-mode -1)
 
 (provide 'setup-python)
