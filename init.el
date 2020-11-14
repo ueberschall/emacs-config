@@ -4,6 +4,7 @@
 ;;
 ;; Die Init-Datei, die als Einsprungspunkt dient
 ;;
+;;
 ;; *** Ergänze die Suchpfade ***
 (add-to-list 'load-path "~/.emacs.d/dired+")
 (add-to-list 'load-path "~/.emacs.d/modeline-posn")
