@@ -1,5 +1,3 @@
-(use-package ein)
-
 (use-package pylint)
 
 (use-package realgud)
