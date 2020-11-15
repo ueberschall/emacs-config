@@ -11,12 +11,4 @@
 
 (require 'setup-python-package)
 
-
-;; (setq flake8-config-file (expand-file-name ".flake8" pyvenv-name))
-;; (if (file-exists-p flake8-config-file)
-;;     (setq flycheck-flake8rc flake8-config-file))
-
-(flymake-mode -1)
-(flycheck-mode -1)
-
 (provide 'setup-python)
