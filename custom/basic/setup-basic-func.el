@@ -149,12 +149,12 @@ will be killed."
     (let ((directory (read-directory-name "Directory: " (expand-file-name default-directory) nil t))
           (currentBuffers (buffer-list)))
       (when (string-prefix-p "~/" directory)
-        (setq directory (replace-regexp-in-string "^~" (getenv "HOME") directory))
-        (message "Directory : %s" directory))
+        (setq directory (replace-regexp-in-string "^~" (getenv "HOME") directory)))
       (dolist (buffer currentBuffers)
         (when (and (buffer-file-name buffer)
                    (string-match-p (regexp-quote directory)
                                    (buffer-file-name buffer)))
           (kill-buffer buffer))))))
+
 
 (provide 'setup-basic-func)
