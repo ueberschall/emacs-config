@@ -17,7 +17,7 @@
   (setq output begin))
 
 (defun install-necessary-packages (necessaryPackages)
-  "Install the the packages in 'necessaryPackages', if they are not already there"
+  "Install the the packages in 'necessaryPackages', if they are not already installed"
   (mapc #'(lambda (package)
     (unless (package-installed-p package)
       (package-install package)))
@@ -58,14 +58,38 @@ will be killed."
   (yank)
   (deactivate-mark))
 
+(defun kill-all-buffers-with-parent-directory ()
+  "Kill all buffers which got a specific directory as root"
+  (interactive)
+  (save-excursion
+    (let ((directory (read-directory-name "Directory: " (expand-file-name default-directory) nil t))
+          (currentBuffers (buffer-list)))
+      (when (string-prefix-p "~/" directory)
+        (setq directory (replace-regexp-in-string "^~" (getenv "HOME") directory)))
+      (dolist (buffer currentBuffers)
+        (when (and (buffer-file-name buffer)
+                   (string-match-p (regexp-quote directory)
+                                   (buffer-file-name buffer)))
+          (kill-buffer buffer))))))
+
+(defun kill-outdated-buffers (nb-of-buffers-to-keep)
+  "Keep only the most nb-of-buffers-to-keep recent buffers and kill the rest"
+  (save-some-buffers t)
+  (setq i 0)
+  (dolist (buf (buffer-list))
+    (setq i (+ i 1))
+    (unless (and (buffer-file-name buf)
+                 (<= i nb-of-buffers-to-keep))
+      (kill-buffer buf))))
+
 (defun session-save ()
   "Save an emacs session."
   (interactive)
   (if (saved-session)
       (if (y-or-n-p "Overwrite existing desktop? ")
-	  (desktop-save-in-desktop-dir)
-	(message "Session not saved."))
-  (desktop-save-in-desktop-dir)))
+	      (desktop-save-in-desktop-dir)
+	    (message "Session not saved."))
+    (desktop-save-in-desktop-dir)))
 
 (defun delete-desktop ()
   "Delete desktop file without setting desktop-dirname to nil"
@@ -92,22 +116,22 @@ will be killed."
 		  (session-restore))))
 
 (defun load-python-ide-settings ()
-  "The settings are altered such that Emacs can be better used as Python IDE"
+  "Use Emacs as Python IDE"
   (interactive)
   (require 'setup-python))
 
 (defun load-cpp-ide-settings ()
-  "The settings are altered such that Emacs can be better used as C/C++ IDE"
+  "Use Emacs as C/C++ IDE"
   (interactive)
   (require 'setup-cpp))
 
 (defun load-tex-ide-settings ()
-  "The settings are altered such that Emacs can be better used as Tex editor"
+  "Use Emacs as Tex editor"
   (interactive)
   (require 'setup-tex))
 
 (defun load-rust-ide-settings ()
-  "The settings are altered such that Emacs can be better used as Rust IDE"
+  "Use Emacs as Rust IDE"
   (interactive)
   (require 'setup-rust))
 
@@ -141,20 +165,5 @@ will be killed."
          (load-tex-ide-settings)
          (load-ide-desktop "emacs-desktop-tex")
          (setq return "Tex"))))
-
-(defun kill-all-buffers-with-parent-directory ()
-  "Kill all buffers which got a specific directory as root"
-  (interactive)
-  (save-excursion
-    (let ((directory (read-directory-name "Directory: " (expand-file-name default-directory) nil t))
-          (currentBuffers (buffer-list)))
-      (when (string-prefix-p "~/" directory)
-        (setq directory (replace-regexp-in-string "^~" (getenv "HOME") directory)))
-      (dolist (buffer currentBuffers)
-        (when (and (buffer-file-name buffer)
-                   (string-match-p (regexp-quote directory)
-                                   (buffer-file-name buffer)))
-          (kill-buffer buffer))))))
-
 
 (provide 'setup-basic-func)
