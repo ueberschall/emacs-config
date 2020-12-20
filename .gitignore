@@ -13,3 +13,6 @@ transient/*
 srecode-map.el
 irony/*
 recentf
+elpy/*
+tramp
+
