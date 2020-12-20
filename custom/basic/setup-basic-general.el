@@ -77,6 +77,8 @@
 (add-hook 'desktop-after-read-hook 'delete-desktop)
 
 ;; TODO: Vor session-save nochmals alle überflüssigen Buffer löschen
-(add-hook 'kill-emacs-hook 'session-save)
+(add-hook 'kill-emacs-hook (lambda ()
+                             (kill-outdated-buffers 20)
+                             (session-save)))
 
 (provide 'setup-basic-general)
