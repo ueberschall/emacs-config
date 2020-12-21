@@ -72,7 +72,7 @@ will be killed."
                                    (buffer-file-name buffer)))
           (kill-buffer buffer))))))
 
-(defun kill-outdated-buffers (nb-of-buffers-to-keep)
+(defun save-and-kill-outdated-buffers (nb-of-buffers-to-keep)
   "Keep only the most nb-of-buffers-to-keep recent buffers and kill the rest"
   (save-some-buffers t)
   (setq i 0)
@@ -81,7 +81,9 @@ will be killed."
       (setq i (+ i 1)))
     (unless (or (eq buf (current-buffer))
                 (and (buffer-file-name buf)
-                     (<= i nb-of-buffers-to-keep)))
+                     (<= i nb-of-buffers-to-keep))
+                (and (string-prefix-p "*" (buffer-name buf))
+                     (string-suffix-p "*" (buffer-name buf))))
       (kill-buffer buf))))
 
 (defun session-save ()

@@ -36,7 +36,7 @@
 ;; Setze das zeitliche Intervall zwischen automatischen Sicherungen
 (setq auto-save-timeout 180)
 
-;; Ausschalten der Werkzeugleiste 
+;; Ausschalten der Werkzeugleiste
 (tool-bar-mode -1)
 
 ;; Anschalten der Spalten-Nummer in der Mode Line
@@ -76,9 +76,8 @@
 
 (add-hook 'desktop-after-read-hook 'delete-desktop)
 
-;; TODO: Vor session-save nochmals alle überflüssigen Buffer löschen
 (add-hook 'kill-emacs-hook (lambda ()
-                             (kill-outdated-buffers 20)
+                             (save-and-kill-outdated-buffers 20)
                              (session-save)))
 
 (provide 'setup-basic-general)
