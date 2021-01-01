@@ -8,6 +8,7 @@ semanticdb/*
 bookmarks
 session.*
 dired+/*
+modeline-posn/*
 backups/*
 transient/*
 # Auto-generiert von CEDET
