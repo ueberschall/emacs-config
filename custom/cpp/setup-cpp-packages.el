@@ -1,4 +1,4 @@
-;; *** Installiere fehlende Packete ***
+;; Installiere fehlende Packete
 ;; rtags und alle damit verbundenen Packete (helm-rtags, company-rtags usw)
 ;; werden nicht aus den Emacs-Packetquellen installiert, sondern manuell
 (install-necessary-packages '(zygospore
@@ -30,12 +30,14 @@
   ;; Shutdown rdm when leaving emacs.
   (add-hook 'kill-emacs-hook 'rtags-quit-rdm)
 
-  (use-package helm-rtags
+  (rtags-start-process-unless-running))
+
+(use-package helm-rtags
   :requires helm rtags
   :config
   (setq rtags-display-result-backend 'helm))
 
-  (use-package company-rtags
+(use-package company-rtags
   :requires company rtags
   :config
   (setq rtags-autostart-diagnostics t)
@@ -43,17 +45,31 @@
   (push 'company-rtags company-backends)
   (setq rtags-completions-enabled t))
 
-  (rtags-start-process-unless-running))
+(use-package flycheck-rtags
+  :requires flycheck
+  :config
+  ;; ensure that we use only rtags checking
+  ;; https://github.com/Andersbakken/rtags#optional-1  
+  (add-hook 'c-initialization-hook (lambda ()
+                                     (flycheck-select-checker 'rtags)
+                                        ;(setq flycheck-global-modes '(cc-mode))
+                                     ;; RTags creates more accurate overlays.
+                                     (setq-local flycheck-highlighting-mode nil) 
+                                     (setq-local flycheck-check-syntax-automatically nil)
+                                     ;; Run flycheck 2 seconds after being idle.
+                                     (rtags-set-periodic-reparse-timeout 2.0) 
+                                        ;(global-flycheck-mode 1)
+                                     ))
 
-(require 'flycheck-rtags)
+  (add-hook 'c-mode-common-hook (lambda ()
+                                  (flycheck-mode 1)))
 
-;; (require 'rtags)
+  (add-hook 'c-mode-common-hook 'clang-format-buffer-smart-on-save))
+
 ;; (cmake-ide-setup)
 
 (use-package zygospore)
 
-(use-package clang-format
-  :config
-  (setq clang-format-style-option "/btool/SDK/src/ref/common/.clang-format"))
+(use-package clang-format)
 
 (provide 'setup-cpp-packages)
