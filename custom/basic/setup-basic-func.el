@@ -73,7 +73,7 @@ will be killed."
           (kill-buffer buffer))))))
 
 (defun save-and-kill-outdated-buffers (nb-of-buffers-to-keep)
-  "Keep only the most nb-of-buffers-to-keep recent buffers and kill the rest"
+  "Keep only the most nb-of-buffers-to-keep recent file buffers and kill the rest"
   (save-some-buffers t)
   (setq i 0)
   (dolist (buf (buffer-list))
