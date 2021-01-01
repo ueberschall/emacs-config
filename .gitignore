@@ -10,6 +10,7 @@ session.*
 dired+/*
 backups/*
 transient/*
+# Auto-generiert von CEDET
 srecode-map.el
 irony/*
 recentf
