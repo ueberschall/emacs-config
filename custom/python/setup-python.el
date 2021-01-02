@@ -9,6 +9,7 @@
 ;; "realgud:pdb" zu aktivieren und dann das Kommando
 ;; "python -m pdb <scriptname>.py" zu aktivieren.
 
+(require 'setup-python-func)
 (require 'setup-python-package)
 
 (provide 'setup-python)
