@@ -1,3 +1,8 @@
+(install-necessary-packages '(pylint
+                              realgud
+                              py-autopep8
+                              elpy))
+
 (use-package pylint)
 
 (use-package realgud)
@@ -7,6 +12,7 @@
 (use-package flycheck)
 
 (use-package elpy
+  :after flycheck
   :config
   (setq python-shell-interpreter "jupyter"
         python-shell-interpreter-args "console --simple-prompt"
