@@ -13,6 +13,8 @@
 
 (use-package elpy
   :after flycheck
+  :init
+  (query-and-store-pyvenv-path (expand-file-name ".pyvenv_path" "~/.emacs.d"))
   :config
   (setq python-shell-interpreter "jupyter"
         python-shell-interpreter-args "console --simple-prompt"
@@ -23,6 +25,8 @@
   (add-hook 'elpy-mode-hook 'flycheck-mode)
   (add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save)
   
-  (elpy-enable))
+  (elpy-enable)
+  (pyvenv-activate (load-pyvenv-path-from-file (expand-file-name ".pyvenv_path" "~/.emacs.d"))))
+  
 
 (provide 'setup-python-package)
