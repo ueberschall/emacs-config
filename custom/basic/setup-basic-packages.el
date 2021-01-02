@@ -21,6 +21,7 @@
                                helm
                                helm-projectile
                                org
+                               flycheck
                                ))
 
 ;; dired+ und modeline-posn werden von EmacsWiki heruntergeladen
