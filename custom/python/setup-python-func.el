@@ -18,6 +18,7 @@
                           (expand-file-name "bin/activate" pyvenv-dir)))
       (when (not pyvenv-dir-p)
         (unless (y-or-n-p (concat pyvenv-dir " is not a Pyvenv directory! Select another directory? "))
+          (setq pyvenv-dir "")
           (setq pyvenv-dir-p t))))
     (let ((buf (find-file-literally file)))
       (set-buffer buf)
