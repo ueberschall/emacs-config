@@ -1,6 +1,6 @@
 ;; ~/.emacs.d/init.el
 ;; Erstellt: 		14. April 2017
-;; Aktualisiert: 	20. Dezember 2020
+;; Aktualisiert: 	14. Januar 2021
 ;;
 ;; Die Init-Datei, die als Einsprungspunkt dient
 
@@ -12,7 +12,10 @@
 (add-to-list 'load-path "~/.emacs.d/custom/python")
 (add-to-list 'load-path "~/.emacs.d/custom/rust")
 (add-to-list 'load-path "~/.emacs.d/custom/tex")
+(add-to-list 'load-path "/usr/local/share/emacs/site-lisp/rtags")
 (add-to-list 'custom-theme-load-path "~/.emacs.d/custom/themes")
+
+(setq byte-compile-warnings '(cl-functions))
 
 ;; Laden der Basis-Konfiguration
 (require 'setup-basic)
@@ -25,6 +28,6 @@
 (setq frame-title-format
       (list ide-mode "   -   Emacs " emacs-version))
 
-;; Laden des "tron"-Themes, das aus den offiziellen Packetquellen stammt
+;; Laden des "Cyberpunk"-Theme
 (setq custom-safe-themes t)
-(add-hook 'after-init-hook (lambda () (load-theme 'tron)))
+(add-hook 'after-init-hook (lambda () (load-theme 'cyberpunk t)))

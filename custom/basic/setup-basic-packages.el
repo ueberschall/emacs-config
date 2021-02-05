@@ -4,8 +4,6 @@
 (add-to-list 'package-archives
        '("melpa" . "http://melpa.org/packages/") t)
 
-(package-initialize)
-
 (when (not package-archive-contents)
   (package-refresh-contents))
 
@@ -22,6 +20,8 @@
                                helm-projectile
                                org
                                flycheck
+                               cyberpunk-theme
+                               tron-legacy-theme
                                ))
 
 ;; dired+ und modeline-posn werden von EmacsWiki heruntergeladen

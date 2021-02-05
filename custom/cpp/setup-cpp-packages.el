@@ -20,6 +20,7 @@
                              (c-set-offset 'innamespace 0))))
 
 (use-package rtags
+  :init
   :config
   (setq rtags-path "/usr/local/bin")
   (unless (rtags-executable-find "rc") (error "Binary rc is not installed!"))
@@ -59,17 +60,17 @@
                                      ;; Run flycheck 2 seconds after being idle.
                                      (rtags-set-periodic-reparse-timeout 2.0) 
                                         ;(global-flycheck-mode 1)
-                                     ))
+                                     )))
 
-  (add-hook 'c-mode-common-hook (lambda ()
-                                  (flycheck-mode 1)))
+(use-package clang-format)
 
-  (add-hook 'c-mode-common-hook 'clang-format-buffer-smart-on-save))
+;; (add-hook 'c-mode-common-hook (lambda ()
+;;                                   (flycheck-mode 1)))
+
+(add-hook 'c-mode-common-hook 'clang-format-buffer-smart-on-save)
 
 ;; (cmake-ide-setup)
 
 (use-package zygospore)
-
-(use-package clang-format)
 
 (provide 'setup-cpp-packages)
