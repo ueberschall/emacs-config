@@ -5,4 +5,4 @@
 ;; hier auskommentiert, da use-package nur einen Fehler werfen würde.
 ;(use-package auctex)
 
-(provide 'setup-tex-package)
+(provide 'setup-tex-packages)
