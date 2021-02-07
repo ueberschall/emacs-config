@@ -29,4 +29,4 @@
   (pyvenv-activate (load-pyvenv-path-from-file (expand-file-name ".pyvenv_path" "~/.emacs.d"))))
   
 
-(provide 'setup-python-package)
+(provide 'setup-python-packages)
