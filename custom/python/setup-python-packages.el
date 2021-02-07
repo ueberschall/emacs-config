@@ -26,7 +26,8 @@
   (add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save)
   
   (elpy-enable)
-  (pyvenv-activate (load-pyvenv-path-from-file (expand-file-name ".pyvenv_path" "~/.emacs.d"))))
+  (pyvenv-activate (load-pyvenv-path-from-file (expand-file-name ".pyvenv_path" "~/.emacs.d")))
+  (setq elpy-rpc-virtualenv-path 'current))
   
 
 (provide 'setup-python-packages)
