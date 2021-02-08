@@ -20,6 +20,7 @@
                                helm-projectile
                                org
                                flycheck
+                               treemacs
                                cyberpunk-theme
                                tron-legacy-theme
                                ))
@@ -51,6 +52,8 @@
 (use-package magit)
 (use-package srefactor-lisp)
 (use-package org)
+
+(use-package treemacs)
 
 (use-package sr-speedbar
   :init (setq speedbar-show-unknown-files t)

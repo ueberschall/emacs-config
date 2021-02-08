@@ -28,6 +28,11 @@
 (setq frame-title-format
       (list ide-mode "   -   Emacs " emacs-version))
 
+;; Rufe in bestimmten Fällen Treemacs auf
+(when (equal ide-mode "C/C++")
+  (treemacs)
+  (treemacs-toggle-fixed-width))
+
 ;; Laden des "Cyberpunk"-Theme
 (setq custom-safe-themes t)
 (add-hook 'after-init-hook (lambda () (load-theme 'cyberpunk t)))
