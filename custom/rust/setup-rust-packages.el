@@ -1,4 +1,4 @@
-(install-necessary-packages '(rust-mode))
+;; (install-necessary-packages '(rust-mode))
 
 (use-package rust-mode)
 

@@ -1,7 +1,7 @@
-(install-necessary-packages '(pylint
-                              realgud
-                              py-autopep8
-                              elpy))
+;; (install-necessary-packages '(pylint
+;;                               realgud
+;;                               py-autopep8
+;;                               elpy))
 
 (use-package pylint)
 

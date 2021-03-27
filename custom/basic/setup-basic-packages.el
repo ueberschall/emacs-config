@@ -8,22 +8,23 @@
 ;;   (package-refresh-contents))
 
 ;; Installiere fehlende Packete
-(install-necessary-packages '(use-package
-                               ace-window
-                               exec-path-from-shell
-                               magit
-                               srefactor
-                               sr-speedbar
-                               company
-                               projectile
-                               helm
-                               helm-projectile
-                               org
-                               flycheck
-                               treemacs
-                               cyberpunk-theme
-                               tron-legacy-theme
-                               ))
+;; (install-necessary-packages '(use-package
+;;                                ace-window
+;;                                exec-path-from-shell
+;;                                magit
+;;                                srefactor
+;;                                sr-speedbar
+;;                                company
+;;                                projectile
+;;                                helm
+;;                                helm-projectile
+;;                                org
+;;                                flycheck
+;;                                treemacs
+;;                                academic-phrases
+;;                                cyberpunk-theme
+;;                                tron-legacy-theme
+;;                                ))
 
 ;; dired+ und modeline-posn werden von EmacsWiki heruntergeladen
 (let* ((diredplus-file (expand-file-name "dired+/dired+.el" "~/.emacs.d"))
