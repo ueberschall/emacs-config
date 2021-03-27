@@ -14,6 +14,9 @@
  gdb-show-main t
 
  ;; Show tool tips
- gud-tooltip-mode 1)
+ gud-tooltip-mode 1
+
+ ;; Disable company mode for GDB
+ company-global-modes '(not gud-mode))
 
 (provide 'setup-cpp-general)
