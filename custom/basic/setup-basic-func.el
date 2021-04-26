@@ -86,6 +86,22 @@ will be killed."
                      (string-suffix-p "*" (buffer-name buf))))
       (kill-buffer buf))))
 
+(defun org-metadown-to-bottom ()
+  "Moves the item, row or subtree to the bottom of its parent struct"
+  (interactive)
+  (condition-case nil
+      (while t
+        (org-metadown))
+    (user-error nil)))
+
+(defun org-metaup-to-beginning ()
+  "Moves the item, row or subtree to the bottom of its parent struct"
+  (interactive)
+  (condition-case nil
+      (while t
+        (org-metaup))
+    (user-error nil)))
+
 (defun session-save ()
   "Save an emacs session."
   (interactive)
