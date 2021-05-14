@@ -13,14 +13,11 @@
 ;;                                exec-path-from-shell
 ;;                                magit
 ;;                                srefactor
-;;                                sr-speedbar
 ;;                                company
 ;;                                projectile
 ;;                                helm
 ;;                                helm-projectile
-;;                                org
 ;;                                flycheck
-;;                                treemacs
 ;;                                academic-phrases
 ;;                                cyberpunk-theme
 ;;                                tron-legacy-theme
