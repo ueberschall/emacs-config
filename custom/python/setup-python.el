@@ -10,6 +10,7 @@
 ;; "python -m pdb <scriptname>.py" zu aktivieren.
 
 (require 'setup-python-func)
+(require 'setup-python-general)
 (require 'setup-python-packages)
 
 (provide 'setup-python)

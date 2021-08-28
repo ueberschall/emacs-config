@@ -186,4 +186,10 @@ will be killed."
          (load-ide-desktop "emacs-desktop-tex")
          (setq return "Tex"))))
 
+(defun compile-with-prefix-arg ()
+  "Call compile command but with prefix arg."
+  (interactive)
+  (setq current-prefix-arg '(4))
+  (call-interactively 'compile))
+
 (provide 'setup-basic-func)
