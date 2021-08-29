@@ -12,5 +12,6 @@
 (require 'setup-python-func)
 (require 'setup-python-general)
 (require 'setup-python-packages)
+(require 'setup-python-keymap)
 
 (provide 'setup-python)
