@@ -22,6 +22,10 @@
   (add-to-list 'python-shell-completion-native-disabled-interpreters
                "jupyter")
   (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
+  (setq elpy-modules (delq 'elpy-module-highlight-indentation elpy-modules))
+  (add-hook 'elpy-mode-hook (lambda ()
+                              (add-hook 'before-save-hook
+                                        'elpy-format-code nil t)))
   (add-hook 'elpy-mode-hook 'flycheck-mode)
   (add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save)
   
