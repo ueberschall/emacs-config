@@ -19,3 +19,4 @@ elpy/*
 tramp
 .pyvenv_path
 .cache/*
+.#*
