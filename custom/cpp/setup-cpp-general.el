@@ -5,8 +5,13 @@
           (lambda () (interactive)
             (setq show-trailing-whitespace 1)))
 
+(add-hook 'cmake-mode-hook
+          (lambda () (interactive)
+            (setq cmake-tab-width 4)))
+
 ;; setup GDB
 (setq
+ 
  ;; use gdb-many-windows by default
  gdb-many-windows t
 
