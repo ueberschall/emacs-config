@@ -5,8 +5,8 @@
 ;; Die Basiseinstellungen für Emacs
 
 (require 'setup-basic-func)
-(require 'setup-basic-general)
 (require 'setup-basic-packages)
+(require 'setup-basic-general)
 (require 'setup-basic-keymap)
 
 (provide 'setup-basic)
