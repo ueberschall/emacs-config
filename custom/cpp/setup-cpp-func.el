@@ -81,21 +81,62 @@
   (insert args)
   (newline-and-indent))
 
-(defun insert-doxygen-documentation-for-variable (variableName)
-  "Inserts doxygen documentation for variableName"
-  (save-excursion
-    (back-to-indentation)
-    (insert-and-indent "//==============================================================================")
-    (insert-and-indent (format "//! \\brief Short description of variable %s" variableName))
-    (insert-and-indent "//------------------------------------------------------------------------------")))
+(defun insert-double-line-comment-seperator ()
+  "Inserts a 80 characters long horizontal comment seperator consisting of '='"
+  (interactive)
+  (insert-and-indent "//=============================================================================="))
 
-(defun insert-doxygen-documentation-for-class (className)
-  "Inserts doxygen documentation for className"
-  (save-excursion
-    (back-to-indentation)
-    (insert-and-indent "//==============================================================================")
-    (insert-and-indent (format "//! \\brief Short description of class %s" className))
-    (insert-and-indent "//------------------------------------------------------------------------------")))
+(defun insert-single-line-comment-seperator ()
+  "Inserts a 80 characters long horizontal comment seperator consisting of '-'"
+  (interactive)
+  (insert-and-indent "//------------------------------------------------------------------------------"))
+
+;; Doxygen documentation generations functions
+
+(setq c-identifier-regex "\\_<[[:alpha:]][[:word:]_]*")
+(setq c-type-regex "\\_<[[:alpha:]][[:word:]_<>*&:]*")
+
+(defun doxygen-documentation-for-variable (variable-name)
+  "Return doxygen documentation for variable"
+  (format "\\brief Variable %s" variable-name))
+
+(defun extract-function-parameters-from-string (parameter-string)
+  "Extract function parameters into list.
+If they have a 'const' as prefix word, it is forwarded into the list.
+The type however is not forwarded."
+  (let ((function-parameters ()))
+    (while (string-match
+            (format "\\(const[[:space:]]+\\)?[[:space:]]*\\(%s\\)[[:space:]]+\\(%s\\)[,)]"
+                    c-type-regex c-identifier-regex)
+            parameter-string)
+      (if (match-end 1)
+          (push (concat "const " (match-string 3 parameter-string)) function-parameters)
+        (push (match-string 3 parameter-string) function-parameters))
+      (setq parameter-string (substring parameter-string (match-end 0))))
+    (nreverse function-parameters)))
+
+(defun doxygen-documentation-for-function (function-name parameter-list return-value)
+  "Return doxygen documentation for function, its parameter list and return value"
+  (setq doc-string (cons (format "\\brief Function %s" function-name) ()))
+  (dolist (param parameter-list doc-string)
+    (if (string-match "const[[:space:]]+" param)
+        (push (format "\\param[in]  %s" (substring param (match-data 0) nil)) doc-string)
+      (push (format "\\param[out]  %s" param) doc-string)))
+  (when return-value
+    (push "\\returns" doc-string))
+  (nreverse doc-string))
+
+(defun doxygen-documentation-for-class (class-name)
+  "Inserts doxygen documentation for class"
+  (format "\\brief Class %s" class-name))
+
+(defun doxygen-documentation-for-struct (struct-name)
+  "Inserts doxygen documentation for struct"
+  (format "\\brief Struct %s" class-name))
+
+(defun doxygen-documentation-for-using (using-name)
+  "Inserts doxygen documentation for struct"
+  (format "\\brief Using %s" using-name))
 
 (defun insert-doxygen-documentation-for-parameter-list ()
   "Insert doxygen documentation for parameter list after point"
@@ -129,7 +170,7 @@
   "Inserts doxygen documentation for functionName"
   (save-excursion
     (back-to-indentation)
-    (insert-and-indent "//==============================================================================")
+    (insert-double-line-comment-seperator)
     (insert-and-indent (format "//! \\brief Short description of function %s" functionName))
     (insert-and-indent "//!"))
   (insert-doxygen-documentation-for-parameter-list)
@@ -137,7 +178,7 @@
     (back-to-indentation)
     (insert-and-indent "//!")
     (insert-and-indent "//! \\returns void")
-    (insert-and-indent "//------------------------------------------------------------------------------")))
+    (insert-single-line-comment-seperator)))
 
 (defun doxygen-documentation-for-region (start end)
   "Generate doxygen documentation for every relevant expression in the passed region"
@@ -172,6 +213,22 @@
                (when (looking-at-p "{")
                  (forward-list))))))))
 
+(defun doxygen-documentation-for-region (start end)
+  "Generate doxygen documentation for every relevant expression in the passed region"
+  (save-excursion
+    (save-restriction
+      (narrow-to-region start end)
+      (goto-char (point-min))
+      (let* ((comment-begin-regex "//\\|/\\*")
+            (template-regex "template<.*>[[:space:]]+")
+            (class-regex "class[[:space:]]+")
+            (struct-regex "struct[[:space:]]+")
+            (using-regex "using[[:space:]]+")
+            (opening-parenthesis-regex "(")
+            (semicolon-regex ";"))
+        (while (re-search-forward search-regex nil t))))))
+
+
 
 (defun doxygen-documentation-for-file (file)
   "Generate doxygen documentation for file"
@@ -184,5 +241,10 @@
   (interactive)
   (setq file (read-file-name "File: " nil (buffer-file-name) t nil 'is-cpp-file))
   (doxygen-documentation-for-file file))
+
+;; Insert '//!' after inserting newline
+(defun newline-and-doxygen-comment ()
+  "Start new Doxygen comment after entering newline while being in Doxygen block."
+  )
 
 (provide 'setup-cpp-func)
