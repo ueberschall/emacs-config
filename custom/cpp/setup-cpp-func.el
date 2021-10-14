@@ -120,7 +120,7 @@ The type however is not forwarded."
   (setq doc-string (cons (format "\\brief Function %s" function-name) ()))
   (dolist (param parameter-list doc-string)
     (if (string-match "const[[:space:]]+" param)
-        (push (format "\\param[in]  %s" (substring param (match-data 0) nil)) doc-string)
+        (push (format "\\param[in]  %s" (substring param (match-end 0) nil)) doc-string)
       (push (format "\\param[out]  %s" param) doc-string)))
   (when return-value
     (push "\\returns" doc-string))
