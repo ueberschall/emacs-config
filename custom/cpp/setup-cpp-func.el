@@ -305,9 +305,16 @@ The type however is not forwarded."
   (setq file (read-file-name "File: " nil (buffer-file-name) t nil 'is-cpp-file))
   (extract-and-insert-doxygen-documentation-for-file file))
 
-;; Insert '//!' after inserting newline
+;; Insert '//!' after inserting newline when in Doxygen comment block
 (defun newline-and-doxygen-comment ()
   "Start new Doxygen comment after entering newline while being in Doxygen block."
-  )
+  (interactive)
+  (let (doxy-comment-p)
+    (save-excursion
+      (back-to-indentation)
+      (setq doxy-comment-p (looking-at-p "//!")))
+    (newline-and-indent)
+    (when doxy-comment-p
+      (insert "//! "))))
 
 (provide 'setup-cpp-func)
