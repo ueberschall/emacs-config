@@ -306,8 +306,9 @@ The type however is not forwarded."
   (extract-and-insert-doxygen-documentation-for-file file))
 
 ;; Insert '//!' after inserting newline when in Doxygen comment block
-(defun newline-and-doxygen-comment ()
-  "Start new Doxygen comment after entering newline while being in Doxygen block."
+(defun cpp-newline ()
+  "Custom newline function for C++
+Start new Doxygen comment after entering newline while being in Doxygen block."
   (interactive)
   (let (doxy-comment-p)
     (save-excursion
