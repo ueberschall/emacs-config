@@ -87,7 +87,7 @@
 ;;------------------------------------------------------------------------------
 ;; Functions for generating Doxygen documentation
 
-(setq c-identifier-regex "\\_<[[:alpha:]][[:word:]_]*\\(::[[:alpha:]][[:word:]_]*\\)*")
+(setq c-identifier-regex "\\_<[[:alpha:]][[:word:]_]*\\(?:::[[:alpha:]][[:word:]_]*\\)*")
 (setq c-type-regex "\\_<[[:alpha:]][[:word:]_<>:]*[&*]?")
 
 (defun doxygen-documentation-for-variable (variable-name)
@@ -146,10 +146,10 @@
 ;; generation from buffer or string
 
 (setq comment-begin-regex "//\\|/\\*")
-(setq template-regex "\\_<template<.*>[[:space:]\n]+")
-(setq class-regex "\\_<class[[:space:]\n]+")
-(setq struct-regex "\\_<struct[[:space:]\n]+")
-(setq alias-regex "\\_<using[[:space:]\n]+")
+(setq template-regex "\\_<template<.*>\\_>")
+(setq class-regex "\\_<class\\_>")
+(setq struct-regex "\\_<struct\\_>")
+(setq alias-regex "\\_<using\\_>")
 
 (defun extract-parameters-from-string (parameter-string)
   "Extract function parameters into list.
@@ -202,7 +202,8 @@ The type however is not forwarded."
   (when (looking-at (format "\\(%s\\)(\\(.*?)\\)" c-identifier-regex))
     (doxygen-documentation-for-function (match-string-no-properties 1)
                                         (extract-parameters-from-string (match-string-no-properties 2))
-                                        (looking-back "void[[:space:]\n]+"))))
+                                        (and (looking-back (format "%s[[:space:]]+" c-type-regex))
+                                             (not (looking-back "void[[:space:]]+"))))))
 
 (defun extract-doxygen-documentation-for-template-after-point ()
   "Reads template declaration after point and returns its doxygen documentation"
@@ -239,31 +240,35 @@ The type however is not forwarded."
   (insert args)
   (newline-and-indent))
 
-(defun insert-double-line-comment-seperator ()
+(defun insert-double-line-comment-seperator (long-p)
   "Inserts a 80 characters long horizontal comment seperator consisting of '='"
   (interactive)
-  (insert-and-indent "//=============================================================================="))
+  (if long-p
+      (insert-and-indent "//==============================================================================")
+    (insert-and-indent "//========================================")))
 
-(defun insert-single-line-comment-seperator ()
+(defun insert-single-line-comment-seperator (long-p)
   "Inserts a 80 characters long horizontal comment seperator consisting of '-'"
   (interactive)
-  (insert-and-indent "//------------------------------------------------------------------------------"))
+  (if long-p
+      (insert-and-indent "//------------------------------------------------------------------------------")
+    (insert-and-indent "//--------------------------------------")))
 
 (defun insert-doxygen-block (doc-string-list)
   "Insert doxygen documentation into buffer"
   (when doc-string-list
     (back-to-indentation)
-    (insert-double-line-comment-seperator)
+    (insert-double-line-comment-seperator t)
     (dolist (doc-line doc-string-list)
       (insert-and-indent (concat "//! " doc-line)))
-    (insert-single-line-comment-seperator)))
+    (insert-single-line-comment-seperator t)))
 
 (defun extract-and-insert-doxygen-documentation-for-symbol-under-point ()
   "Extracts doxygen documentation for symbol under point and insert it before"
   (interactive)
   (let (bound)
     (save-excursion
-      (line-move -2)
+      (line-move -1)
       (beginning-of-line)
       (setq bound (point)))
     (save-excursion
@@ -289,7 +294,16 @@ The type however is not forwarded."
     (save-restriction
       (narrow-to-region start end)
       (goto-char (point-min))
-        (while (re-search-forward c-type-regex nil t)))))
+      (while (re-search-forward
+              (format "%s\\|\\%s\\|{" comment-begin-regex c-type-regex) nil t)
+        (setq selected-string (match-string-no-properties 0))
+        (if (string-match-p "/\\*" selected-string)
+            (re-search-forward "\\*/" nil)
+          (if (string-match-p "//" selected-string)
+              (end-of-line)
+            (if (string-match-p c-type-regex selected-string)
+                (if (string-match-p template-regex selected-string))
+              (if (string-match-p "{")))))))))
 
 
 
