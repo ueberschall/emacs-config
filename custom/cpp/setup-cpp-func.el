@@ -170,7 +170,7 @@ The type however is not forwarded."
   "Extract template parameters from string into list"
   (let (template-parameters)
     (while (string-match
-           (format "[[:space:]]*%s[[:space:]]+\\(%s\\)[[:space:]]*[=,>]"
+           (format "[[:space:]\n]*%s[[:space:]\n]+\\(%s\\)[[:space:]\n]*[=,>]"
                    c-type-regex c-identifier-regex)
            template-parameter-string)
       (push (match-string 1 template-parameter-string) template-parameters)
@@ -184,17 +184,17 @@ The type however is not forwarded."
 
 (defun extract-doxygen-documentation-for-class-after-point ()
   "Reads class declaration after point and returns its doxygen documentation"
-  (when (looking-at (format "%s\\(%s\\)" class-regex c-identifier-regex))
+  (when (looking-at (format "%s[[:space:]\n]+\\(%s\\)" class-regex c-identifier-regex))
     (doxygen-documentation-for-class (match-string-no-properties 1))))
 
 (defun extract-doxygen-documentation-for-struct-after-point ()
   "Reads struct declaration after point and returns its doxygen documentation"
-  (when (looking-at (format "%s\\(%s\\)" struct-regex c-identifier-regex))
+  (when (looking-at (format "%s[[:space:]\n]+\\(%s\\)" struct-regex c-identifier-regex))
     (doxygen-documentation-for-class (match-string-no-properties 1))))
 
 (defun extract-doxygen-documentation-for-alias-after-point ()
   "Reads alias declaration after point and returns its doxygen documentation"
-  (when (looking-at (format "%s[[:space:]]+\\(%s\\)[[:space:]]*=" alias-regex c-identifier-regex))
+  (when (looking-at (format "%s[[:space:]\n]+\\(%s\\)[[:space:]]*=" alias-regex c-identifier-regex))
     (doxygen-documentation-for-alias (match-string-no-properties 1))))
 
 (defun extract-doxygen-documentation-for-function-after-point ()
