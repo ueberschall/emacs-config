@@ -263,9 +263,9 @@ The type however is not forwarded."
       (insert-and-indent (concat "//! " doc-line)))
     (insert-single-line-comment-seperator long-p)))
 
-(defun extract-and-insert-doxygen-documentation-for-symbol-under-point ()
+(defun extract-and-insert-doxygen-documentation-for-symbol-under-point (arg)
   "Extracts doxygen documentation for symbol under point and insert it before"
-  (interactive)
+  (interactive "P")
   (let (bound)
     (save-excursion
       (line-move -1)
@@ -285,7 +285,8 @@ The type however is not forwarded."
               (if (looking-at-p (concat c-identifier-regex "("))
                   (extract-doxygen-documentation-for-function-after-point)
                 (if (looking-at-p (concat c-identifier-regex "[{;]?"))
-                  (extract-doxygen-documentation-for-variable-after-point)))))))))))
+                    (extract-doxygen-documentation-for-variable-after-point)))))))
+       arg))))
 
 
 ;; (defun extract-and-insert-doxygen-documentation-for-region (start end long-p)
