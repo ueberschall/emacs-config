@@ -194,7 +194,7 @@ The type however is not forwarded."
 
 (defun extract-doxygen-documentation-for-alias-after-point ()
   "Reads alias declaration after point and returns its doxygen documentation"
-  (when (looking-at (format "%s\\(%s\\)[[:space:]]*=" alias-regex c-identifier-regex))
+  (when (looking-at (format "%s[[:space:]]+\\(%s\\)[[:space:]]*=" alias-regex c-identifier-regex))
     (doxygen-documentation-for-alias (match-string-no-properties 1))))
 
 (defun extract-doxygen-documentation-for-function-after-point ()
