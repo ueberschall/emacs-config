@@ -242,14 +242,14 @@ The type however is not forwarded."
 
 (defun insert-double-line-comment-seperator (long-p)
   "Inserts a 80 characters long horizontal comment seperator consisting of '='"
-  (interactive)
+  (interactive "P")
   (if long-p
       (insert-and-indent "//==============================================================================")
     (insert-and-indent "//========================================")))
 
 (defun insert-single-line-comment-seperator (long-p)
   "Inserts a 80 characters long horizontal comment seperator consisting of '-'"
-  (interactive)
+  (interactive "P")
   (if long-p
       (insert-and-indent "//------------------------------------------------------------------------------")
     (insert-and-indent "//--------------------------------------")))
