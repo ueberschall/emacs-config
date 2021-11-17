@@ -146,7 +146,7 @@
 ;; generation from buffer or string
 
 (setq comment-begin-regex "\\(?://\\)\\|\\(?:/\\*\\)")
-(setq template-regex "\\_<template<.*>\\_>")
+(setq template-regex "\\_<template<.*>")
 (setq class-regex "\\_<class\\_>")
 (setq struct-regex "\\_<struct\\_>")
 (setq alias-regex "\\_<using\\_>")
@@ -170,7 +170,7 @@ The type however is not forwarded."
   "Extract template parameters from string into list"
   (let (template-parameters)
     (while (string-match
-           (format "[[:space:]\n]*%s[[:space:]\n]+\\(%s\\)[[:space:]\n]*[=,>]"
+           (format "[[:space:]\n]*%s\\.\\{0,3\\}[[:space:]\n]+\\(%s\\)[[:space:]\n]*[=,>]"
                    c-type-regex c-identifier-regex)
            template-parameter-string)
       (push (match-string 1 template-parameter-string) template-parameters)
@@ -207,7 +207,7 @@ The type however is not forwarded."
 
 (defun extract-doxygen-documentation-for-template-after-point ()
   "Reads template declaration after point and returns its doxygen documentation"
-  (if (looking-at-p (format "%sclass" template-regex))
+  (if (looking-at-p (format "%s[[:space:]\n]+class" template-regex))
       (when
           (looking-at
            (format
