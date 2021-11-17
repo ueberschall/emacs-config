@@ -88,7 +88,7 @@
 ;; Functions for generating Doxygen documentation
 
 (setq c-identifier-regex "\\_<[[:alpha:]][[:word:]_]*\\(?:::[[:alpha:]][[:word:]_]*\\)*")
-(setq c-type-regex "\\_<[[:alpha:]][[:word:]_<>:]*[&*]?")
+(setq c-type-regex "\\_<[[:alpha:]][[:word:]_<>:]*\\(?:&\\{0,2\\}\\|\\*\\)?")
 
 (defun doxygen-documentation-for-variable (variable-name)
   "Return doxygen documentation for variable"
@@ -99,8 +99,8 @@
   (let (doc-string-list)
     (dolist (param parameter-list doc-string-list)
     (if (string-match "const[[:space:]]+" param)
-        (push (format "\\param[in]   %s" (substring param (match-end 0) nil)) doc-string-list)
-      (push (format "\\param[out]  %s" param) doc-string-list)))
+        (push (format "\\param[in]  %s" (substring param (match-end 0) nil)) doc-string-list)
+      (push (format "\\param[out] %s" param) doc-string-list)))
     (nreverse doc-string-list)))
 
 (defun doxygen-documentation-for-function (function-name parameter-list return-value)
