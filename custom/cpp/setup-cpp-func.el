@@ -199,7 +199,7 @@ The type however is not forwarded."
 
 (defun extract-doxygen-documentation-for-function-after-point ()
   "Reads function declaration after point and returns its doxygen documentation"
-  (when (looking-at (format "\\(%s\\)(\\(\\(?:.*?\n?\\)+\\))" c-identifier-regex))
+  (when (looking-at (format "\\(%s\\)(\\(\\(?:.*?\n?\\)+)\\)" c-identifier-regex))
     (doxygen-documentation-for-function (match-string-no-properties 1)
                                         (extract-parameters-from-string (match-string-no-properties 2))
                                         (and (looking-back (format "%s[[:space:]]+" c-type-regex))
