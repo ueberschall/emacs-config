@@ -157,7 +157,7 @@ If they have a 'const' as prefix word, it is forwarded into the list.
 The type however is not forwarded."
   (let ((parameters ()))
     (while (string-match
-            (format "\\(const[[:space:]]+\\)?[[:space:]]*\\(%s\\)[[:space:]]+\\(%s\\)[[:space:]]*[=,)]"
+            (format "\\(const[[:space:]]+\\)?[[:space:]]*\\(%s\\)\\.\\{0,3\\}[[:space:]]+\\(%s\\)[[:space:]]*[=,)]"
                     c-type-regex c-identifier-regex)
             parameter-string)
       (if (match-end 1)
@@ -220,7 +220,7 @@ The type however is not forwarded."
     (when
         (looking-at
          (format
-          "template<\\(.*>\\)[[:space:]\n]+\\(%s[[:space:]\n]\\)+?\\(%s\\)(\\(.*?)\\)"
+          "template<\\(.*>\\)[[:space:]\n]+\\(%s[[:space:]\n]\\)+?\\(%s\\)(\\(\\(?:.*?\n?\\)+)\\)"
           c-type-regex c-identifier-regex))
       (let ((tfunc-name (match-string-no-properties 3))
             (tparam-string (match-string-no-properties 1))
