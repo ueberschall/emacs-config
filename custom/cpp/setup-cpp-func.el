@@ -221,7 +221,7 @@ The type however is not forwarded."
     (when
         (looking-at
          (format
-          "template<\\(.*>\\)[[:space:]\n]+\\(%s[[:space:]\n]\\)+?\\(%s\\)(\\(\\(?:.*?\n?\\)+)\\)"
+          "template<\\(.*>\\)[[:space:]\n]+\\(%s[[:space:]\n]\\)+?[[:space:]\n]*\\(%s\\)(\\(\\(?:.*?\n?\\)+)\\)"
           c-type-regex c-identifier-regex))
       (let ((tfunc-name (match-string-no-properties 3))
             (tparam-string (match-string-no-properties 1))
@@ -269,7 +269,7 @@ The type however is not forwarded."
   (interactive "P")
   (let (bound)
     (save-excursion
-      (line-move -1)
+      (line-move -2)
       (beginning-of-line)
       (setq bound (point)))
     (save-excursion
