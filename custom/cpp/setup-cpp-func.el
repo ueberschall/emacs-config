@@ -226,7 +226,7 @@ The type however is not forwarded."
       (let ((tfunc-name (match-string-no-properties 3))
             (tparam-string (match-string-no-properties 1))
             (fparam-string (match-string-no-properties 4))
-            (return-p (string-match-p "\\<void\\>" (match-string-no-properties 2))))
+            (return-p (not (string-match-p "\\<void\\>" (match-string-no-properties 2)))))
         (doxygen-documentation-for-template
          (concat "function " tfunc-name)
          (extract-template-parameters-from-string tparam-string)
