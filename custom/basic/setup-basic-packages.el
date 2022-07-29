@@ -71,9 +71,7 @@
 
 (use-package helm
   :config
-  (require 'helm-config)
-  (require 'helm-grep)
-
+  
   (setq helm-echo-input-in-header-line t)
   
   (defun helm-hide-minibuffer-maybe ()
