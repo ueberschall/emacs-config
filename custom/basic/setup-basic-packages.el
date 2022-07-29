@@ -21,6 +21,7 @@
 ;;                                academic-phrases
 ;;                                cyberpunk-theme
 ;;                                tron-legacy-theme
+;;                                org-superstar
 ;;                                ))
 
 ;; dired+ und modeline-posn werden von EmacsWiki heruntergeladen
@@ -49,7 +50,13 @@
 (use-package exec-path-from-shell)
 (use-package magit)
 (use-package srefactor-lisp)
-(use-package org)
+
+(use-package org
+  :config
+  (setq org-startup-indented t)
+  (add-hook 'org-mode-hook
+            (lambda ()
+              (org-superstar-mode 1))))
 
 (use-package treemacs)
 
