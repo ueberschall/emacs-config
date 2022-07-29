@@ -207,25 +207,26 @@ The type however is not forwarded."
 
 (defun extract-doxygen-documentation-for-template-after-point ()
   "Reads template declaration after point and returns its doxygen documentation"
-  (if (looking-at-p (format "%s[[:space:]\n]+class" template-regex))
-      (when
-          (looking-at
-           (format
-            "template<\\(.*>\\)[[:space:]\n]+\\(class\\)?[[:space:]\n]*\\(%s\\)"
-            c-identifier-regex))
+  (if (looking-at
+       (format
+        "template<\\(.*>\\)[[:space:]\n]+\\(class\\|struct\\|using\\)[[:space:]\n]+\\(%s\\)"
+        c-identifier-regex))
+      (let ((ttype (match-string-no-properties 2))
+            (ttype-name (match-string-no-properties 3))
+            (tparam-string (match-string-no-properties 1)))
         (doxygen-documentation-for-template
-         (concat "class " (match-string-no-properties 3))
-         (extract-template-parameters-from-string (match-string-no-properties 1))
+         (concat ttype " " ttype-name)
+         (extract-template-parameters-from-string tparam-string)
          nil nil))
     (when
         (looking-at
          (format
-          "template<\\(.*>\\)[[:space:]\n]+\\(%s[[:space:]\n]\\)+?\\(%s\\)(\\(\\(?:.*?\n?\\)+)\\)"
+          "template<\\(.*>\\)[[:space:]\n]+\\(%s[[:space:]\n]\\)+?[[:space:]\n]*\\(%s\\)(\\(\\(?:.*?\n?\\)+)\\)"
           c-type-regex c-identifier-regex))
       (let ((tfunc-name (match-string-no-properties 3))
             (tparam-string (match-string-no-properties 1))
             (fparam-string (match-string-no-properties 4))
-            (return-p (string-match-p "\\<void\\>" (match-string-no-properties 2))))
+            (return-p (not (string-match-p "\\<void\\>" (match-string-no-properties 2)))))
         (doxygen-documentation-for-template
          (concat "function " tfunc-name)
          (extract-template-parameters-from-string tparam-string)
@@ -268,7 +269,7 @@ The type however is not forwarded."
   (interactive "P")
   (let (bound)
     (save-excursion
-      (line-move -1)
+      (line-move -2)
       (beginning-of-line)
       (setq bound (point)))
     (save-excursion
