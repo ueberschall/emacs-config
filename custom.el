@@ -1,8 +1,9 @@
-;; ~/.emacs.d/init.el
-;; Erstellt: 		14. April 2017
-;; Aktualisiert: 	14. Januar 2021
-;;
-;; Die Init-Datei, die als Einsprungspunkt dient
+;; This file is the entry point for the custom configuration.
+;; To load this file write the following into your .emacs/init.el file:
+
+;; (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+;; (when (file-exists-p custom-file)
+;;   (load custom-file))
 
 ;; Ergänze die Suchpfade 
 (add-to-list 'load-path "~/.emacs.d/dired+")
