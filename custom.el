@@ -1,5 +1,5 @@
 ;; This file is the entry point for the custom configuration.
-;; To load this file write the following into your .emacs/init.el file:
+;; To load this file write the following into your .emacs file:
 
 ;; (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 ;; (when (file-exists-p custom-file)
