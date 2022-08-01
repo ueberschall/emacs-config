@@ -54,6 +54,8 @@
 (use-package org
   :config
   (setq org-startup-indented t)
+  (setq org-todo-keywords
+        '((sequence "TODO(t)" "IN PROGRESS(p)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))
   (add-hook 'org-mode-hook
             (lambda ()
               (org-superstar-mode 1))))
