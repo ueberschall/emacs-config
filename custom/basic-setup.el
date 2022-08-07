@@ -61,7 +61,11 @@
 ;; Loading custom themes is considered safe
 (setq custom-safe-themes t)
 
-;;---------------------------------Package Management-------------------------------------
+;;---------------------------------Server Start----------------------------------------
+
+(server-start)
+
+;;---------------------------------Package Management-----------------------------------
 
 ;; Initialize package manager
 (require 'package)
@@ -97,6 +101,7 @@
         (while t
           (org-metadown))
       (user-error nil)))
+  
   (defun org-metaup-to-beginning ()
     "Moves the item, row or subtree to the bottom of its parent struct"
     (interactive)
@@ -111,6 +116,9 @@
   (add-hook 'org-mode-hook
             (lambda ()
               (org-superstar-mode 1)))
-  )
+  
+  :bind (:map org-mode-map
+              ("<M-s-up>" . org-metaup-to-beginning)
+              ("<M-s-down>" . org-metaup-to-bottom)))
 
 (provide 'basic-setup)
