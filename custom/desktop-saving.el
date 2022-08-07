@@ -38,8 +38,6 @@
 	  (if (y-or-n-p "Restore desktop? ")
 		  (session-restore))))
 
-
-(add-hook 'after-init-hook (lambda () (load-desktop desktop-base-file-name)))
 (add-hook 'desktop-after-read-hook 'delete-desktop)
 
 ;; When Emacs is killed, keep only the 30 most recent buffers and kill the rest.

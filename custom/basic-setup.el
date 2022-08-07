@@ -1,7 +1,5 @@
 ;; Load some usability functions.
 (require 'basic-functions)
-;; Load the functions for saving and restoring desktops.
-(require 'desktop-saving)
 
 ;; Set the text in the frame title to be "Emacs <version>".
 (setq frame-title-format (concat "Emacs " emacs-version))
@@ -78,13 +76,41 @@
   (setq use-package-always-ensure t
         use-package-expand-minimally t))
 
+;; Use the Cyberpunk-Theme (because it is cool as hell!!)
 (use-package cyberpunk-theme
   :config
   (add-hook 'after-init-hook (lambda () (load-theme 'cyberpunk t))))
 
+;; Configure Treemacs
 (use-package treemacs
   :config
   (treemacs)
   (treemacs-toggle-fixed-width))
+
+;; Configure Org
+(use-package org
+  :config
+  (defun org-metadown-to-bottom ()
+    "Moves the item, row or subtree to the bottom of its parent struct"
+    (interactive)
+    (condition-case nil
+        (while t
+          (org-metadown))
+      (user-error nil)))
+  (defun org-metaup-to-beginning ()
+    "Moves the item, row or subtree to the bottom of its parent struct"
+    (interactive)
+    (condition-case nil
+        (while t
+          (org-metaup))
+      (user-error nil)))
+  
+  (setq org-startup-indented t)
+  (setq org-todo-keywords
+        '((sequence "TODO(t)" "IN PROGRESS(p)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))
+  (add-hook 'org-mode-hook
+            (lambda ()
+              (org-superstar-mode 1)))
+  )
 
 (provide 'basic-setup)

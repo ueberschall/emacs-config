@@ -18,9 +18,13 @@
 ;; (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/rtags")
 ;; (add-to-list 'custom-theme-load-path "~/.emacs.d/custom/themes")
 
-;; Laden der Basis-Konfiguration
+;; Setup Emacs for all my workflows.
 (require 'basic-setup)
 (require 'cc-setup)
 (require 'python-setup)
 (require 'rust-setup)
 (require 'tex-setup)
+
+;; Load the functions for saving and restoring desktops.
+(require 'desktop-saving)
+(load-desktop desktop-base-file-name)
