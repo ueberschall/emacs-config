@@ -1,0 +1,1 @@
+(provide 'desktop-saving)
