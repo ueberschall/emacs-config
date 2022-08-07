@@ -43,7 +43,8 @@
 (column-number-mode 1)
 
 ;; Verhindere dass der Begrüßungsschirm angezeigt wird
-(setq inhibit-startup-screen t)
+(setq inhibit-startup-screen t
+      initial-scratch-message ";; Scratch\n\n")
 
 ;; Mache "Ja-oder-Nein"-Abfragen einfacher
 (defalias 'yes-or-no-p 'y-or-n-p)
@@ -80,7 +81,7 @@
 (add-hook 'desktop-after-read-hook 'delete-desktop)
 
 (add-hook 'kill-emacs-hook (lambda ()
-                             (save-and-kill-outdated-buffers 20)
+                             (save-and-kill-outdated-buffers 30)
                              (session-save)))
 
 (provide 'setup-basic-general)
