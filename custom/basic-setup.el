@@ -80,6 +80,12 @@
   (setq use-package-always-ensure t
         use-package-expand-minimally t))
 
+;; Load the packages which do not need any further configuration.
+(use-package ace-window)
+(use-package exec-path-from-shell)
+(use-package magit)
+(use-package srefactor-lisp)
+
 ;; Use the Cyberpunk-Theme (because it is cool as hell!!)
 (use-package cyberpunk-theme
   :config
@@ -124,5 +130,80 @@
               ("C-c c" . org-capture)
               ("<M-s-up>" . org-metaup-to-beginning)
               ("<M-s-down>" . org-metaup-to-bottom)))
+
+;; Configure company
+(use-package company
+  :init
+  (setq-default company-backends
+                '((company-files
+                   company-keywords
+                   company-capf
+                   company-yasnippet)
+                  (company-dabbrev company-abbrev)))
+  :config
+  (global-company-mode 1)
+  (setq company-idle-delay 0.3)
+  :bind (("<C-tab>" . company-complete)
+         :map company-active-map
+         ("C-n" . company-select-next)
+         ("C-p" . company-select-previous))
+  )
+
+(use-package projectile
+  :config (projectile-mode 1)
+  :bind (("C-?" . projectile-find-other-file)))
+
+(use-package helm
+  :config
+  (setq helm-echo-input-in-header-line t)
+  
+  (defun helm-hide-minibuffer-maybe ()
+    (when (with-helm-buffer helm-echo-input-in-header-line)
+      (let ((ov (make-overlay (point-min) (point-max) nil nil t)))
+        (overlay-put ov 'window (selected-window))
+        (overlay-put ov 'face (let ((bg-color (face-background 'default nil)))
+                                `(:background ,bg-color :foreground ,bg-color)))
+        (setq-local cursor-type nil))))
+
+  (add-hook 'helm-minibuffer-set-up-hook 'helm-hide-minibuffer-maybe)
+
+  (setq helm-split-window-in-side-p t
+        helm-mode-fuzzy-match t
+        helm-buffers-fuzzy-matching t
+        helm-M-x-fuzzy-match t
+        helm-imenu-fuzzy-match t
+        helm-lisp-fuzzy-completion t
+        helm-locate-fuzzy-match t)
+
+  (when (executable-find "curl")
+    (setq helm-google-suggest-use-curl-p t))
+
+  (helm-autoresize-mode -1)
+
+  (set-face-attribute 'helm-source-header nil :foreground "dark magenta" :weight 'bold
+                      :background "black" :font "Ubuntu Mono-14")
+  (set-face-attribute 'helm-selection nil :foreground "white" :background "SpringGreen4")
+  (set-face-attribute 'helm-buffer-modified nil :foreground "RosyBrown")
+
+  :bind (("C-c h" . helm-command-prefix)
+         ("M-x" . helm-M-x)
+         ("M-y" . helm-show-kill-ring)
+         ("C-x b" . helm-buffers-list)
+         ("C-x C-f" . helm-find-files)
+         ("C-c r" . helm-recentf)
+         ("C-h SPC" . helm-all-mark-rings)
+         ("C-c h o" . helm-occur)
+         ("C-c h w" . helm-wikipedia-suggest)
+         ("C-c h g" . helm-google-suggest)
+         ("C-c h x" . helm-register)
+         :map help-command
+         ("C-f" . helm-apropos)
+         ("r" . helm-info-emacs)
+         ("C-l" . helm-locate-library)
+         :map minibuffer-local-map
+         ()
+         ))
+
+;; Configure 
 
 (provide 'basic-setup)
