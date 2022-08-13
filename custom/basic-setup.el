@@ -238,7 +238,7 @@
 
 (use-package helm-wikipedia
   :after helm
-  :bind ("C-c h w" . helm-wikipedia))
+  :bind ("C-c h w" . helm-wikipedia-suggest))
 
 ;; Configure shell
 (use-package shell
