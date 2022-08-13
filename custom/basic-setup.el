@@ -39,7 +39,7 @@
 ;; two successive savings
 (setq
  backup-by-copying t
- backup-directory-alist '(("." . (expand-file-name ".backups" (getenv "HOME"))))
+ backup-directory-alist `(("." . ,(expand-file-name ".backups" (getenv "HOME"))))
  auto-save-timeout 180)
 
 ;; Activate a couple of useful minor modes.
