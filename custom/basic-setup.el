@@ -246,6 +246,8 @@
 
 ;; Configure Dired+
 (use-package dired+
+  :init
+  (add-to-list 'load-path (expand-file-name "dired+" user-emacs-directory))
   :config (diredp-toggle-find-file-reuse-dir 1)
   :bind (:map dired-mode-map
               ("<C-right>" . windmove-right)
@@ -263,7 +265,9 @@
   (url-copy-file "https://www.emacswiki.org/emacs/download/modeline-posn.el"
                  modeline-file)))
 
+
 ;; modeline-posn cannot be configured using use-package.
+(add-to-list 'load-path (expand-file-name "modeline-posn" user-emacs-directory))
 (require 'modeline-posn)
 
 ;;-------------------------------Global key bindings-------------------------------------
