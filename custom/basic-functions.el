@@ -61,4 +61,10 @@ will be killed."
                      (string-suffix-p "*" (buffer-name buf))))
       (kill-buffer buf))))
 
+(defun compile-with-prefix-arg ()
+  "Call compile command but with prefix arg."
+  (interactive)
+  (setq current-prefix-arg '(4))
+  (call-interactively 'compile))
+
 (provide 'basic-functions)
