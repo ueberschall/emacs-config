@@ -157,8 +157,9 @@
                    company-yasnippet)
                   (company-dabbrev company-abbrev)))
   :config
-  (global-company-mode 1)
-  (setq company-idle-delay 0.3)
+  (setq company-idle-delay 0.1)
+  :hook ((prog-mode . company-mode)
+         (text-mode . company-mode))
   :bind (("<C-tab>" . company-complete)
          :map company-active-map
          ("C-n" . company-select-next)
