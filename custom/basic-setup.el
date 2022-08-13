@@ -200,11 +200,6 @@
 
   (helm-autoresize-mode -1)
 
-  (set-face-attribute 'helm-source-header nil :foreground "dark magenta" :weight 'bold
-                      :background "black" :font "Ubuntu Mono-14")
-  (set-face-attribute 'helm-selection nil :foreground "white" :background "SpringGreen4")
-  (set-face-attribute 'helm-buffer-modified nil :foreground "RosyBrown")
-
   (define-key 'help-command (kbd "C-f") 'helm-apropos)
   (define-key 'help-command (kbd "r") 'helm-info-emacs)
   (define-key 'help-command (kbd "C-l") 'helm-locate-library)
@@ -228,8 +223,12 @@
          :map helm-grep-mode-map
          ("<return>" . helm-grep-mode-jump-other-window)
          ("n" . helm-grep-mode-jump-other-window-forward)
-         ("p" . helm-grep-mode-jump-other-window-backward)
-         ))
+         ("p" . helm-grep-mode-jump-other-window-backward))
+  
+  :custom-face
+  (helm-source-header ((nil (:foreground "dark magenta" (:weight bold (:background black (:font "Ubuntu-Mono 14")))))))
+  (helm-selection ((nil (:foreground "white" (:background "SpringGreen4")))))
+  (helm-buffer-modified ((nil (:foreground "RosyBrown")))))
 
 ;; Configure helm-projectile
 (use-package helm-projectile
@@ -303,5 +302,11 @@
 (global-set-key (kbd "C-M-s") 'isearch-forward)
 (global-set-key (kbd "C-M-r") 'isearch-backward)
 (global-set-key (kbd "C-x C-b") 'ibuffer)
+(global-set-key (kbd "C-c c") 'comment-region)
+(global-set-key (kbd "C-c u c") 'uncomment-region)
+
+;; Global Unset
+(global-unset-key (kbd "C-x c")) ;; Recommended in Helm tutorial, see http://tuhdo.github.io/helm-intro.html
+(global-unset-key (kbd "C-x f"))
 
 (provide 'basic-setup)
