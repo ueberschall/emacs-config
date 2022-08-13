@@ -61,7 +61,7 @@
 ;; Loading custom themes is considered safe
 (setq custom-safe-themes t)
 
-;;---------------------------------Server Start----------------------------------------
+;;---------------------------------Server Setup-----------------------------------------
 
 (server-start)
 
@@ -109,7 +109,8 @@
         (while t
           (org-metaup))
       (user-error nil)))
-  
+
+  (setq org-support-shift-select t) ;; Enables region selection with shift and arrow key.
   (setq org-startup-indented t)
   (setq org-todo-keywords
         '((sequence "TODO(t)" "IN PROGRESS(p)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))
@@ -118,6 +119,9 @@
               (org-superstar-mode 1)))
   
   :bind (:map org-mode-map
+              ("C-c l" . org-store-link)
+              ("C-c a" . org-agenda)
+              ("C-c c" . org-capture)
               ("<M-s-up>" . org-metaup-to-beginning)
               ("<M-s-down>" . org-metaup-to-bottom)))
 
