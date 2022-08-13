@@ -301,8 +301,6 @@
 (global-set-key (kbd "C-M-r") 'isearch-backward)
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 
-(use-package shell-mode)
-
 ;; Shell-mode
 (define-key shell-mode-map (kbd "<C-right>") 'windmove-right)
 (define-key shell-mode-map (kbd "<C-left>") 'windmove-left)
