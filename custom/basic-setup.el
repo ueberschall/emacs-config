@@ -76,9 +76,10 @@
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
-(eval-and-compile
-  (setq use-package-always-ensure t
-        use-package-expand-minimally t))
+(require 'use-package)
+
+;; Make sure that every package which is loaded by use-package is actually installed.
+(setq use-package-always-ensure t)
 
 (use-package exec-path-from-shell)
 
@@ -132,9 +133,6 @@
   (setq org-startup-indented t)
   (setq org-todo-keywords
         '((sequence "TODO(t)" "IN PROGRESS(p)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))
-  (add-hook 'org-mode-hook
-            (lambda ()
-              (org-superstar-mode 1)))
   
   :bind (:map org-mode-map
               ("C-c l" . org-store-link)
@@ -142,6 +140,11 @@
               ("C-c c" . org-capture)
               ("<M-s-up>" . org-metaup-to-beginning)
               ("<M-s-down>" . org-metaup-to-bottom)))
+
+(use-package org-superstar
+  :after org
+  :hook (org-mode . org-superstar-mode)
+  )
 
 ;; Configure company
 (use-package company
@@ -260,8 +263,7 @@
 
 ;; Configure Dired+
 (use-package dired+
-  :init
-  (add-to-list 'load-path (expand-file-name "dired+" user-emacs-directory))
+  :load-path "dired+"
   :config (diredp-toggle-find-file-reuse-dir 1)
   :bind (:map dired-mode-map
               ("<C-right>" . windmove-right)
