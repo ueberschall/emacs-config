@@ -20,10 +20,10 @@
 
 ;; Setup Emacs for all my workflows.
 (require 'basic-setup)
-(require 'cc-setup)
-(require 'python-setup)
-(require 'rust-setup)
-(require 'tex-setup)
+;; (require 'cc-setup)
+;; (require 'python-setup)
+;; (require 'rust-setup)
+;; (require 'tex-setup)
 
 ;; Load the functions for saving and restoring desktops.
 (require 'desktop-saving)

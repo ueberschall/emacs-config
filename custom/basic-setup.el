@@ -80,24 +80,36 @@
   (setq use-package-always-ensure t
         use-package-expand-minimally t))
 
-;; Load the packages which do not need any further configuration.
-(use-package ace-window)
 (use-package exec-path-from-shell)
-(use-package magit)
-(use-package srefactor-lisp)
+
+;; Configure ace-window
+(use-package ace-window
+  :bind (("C-c w" . ace-window)))
+
+;; Configure magit
+(use-package magit
+  :bind (("C-x g" . magit-status)
+         ("C-x M-g" . magit-dispatch-popup)))
+
+;; Configure srefactor-lisp
+(use-package srefactor-lisp
+  :bind (("M-RET o" . srefactor-lisp-one-line)
+         ("M-RET m" . srefactor-lisp-format-sexp)
+         ("M-RET d" . srefactor-lisp-format-defun)
+         ("M-RET b" . srefactor-lisp-format-buffer)))
 
 ;; Use the Cyberpunk-Theme (because it is cool as hell!!)
 (use-package cyberpunk-theme
   :config
   (add-hook 'after-init-hook (lambda () (load-theme 'cyberpunk t))))
 
-;; Configure Treemacs
+;; Configure treemacs
 (use-package treemacs
   :config
   (treemacs)
   (treemacs-toggle-fixed-width))
 
-;; Configure Org
+;; Configure org
 (use-package org
   :config
   (defun org-metadown-to-bottom ()
@@ -149,10 +161,12 @@
          ("C-p" . company-select-previous))
   )
 
+;; Configure projectile
 (use-package projectile
   :config (projectile-mode 1)
   :bind (("C-?" . projectile-find-other-file)))
 
+;; Configure helm
 (use-package helm
   :config
   (setq helm-echo-input-in-header-line t)
@@ -201,9 +215,79 @@
          ("r" . helm-info-emacs)
          ("C-l" . helm-locate-library)
          :map minibuffer-local-map
-         ()
+         ("M-p" . helm-minibuffer-history)
+         ("M-n" . helm-minibuffer-history)
+         :map helm-map
+         ("<tab>" . helm-execute-persistent-action)
+         ("C-i" . helm-execute-persistent-action)
+         ("C-z" . helm-select-action)
+         :map helm-grep-mode-map
+         ("<return>" . helm-grep-mode-jump-other-window)
+         ("n" . helm-grep-mode-jump-other-window-forward)
+         ("p" . helm-grep-mode-jump-other-window-backward)
          ))
 
-;; Configure 
+(use-package helm-projectile
+  :after helm
+  :init
+  (helm-projectile-on)
+  (setq projectile-completion-system 'helm)
+  (setq projectile-indexing-method 'alien))
+
+;; Dired+ has to be downloaded from EmacsWiki.
+(let* ((diredplus-file (expand-file-name "dired+/dired+.el" user-emacs-directory))
+      (diredplus-dir (file-name-directory diredplus-file)))
+  (if (file-exists-p diredplus-file)
+    (message "Dired+ does already exist")
+  (unless (file-directory-p diredplus-dir)
+    (make-directory diredplus-dir))
+  (url-copy-file "https://www.emacswiki.org/emacs/download/dired%2b.el"
+                 diredplus-file)))
+
+;; Configure Dired+
+(use-package dired+
+  :config (diredp-toggle-find-file-reuse-dir 1)
+  :bind (:map dired-mode-map
+              ("<C-right>" . windmove-right)
+              ("<C-left>" . windmove-left)
+              ("<C-up>" . windmove-up)
+              ("<C-down>" . windmove-down)))
+
+;; modeline-posn has to be downloaded from the EmacsWiki.
+(let* ((modeline-file (expand-file-name "modeline-posn/modeline-posn.el" user-emacs-directory))
+      (modeline-dir (file-name-directory modeline-file)))
+  (if (file-exists-p modeline-file)
+    (message "Modeline-Posn does already exist")
+  (unless (file-directory-p modeline-dir)
+    (make-directory modeline-dir))
+  (url-copy-file "https://www.emacswiki.org/emacs/download/modeline-posn.el"
+                 modeline-file)))
+
+;; modeline-posn cannot be configured using use-package.
+(require 'modeline-posn)
+
+;;-------------------------------Global key bindings-------------------------------------
+
+(global-set-key (kbd "<f5>") (lambda ()
+                               (interactive)
+                               (setq-local compilation-read-command nil)
+                               (call-interactively 'compile-with-prefix-arg)))
+(global-set-key (kbd "<f6>") 'recompile)
+(global-set-key (kbd "<C-right>") 'windmove-right)
+(global-set-key (kbd "<C-left>") 'windmove-left)
+(global-set-key (kbd "<C-up>") 'windmove-up)
+(global-set-key (kbd "<C-down>") 'windmove-down)
+(global-set-key (kbd "C-c <return>") 'duplicate-line)
+(global-set-key (kbd "C-s") 'isearch-forward-regexp)
+(global-set-key (kbd "C-r") 'isearch-backward-regexp)
+(global-set-key (kbd "C-M-s") 'isearch-forward)
+(global-set-key (kbd "C-M-r") 'isearch-backward)
+(global-set-key (kbd "C-x C-b") 'ibuffer)
+
+;; Shell-mode
+(define-key shell-mode-map (kbd "<C-right>") 'windmove-right)
+(define-key shell-mode-map (kbd "<C-left>") 'windmove-left)
+(define-key shell-mode-map (kbd "<C-up>") 'windmove-up)
+(define-key shell-mode-map (kbd "<C-down>") 'windmove-down)
 
 (provide 'basic-setup)
