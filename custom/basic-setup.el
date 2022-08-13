@@ -107,8 +107,8 @@
 ;; Configure treemacs
 (use-package treemacs
   :config
-  (treemacs)
-  (treemacs-toggle-fixed-width))
+  (add-hook 'after-init-hook (lambda () (treemacs)
+                               (treemacs-toggle-fixed-width))))
 
 ;; Configure org
 (use-package org
