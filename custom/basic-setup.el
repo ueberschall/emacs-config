@@ -73,13 +73,13 @@
 (package-initialize)
 
 ;; Make sure that 'use-package' is installed.
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
+;; (unless (package-installed-p 'use-package)
+;;   (package-refresh-contents)
+;;   (package-install 'use-package))
 (require 'use-package)
 
 ;; Make sure that every package which is loaded by use-package is actually installed.
-(setq use-package-always-ensure t)
+;; (setq use-package-always-ensure t)
 
 (use-package exec-path-from-shell)
 
@@ -150,14 +150,22 @@
 ;; Configure company
 (use-package company
   :init
+  ;; (setq-default company-backends
+  ;;               '((company-files
+  ;;                  company-keywords
+  ;;                  company-capf
+  ;;                  company-yasnippet)
+  ;;                 (company-dabbrev company-abbrev)))
   (setq-default company-backends
-                '((company-files
-                   company-keywords
-                   company-capf
-                   company-yasnippet)
-                  (company-dabbrev company-abbrev)))
+                '((company-capf company-dabbrev)
+                  (company-files company-keywords)))
   :config
-  (setq company-idle-delay 0.1)
+  (setq company-idle-delay 0.1
+        company-dabbrev-ignore-case nil
+        company-dabbrev-other-buffers 'all
+        company-dabbrev-downcase nil
+        company-files-exclusions '(".git/"))
+  
   :hook ((prog-mode . company-mode)
          (text-mode . company-mode))
   :bind (("<C-tab>" . company-complete)
