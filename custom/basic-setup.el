@@ -196,17 +196,17 @@
     (setq helm-google-suggest-use-curl-p t))
 
   (helm-autoresize-mode -1)
-  
-  (define-key 'help-command (kbd "C-f") 'helm-apropos)
-  (define-key 'help-command (kbd "r") 'helm-info-emacs)
-  (define-key 'help-command (kbd "C-l") 'helm-locate-library)
-  (define-key minibuffer-local-map (kbd "M-p") 'helm-minibuffer-history)
-  (define-key minibuffer-local-map (kbd "M-n") 'helm-minibuffer-history)
 
   (set-face-attribute 'helm-source-header nil :foreground "dark magenta" :weight 'bold
                       :background "black" :font "Ubuntu Mono-14")
   (set-face-attribute 'helm-selection nil :foreground "white" :background "SpringGreen4")
   (set-face-attribute 'helm-buffer-modified nil :foreground "RosyBrown")
+
+  (define-key 'help-command (kbd "C-f") 'helm-apropos)
+  (define-key 'help-command (kbd "r") 'helm-info-emacs)
+  (define-key 'help-command (kbd "C-l") 'helm-locate-library)
+  (define-key minibuffer-local-map (kbd "M-p") 'helm-minibuffer-history)
+  (define-key minibuffer-local-map (kbd "M-n") 'helm-minibuffer-history)
 
   :bind (("C-c h" . helm-command-prefix)
          ("M-x" . helm-M-x)
@@ -216,7 +216,6 @@
          ("C-c r" . helm-recentf)
          ("C-h SPC" . helm-all-mark-rings)
          ("C-c h o" . helm-occur)
-         ("C-c h w" . helm-wikipedia-suggest)
          ("C-c h g" . helm-google-suggest)
          ("C-c h x" . helm-register)
          :map helm-map
@@ -236,6 +235,10 @@
   (helm-projectile-on)
   (setq projectile-completion-system 'helm)
   (setq projectile-indexing-method 'alien))
+
+(use-package helm-wikipedia
+  :after helm
+  :bind ("C-c h w" . helm-wikipedia))
 
 ;; Configure shell
 (use-package shell
@@ -298,25 +301,5 @@
 (global-set-key (kbd "C-M-s") 'isearch-forward)
 (global-set-key (kbd "C-M-r") 'isearch-backward)
 (global-set-key (kbd "C-x C-b") 'ibuffer)
-
-;; Helm key bindings
-;; (global-set-key (kbd "C-c h") 'helm-command-prefix)
-;; (global-set-key (kbd "M-x") 'helm-M-x)
-;; (global-set-key (kbd "M-y") 'helm-show-kill-ring)
-;; (global-set-key (kbd "C-x b") 'helm-buffers-list)
-;; (global-set-key (kbd "C-x C-f") 'helm-find-files)
-;; (global-set-key (kbd "C-c r") 'helm-recentf)
-;; (global-set-key (kbd "C-h SPC") 'helm-all-mark-rings)
-;; (global-set-key (kbd "C-c h o") 'helm-occur)
-;; (global-set-key (kbd "C-c h w") 'helm-wikipedia-suggest)
-;; (global-set-key (kbd "C-c h g") 'helm-google-suggest)
-;; (global-set-key (kbd "C-c h x") 'helm-register)
-
-;; (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab to do persistent action
-;; (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB works in terminal
-;; (define-key helm-map (kbd "C-z")  'helm-select-action) ; list actions using C-z
-;; (define-key helm-grep-mode-map (kbd "<return>")  'helm-grep-mode-jump-other-window)
-;; (define-key helm-grep-mode-map (kbd "n")  'helm-grep-mode-jump-other-window-forward)
-;; (define-key helm-grep-mode-map (kbd "p")  'helm-grep-mode-jump-other-window-backward)
 
 (provide 'basic-setup)
