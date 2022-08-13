@@ -112,7 +112,7 @@
 
 ;; Configure org
 (use-package org
-  :config
+  :preface
   (defun org-metadown-to-bottom ()
     "Moves the item, row or subtree to the bottom of its parent struct"
     (interactive)
@@ -129,6 +129,7 @@
           (org-metaup))
       (user-error nil)))
 
+  :config
   (setq org-support-shift-select t) ;; Enables region selection with shift and arrow key.
   (setq org-startup-indented t)
   (setq org-todo-keywords
@@ -139,7 +140,7 @@
               ("C-c a" . org-agenda)
               ("C-c c" . org-capture)
               ("<M-s-up>" . org-metaup-to-beginning)
-              ("<M-s-down>" . org-metaup-to-bottom)))
+              ("<M-s-down>" . org-metadown-to-bottom)))
 
 (use-package org-superstar
   :after org
