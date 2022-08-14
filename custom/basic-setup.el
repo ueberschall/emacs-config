@@ -73,13 +73,13 @@
 (package-initialize)
 
 ;; Make sure that 'use-package' is installed.
-;; (unless (package-installed-p 'use-package)
-;;   (package-refresh-contents)
-;;   (package-install 'use-package))
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
 (require 'use-package)
 
 ;; Make sure that every package which is loaded by use-package is actually installed.
-;; (setq use-package-always-ensure t)
+(setq use-package-always-ensure t)
 
 (use-package exec-path-from-shell)
 
@@ -144,23 +144,23 @@
 
 (use-package org-superstar
   :after org
-  :hook (org-mode . org-superstar-mode)
-  )
+  :hook (org-mode . org-superstar-mode))
+
+
 
 ;; Configure company
 (use-package company
   :init
-  ;; (setq-default company-backends
-  ;;               '((company-files
-  ;;                  company-keywords
-  ;;                  company-capf
-  ;;                  company-yasnippet)
-  ;;                 (company-dabbrev company-abbrev)))
   (setq-default company-backends
-                '((company-capf company-dabbrev)
-                  (company-files company-keywords)))
+                '(company-files
+                  (company-capf company-dabbrev)))
+  
   :config
-  (setq company-idle-delay 0.1
+  (setq company-tooltip-align-annotations t
+        company-tooltip-flip-when-above t
+        company-tooltip-limit 10
+        company-tooltip-minimum 10
+        company-idle-delay 0
         company-dabbrev-ignore-case nil
         company-dabbrev-other-buffers 'all
         company-dabbrev-downcase nil
@@ -168,11 +168,26 @@
   
   :hook ((prog-mode . company-mode)
          (text-mode . company-mode))
+  
   :bind (("<C-tab>" . company-complete)
          :map company-active-map
          ("C-n" . company-select-next)
          ("C-p" . company-select-previous))
-  )
+
+  :custom-face
+  (company-tooltip
+   ((t (:background "black" :foreground "white"))))
+  (company-tooltip-selection
+   ((t (:background "DodgerBlue" :foreground "yellow3" :weight bold))))
+  (company-tooltip-common ((t (:weight bold :foreground "DodgerBlue"))))
+  (company-tooltip-common-selection ((t (:weight bold :foreground "white"))))
+  (company-scrollbar-fg ((t (:background "ivory4"))))
+  (company-scrollbar-bg ((t (:background "ivory3"))))
+  (company-tooltip-annotation ((t (:foreground "DarkCyan")))))
+
+;; (use-package company-box
+;;   :after company
+;;   :hook (company-mode . company-box-mode))
 
 ;; Configure projectile
 (use-package projectile
