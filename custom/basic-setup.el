@@ -80,7 +80,7 @@
 (require 'use-package)
 
 ;; Make sure that every package which is loaded by use-package is actually installed.
-(setq use-package-always-ensure t)
+;;(setq use-package-always-ensure t)
 
 (use-package exec-path-from-shell)
 

@@ -82,8 +82,12 @@
         (new-include (read-string "Include directive to insert: ")))
     (replace-include-directives-in-directory directory old-include new-include)))
 
+;;---------------------------------------Doxygen------------------------------
+
 ;; Load the functions for the doxygen generation.
 (require 'doxygen-generation)
+
+;;--------------------------------------Configure packages -------------------
 
 ;; Configure C/C++-Mode
 (use-package cc-mode
@@ -92,10 +96,12 @@
         gdb-many-windows t
         gdb-show-main t
         gud-tooltip-mode 1
-        company-global-modes '(not gud-mode)))
+        company-global-modes '(not gud-mode))
+  (setq-local company-backends '()))
 
 (use-package cmake-mode
   :config
-  (setq-default cmake-tab-width 4))
+  (setq-default cmake-tab-width 4)
+  (setq-local company-backends '(company-cmake)))
 
 (provide 'cc-setup)
