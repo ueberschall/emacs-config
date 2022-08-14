@@ -61,9 +61,10 @@
 ;; Loading custom themes is considered safe
 (setq custom-safe-themes t)
 
-;;---------------------------------Server Setup-----------------------------------------
+;;---------------------------------Hooks------------------------------------------------
 
-(server-start)
+(add-hook 'after-init-hook (lambda () (server-start)))
+(add-hook 'prog-mode-hook (lambda () (setq show-trailing-whitespace 1)))
 
 ;;---------------------------------Package Management-----------------------------------
 
