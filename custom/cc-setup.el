@@ -25,7 +25,13 @@
   (add-hook 'c-mode-common-hook (lambda ()
                                   (c-set-style "ana_style")))
   (add-hook 'c++-mode-hook (lambda ()
-                             (c-set-offset 'innamespace 0))))
+                             (c-set-offset 'innamespace 0)))
+
+  :bind (:map c-mode-base-map
+              ("RET" . cpp-newline)
+              ("C-c =" . insert-double-line-comment-seperator)
+              ("C-c -" . insert-single-line-comment-seperator)
+              ("C-c d c" . extract-and-insert-doxygen-documentation-for-symbol-under-point)))
 
 (use-package clang-format
   :config
@@ -33,7 +39,10 @@
                                 (when (and
                                        (derived-mode-p 'cc-mode)
                                        (file-exists-p (expand-file-name ".clang-format" (projectile-project-root))))
-                                  (clang-format-buffer)))))
+                                  (clang-format-buffer))))
+  :bind (:map c-mode-base-map
+              ("C-c f r" . clang-format-region)
+              ("C-c f b" . clang-format-buffer)))
 
 (use-package rtags
   :if (executable-find "rdm")
@@ -44,7 +53,19 @@
 
   ;; Shutdown rdm when leaving emacs.
   (add-hook 'kill-emacs-hook 'rtags-quit-rdm)
-  (rtags-start-process-unless-running))
+  (rtags-start-process-unless-running)
+
+  :bind (:map c-mode-base-map
+              ("M-." . rtags-find-symbol-at-point)
+              ("M-," . rtags-find-references-at-point)
+              ("C->" . rtags-location-stack-forward)
+              ("C-<" . rtags-location-stack-back)
+              ("M-?" . rtags-find-file)
+              ("M-;" . rtags-find-file)
+              ("C-." . rtags-find-symbol)
+              ("C-," . rtags-find-references)
+              ("C-;" . rtags-find-virtuals-at-point)
+              ("C-c r r" . rtags-rename-symbol)))
 
 (use-package helm-rtags
   :requires helm rtags
@@ -64,6 +85,8 @@
   (add-hook 'cmake-mode-hook
             (lambda ()
               (add-to-list (make-local-variable 'company-backends) 'company-cmake))))
+
+(use-package yasnippet-snippets)
 
 (use-package yasnippet
   :requires yasnippet-snippets
@@ -87,11 +110,7 @@
                                   (setq-local flycheck-highlighting-mode nil) 
                                   (setq-local flycheck-check-syntax-automatically nil)
                                   ;; Run flycheck 2 seconds after being idle.
-                                  (rtags-set-periodic-reparse-timeout 2.0) 
-                                        ;(global-flycheck-mode 1)
-                                  )))
-
-(use-package zygospore)
+                                  (rtags-set-periodic-reparse-timeout 2.0))))
 
 (add-hook 'c++-mode-hook
           (lambda ()

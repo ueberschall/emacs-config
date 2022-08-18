@@ -272,6 +272,9 @@
               ("<C-up>" . windmove-up)
               ("<C-down>" . windmove-down)))
 
+(use-package zygospore
+  :bind (("C-x 1" . zygospore-toggle-delete-other-windows)))
+
 ;; Dired+ has to be downloaded from EmacsWiki.
 (let* ((diredplus-file (expand-file-name "dired+/dired+.el" user-emacs-directory))
       (diredplus-dir (file-name-directory diredplus-file)))
