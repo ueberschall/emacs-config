@@ -9,21 +9,13 @@
 
 ;; Add the 'custom' directory to the load path. 
 (add-to-list 'load-path (expand-file-name "custom" user-emacs-directory))
-;; (add-to-list 'load-path "~/.emacs.d/modeline-posn")
-;; (add-to-list 'load-path "~/.emacs.d/custom/basic")
-;; (add-to-list 'load-path "~/.emacs.d/custom/cpp")
-;; (add-to-list 'load-path "~/.emacs.d/custom/python")
-;; (add-to-list 'load-path "~/.emacs.d/custom/rust")
-;; (add-to-list 'load-path "~/.emacs.d/custom/tex")
-;; (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/rtags")
-;; (add-to-list 'custom-theme-load-path "~/.emacs.d/custom/themes")
 
 ;; Setup Emacs for all my workflows.
 (require 'basic-setup)
-;; (require 'cc-setup)
-;; (require 'python-setup)
-;; (require 'rust-setup)
-;; (require 'tex-setup)
+(require 'cc-setup)
+(require 'python-setup)
+(require 'rust-setup)
+(require 'tex-setup)
 
 ;; Load the functions for saving and restoring desktops.
 (require 'desktop-saving)

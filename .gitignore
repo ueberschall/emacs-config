@@ -21,4 +21,5 @@ tramp
 .pyvenv_path
 .org-id-locations
 .cache/*
+.org-id-locations
 .#*

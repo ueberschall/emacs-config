@@ -61,15 +61,17 @@
 ;; Loading custom themes is considered safe
 (setq custom-safe-themes t)
 
-;;---------------------------------Server Setup-----------------------------------------
+;;---------------------------------Hooks------------------------------------------------
 
-(server-start)
+(add-hook 'after-init-hook (lambda () (server-start)))
+(add-hook 'prog-mode-hook (lambda () (setq show-trailing-whitespace 1)))
 
 ;;---------------------------------Package Management-----------------------------------
 
 ;; Initialize package manager
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+(add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/"))
 (package-initialize)
 
 ;; Make sure that 'use-package' is installed.
@@ -80,6 +82,7 @@
 
 ;; Make sure that every package which is loaded by use-package is actually installed.
 (setq use-package-always-ensure t)
+(setq use-package-always-pin "melpa")
 
 (use-package exec-path-from-shell)
 
@@ -93,7 +96,7 @@
          ("C-x M-g" . magit-dispatch-popup)))
 
 ;; Configure srefactor-lisp
-(use-package srefactor-lisp
+(use-package srefactor
   :bind (("M-RET o" . srefactor-lisp-one-line)
          ("M-RET m" . srefactor-lisp-format-sexp)
          ("M-RET d" . srefactor-lisp-format-defun)
@@ -112,7 +115,7 @@
 
 ;; Configure org
 (use-package org
-  :config
+  :preface
   (defun org-metadown-to-bottom ()
     "Moves the item, row or subtree to the bottom of its parent struct"
     (interactive)
@@ -129,6 +132,7 @@
           (org-metaup))
       (user-error nil)))
 
+  :config
   (setq org-support-shift-select t) ;; Enables region selection with shift and arrow key.
   (setq org-startup-indented t)
   (setq org-todo-keywords
@@ -139,30 +143,50 @@
               ("C-c a" . org-agenda)
               ("C-c c" . org-capture)
               ("<M-s-up>" . org-metaup-to-beginning)
-              ("<M-s-down>" . org-metaup-to-bottom)))
+              ("<M-s-down>" . org-metadown-to-bottom)))
 
 (use-package org-superstar
   :after org
-  :hook (org-mode . org-superstar-mode)
-  )
+  :hook (org-mode . org-superstar-mode))
+
+
 
 ;; Configure company
 (use-package company
   :init
   (setq-default company-backends
-                '((company-files
-                   company-keywords
-                   company-capf
-                   company-yasnippet)
-                  (company-dabbrev company-abbrev)))
+                '(company-files
+                  (company-capf company-dabbrev)))
+
   :config
-  (global-company-mode 1)
-  (setq company-idle-delay 0.3)
+  (setq company-tooltip-align-annotations t
+        company-tooltip-flip-when-above t
+        company-tooltip-limit 10
+        company-tooltip-minimum 10
+        company-idle-delay 0
+        company-dabbrev-ignore-case nil
+        company-dabbrev-other-buffers 'all
+        company-dabbrev-downcase nil
+        company-files-exclusions '(".git/"))
+
+  :hook ((prog-mode . company-mode)
+         (text-mode . company-mode))
+
   :bind (("<C-tab>" . company-complete)
          :map company-active-map
          ("C-n" . company-select-next)
          ("C-p" . company-select-previous))
-  )
+
+  :custom-face
+  (company-tooltip
+   ((t (:background "black" :foreground "white"))))
+  (company-tooltip-selection
+   ((t (:background "DodgerBlue" :foreground "yellow3" :weight bold))))
+  (company-tooltip-common ((t (:weight bold :foreground "DodgerBlue"))))
+  (company-tooltip-common-selection ((t (:weight bold :foreground "white"))))
+  (company-scrollbar-fg ((t (:background "ivory4"))))
+  (company-scrollbar-bg ((t (:background "ivory3"))))
+  (company-tooltip-annotation ((t (:foreground "DarkCyan")))))
 
 ;; Configure projectile
 (use-package projectile
@@ -200,11 +224,6 @@
 
   (helm-autoresize-mode -1)
 
-  (set-face-attribute 'helm-source-header nil :foreground "dark magenta" :weight 'bold
-                      :background "black" :font "Ubuntu Mono-14")
-  (set-face-attribute 'helm-selection nil :foreground "white" :background "SpringGreen4")
-  (set-face-attribute 'helm-buffer-modified nil :foreground "RosyBrown")
-
   (define-key 'help-command (kbd "C-f") 'helm-apropos)
   (define-key 'help-command (kbd "r") 'helm-info-emacs)
   (define-key 'help-command (kbd "C-l") 'helm-locate-library)
@@ -228,8 +247,12 @@
          :map helm-grep-mode-map
          ("<return>" . helm-grep-mode-jump-other-window)
          ("n" . helm-grep-mode-jump-other-window-forward)
-         ("p" . helm-grep-mode-jump-other-window-backward)
-         ))
+         ("p" . helm-grep-mode-jump-other-window-backward))
+  
+  :custom-face
+  (helm-source-header ((nil (:foreground "dark magenta" (:weight bold (:background black (:font "Ubuntu-Mono 14")))))))
+  (helm-selection ((nil (:foreground "white" (:background "SpringGreen4")))))
+  (helm-buffer-modified ((nil (:foreground "RosyBrown")))))
 
 ;; Configure helm-projectile
 (use-package helm-projectile
@@ -251,6 +274,9 @@
               ("<C-up>" . windmove-up)
               ("<C-down>" . windmove-down)))
 
+(use-package zygospore
+  :bind (("C-x 1" . zygospore-toggle-delete-other-windows)))
+
 ;; Dired+ has to be downloaded from EmacsWiki.
 (let* ((diredplus-file (expand-file-name "dired+/dired+.el" user-emacs-directory))
       (diredplus-dir (file-name-directory diredplus-file)))
@@ -260,6 +286,8 @@
     (make-directory diredplus-dir))
   (url-copy-file "https://www.emacswiki.org/emacs/download/dired%2b.el"
                  diredplus-file)))
+
+(use-package flycheck)
 
 ;; Configure Dired+
 (use-package dired+
@@ -303,5 +331,11 @@
 (global-set-key (kbd "C-M-s") 'isearch-forward)
 (global-set-key (kbd "C-M-r") 'isearch-backward)
 (global-set-key (kbd "C-x C-b") 'ibuffer)
+(global-set-key (kbd "C-c c") 'comment-region)
+(global-set-key (kbd "C-c u c") 'uncomment-region)
+
+;; Global Unset
+(global-unset-key (kbd "C-x c")) ;; Recommended in Helm tutorial, see http://tuhdo.github.io/helm-intro.html
+(global-unset-key (kbd "C-x f"))
 
 (provide 'basic-setup)
