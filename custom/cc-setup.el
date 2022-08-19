@@ -95,8 +95,6 @@
   (add-hook 'c++-mode-hook (lambda ()
                              (yas-minor-mode 1))))
 
-(use-package flycheck)
-
 (use-package flycheck-rtags
   :after flycheck rtags
   :config

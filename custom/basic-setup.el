@@ -155,7 +155,7 @@
   (setq-default company-backends
                 '(company-files
                   (company-capf company-dabbrev)))
-  
+
   :config
   (setq company-tooltip-align-annotations t
         company-tooltip-flip-when-above t
@@ -166,10 +166,10 @@
         company-dabbrev-other-buffers 'all
         company-dabbrev-downcase nil
         company-files-exclusions '(".git/"))
-  
+
   :hook ((prog-mode . company-mode)
          (text-mode . company-mode))
-  
+
   :bind (("<C-tab>" . company-complete)
          :map company-active-map
          ("C-n" . company-select-next)
@@ -284,6 +284,8 @@
     (make-directory diredplus-dir))
   (url-copy-file "https://www.emacswiki.org/emacs/download/dired%2b.el"
                  diredplus-file)))
+
+(use-package flycheck)
 
 ;; Configure Dired+
 (use-package dired+

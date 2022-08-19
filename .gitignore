@@ -20,4 +20,5 @@ elpy/*
 tramp
 .pyvenv_path
 .cache/*
+.org-id-locations
 .#*
