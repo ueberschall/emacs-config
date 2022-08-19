@@ -1,1 +1,0 @@
-(provide 'setup-tex-keymap)
