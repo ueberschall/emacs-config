@@ -34,11 +34,11 @@
 (use-package python
   :config
   (add-hook 'python-mode-hook
-          (lambda ()
-            (set (make-local-variable 'compile-command)
-                 (concat "python -m "
-                         (if buffer-file-name
-                             (shell-quote-argument (file-name-sans-extension (file-name-nondirectory buffer-file-name)))))))))
+            (lambda ()
+              (set (make-local-variable 'compile-command)
+                   (concat "python -m "
+                           (if buffer-file-name
+                               (shell-quote-argument (file-name-sans-extension (file-name-nondirectory buffer-file-name)))))))))
 
 (use-package pylint)
 
@@ -64,15 +64,17 @@
                               (add-hook 'before-save-hook
                                         'elpy-format-code nil t)))
   (add-hook 'elpy-mode-hook (lambda () (flycheck-mode 1)))
-  (add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save)
+  (add-hook 'elpy-mode-hook (lambda () (py-autopep8-mode 1)))
 
   (elpy-enable)
   ;; (setq pyvenvPath (load-pyvenv-path-from-file (expand-file-name ".pyvenv_path" user-emacs-directory)))
-  ;; (when pyvenvPath
-  ;;   (pyvenv-activate pyvenvPath))
+  (pyvenv-activate (expand-file-name "Programme/Python_Venvs/build/3_9/workhorse" (getenv "HOME")))
   (setq elpy-rpc-virtualenv-path 'current)
 
-  :bind (:map python-mode-map
-              ("C-c f" . elpy-format-mode)))
+  :bind (:map elpy-mode-map
+              ("<C-right>" . windmove-right)
+              ("<C-left>" . windmove-left)
+              ("<C-up>" . windmove-up)
+              ("<C-down>" . windmove-down)))
 
 (provide 'python-setup)

@@ -71,6 +71,7 @@
 ;; Initialize package manager
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+(add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/"))
 (package-initialize)
 
 ;; Make sure that 'use-package' is installed.
@@ -81,6 +82,7 @@
 
 ;; Make sure that every package which is loaded by use-package is actually installed.
 (setq use-package-always-ensure t)
+(setq use-package-always-pin "melpa")
 
 (use-package exec-path-from-shell)
 
@@ -94,7 +96,7 @@
          ("C-x M-g" . magit-dispatch-popup)))
 
 ;; Configure srefactor-lisp
-(use-package srefactor-lisp
+(use-package srefactor
   :bind (("M-RET o" . srefactor-lisp-one-line)
          ("M-RET m" . srefactor-lisp-format-sexp)
          ("M-RET d" . srefactor-lisp-format-defun)
