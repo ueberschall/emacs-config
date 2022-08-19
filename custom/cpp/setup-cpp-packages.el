@@ -10,8 +10,7 @@
                '("bsd"
                  (c-basic-offset . 4)
                  (c-offset-alists
-                  (case-label . *)
-                  (innamespace . 0))))
+                  (case-label . *))))
 
   (setq c-default-style "ana_style")
   (add-hook 'c-mode-common-hook (lambda ()
