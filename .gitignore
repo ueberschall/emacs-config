@@ -19,5 +19,6 @@ recentf
 elpy/*
 tramp
 .pyvenv_path
+.org-id-locations
 .cache/*
 .#*
