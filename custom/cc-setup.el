@@ -45,6 +45,8 @@
               ("C-c f b" . clang-format-buffer)))
 
 (use-package rtags
+  :ensure nil
+  :pin manual
   :if (executable-find "rdm")
   :load-path "/usr/local/share/emacs/site-lisp/rtags"
   :config
@@ -68,11 +70,15 @@
               ("C-c r r" . rtags-rename-symbol)))
 
 (use-package helm-rtags
+  :ensure nil
+  :pin manual
   :requires helm rtags
   :config
   (setq rtags-display-result-backend 'helm))
 
 (use-package company-rtags
+  :ensure nil
+  :pin manual
   :requires company rtags
   :config
   (setq rtags-autostart-diagnostics t)
@@ -96,6 +102,7 @@
                              (yas-minor-mode 1))))
 
 (use-package flycheck-rtags
+  :pin manual
   :after flycheck rtags
   :config
   ;; ensure that we use only rtags checking

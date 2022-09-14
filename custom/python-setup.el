@@ -49,7 +49,7 @@
 (use-package elpy
   :after flycheck
   :init
-  ;;(query-and-store-pyvenv-path (expand-file-name ".pyvenv_path" "~/.emacs.d"))
+  (query-and-store-pyvenv-path (expand-file-name ".pyvenv_path" "~/.emacs.d"))
   :config
   (setq python-shell-interpreter "jupyter"
         python-shell-interpreter-args "console --simple-prompt"
@@ -67,8 +67,9 @@
   (add-hook 'elpy-mode-hook (lambda () (py-autopep8-mode 1)))
 
   (elpy-enable)
-  ;; (setq pyvenvPath (load-pyvenv-path-from-file (expand-file-name ".pyvenv_path" user-emacs-directory)))
-  (pyvenv-activate (expand-file-name "Programme/Python_Venvs/build/3_9/workhorse" (getenv "HOME")))
+  (setq pyvenvPath (load-pyvenv-path-from-file (expand-file-name ".pyvenv_path" user-emacs-directory)))
+  (when pyvenvPath
+    (pyvenv-activate pyvenvPath))
   (setq elpy-rpc-virtualenv-path 'current)
 
   :bind (:map elpy-mode-map
