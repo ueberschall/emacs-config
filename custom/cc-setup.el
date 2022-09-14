@@ -3,6 +3,20 @@
 ;; Load the functions for the doxygen generation.
 (require 'doxygen-generation)
 
+;;--------------------------------------Fix GDB Many windows setup -----------
+;; Apparently, GDB does not use always the same window for the source code inspection.
+;; Use this piece of code to prevent switching the source code window, when it is
+;; already found in another frame
+(defun my-set-source-window (wrapped true-file line)
+  "Always use the same window to show source code."
+  (let ((buf (get-file-buffer true-file)))
+    (when (and buf gdb-source-window)
+      (set-window-buffer gdb-source-window buf)))
+  (let (split-width-threshold split-width-threshold)
+    (apply wrapped (list true-file line))))
+
+(advice-add 'gud-display-line :around #'my-set-source-window)
+
 ;;--------------------------------------Configure packages -------------------
 
 ;; Configure C/C++-Mode
