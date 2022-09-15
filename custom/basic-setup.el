@@ -33,7 +33,7 @@
                      'local-map mode-line-buffer-identification-keymap)))
 
 ;; Set the default font to Ubuntu-Mono.
-(set-face-attribute 'default nil :font "Ubuntu Mono-14")
+(set-face-attribute 'default nil :font "Ubuntu Mono-16")
 
 ;; Set the directory for backups of buffers and intervall time between
 ;; two successive savings
@@ -135,8 +135,13 @@
   :config
   (setq org-support-shift-select t) ;; Enables region selection with shift and arrow key.
   (setq org-startup-indented t)
+  (setq org-pretty-entities t)
+  (setq org-hide-emphasis-markers t)
+  (setq org-startup-with-inline-images t)
+  (setq org-image-actual-width t)
+  (setq org-log-done 'time)
   (setq org-todo-keywords
-        '((sequence "TODO(t)" "IN PROGRESS(p)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))
+        '((sequence "TODO(t)" "WAIT(w)" "IN PROGRESS(p)" "|" "DONE(d)" "CANCELLED(c)")))
   
   :bind (:map org-mode-map
               ("C-c l" . org-store-link)
@@ -145,11 +150,18 @@
               ("<M-s-up>" . org-metaup-to-beginning)
               ("<M-s-down>" . org-metadown-to-bottom)))
 
+;; Show hidden emphasis markers
+(use-package org-appear
+  :hook (org-mode . org-appear-mode))
+
 (use-package org-superstar
   :after org
-  :hook (org-mode . org-superstar-mode))
-
-
+  :config
+  (setq org-superstar-todo-bullet-alist
+        '(("TODO" . 9744) ("WAIT" . 8987) ("IN PROGRESS" . 8599) ("DONE" . 9745) ("CANCELLED" . 9747)))
+  (setq org-superstar-special-todo-items t)
+  (add-hook 'org-mode-hook (lambda ()
+                             (org-superstar-mode 1))))
 
 ;; Configure company
 (use-package company
