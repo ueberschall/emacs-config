@@ -108,10 +108,7 @@
   (add-hook 'after-init-hook (lambda () (load-theme 'cyberpunk t))))
 
 ;; Configure treemacs
-(use-package treemacs
-  :config
-  (add-hook 'after-init-hook (lambda () (treemacs)
-                               (treemacs-toggle-fixed-width))))
+(use-package treemacs)
 
 ;; Configure org
 (use-package org
