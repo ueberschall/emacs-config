@@ -136,6 +136,7 @@
   (setq org-hide-emphasis-markers t)
   (setq org-startup-with-inline-images t)
   (setq org-image-actual-width t)
+  (setq org-fontify-done-headline t)
   (setq org-log-done 'time)
   (setq org-log-into-drawer 'LOGBOOK)
   (setq org-todo-keywords
@@ -146,7 +147,12 @@
               ("C-c a" . org-agenda)
               ("C-c c" . org-capture)
               ("<M-s-up>" . org-metaup-to-beginning)
-              ("<M-s-down>" . org-metadown-to-bottom)))
+              ("<M-s-down>" . org-metadown-to-bottom))
+  :custom-face
+  (org-level-4
+   ((t (:foreground "DarkRed"))))
+  (org-headline-done
+   ((t (:foreground "Green" :strike-through "t")))))
 
 ;; Show hidden emphasis markers
 (use-package org-appear
