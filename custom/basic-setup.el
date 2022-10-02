@@ -130,12 +130,15 @@
       (user-error nil)))
 
   :config
+  (setq org-directory (expand-file-name "Notizen" (getenv "HOME")))
+  (setq org-agenda-files (list (expand-file-name "GTD" org-directory)))
   (setq org-support-shift-select t) ;; Enables region selection with shift and arrow key.
   (setq org-startup-indented t)
   (setq org-pretty-entities t)
   (setq org-hide-emphasis-markers t)
   (setq org-startup-with-inline-images t)
   (setq org-image-actual-width t)
+  (setq org-keep-stored-link-after-insertion t)
   (setq org-fontify-done-headline t)
   (setq org-log-done 'time)
   (setq org-log-into-drawer 'LOGBOOK)
