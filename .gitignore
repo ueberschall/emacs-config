@@ -22,4 +22,6 @@ tramp
 .org-id-locations
 .cache/*
 .org-id-locations
+eww-bookmarks
+url/*
 .#*
