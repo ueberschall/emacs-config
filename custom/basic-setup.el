@@ -137,6 +137,7 @@
                                (expand-file-name "2_next_actions.org" org-directory)
                                (expand-file-name "3_next_actions_recurring.org" org-directory)
                                (expand-file-name "4_someday_maybe.org" org-directory)))
+  (setq org-tags-match-list-sublevels t)
   (setq org-support-shift-select t) ;; Enables region selection with shift and arrow key.
   (setq org-startup-indented t)
   (setq org-pretty-entities t)
