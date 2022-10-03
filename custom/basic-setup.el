@@ -129,12 +129,23 @@
           (org-metaup))
       (user-error nil)))
 
+  (defun generate-archive-file-path ()
+    "Generate the path to the corresponding archive file for a project name"
+    (re-search-backward "\\* \\(.*\\)\\> +:")
+    (concat "Archiv/" (downcase (string-replace " " "_" (match-string 1))) ".org::"))
+
   :custom
   (org-capture-templates
-   '(("t" "Todo" entry (file+headline "~/Notizen/2_next_actions.org" "Tasks")
-      "* TODO %?\n  %i\n  %a")
-     ("j" "Journal" entry (file+datetree "~/Notizen/0_input.org")
-      "* %?\nEntered on %U\n  %i\n  %a")))
+   '(("i" "Input" entry (file "~/Notizen/0_input.org")
+      "* %?\n:PROPERTIES:\n:CREATED_AT: %U\n:END:" :empty-lines 1)
+     ("p" "Project" entry (file "~/Notizen/1_projects.org")
+      "* %^{Project name} %^g\n:PROPERTIES:\n:ID:         %(org-id-new)\n:ARCHIVE:    Archiv/%^{Archive|default}.org::\n:CREATED_AT: %U\n:END:\n\n** Goals\n\n%?\n\n** Resources" :empty-lines 1)
+     ("t" "Todo" entry (file "~/Notizen/2_next_actions.org")
+      "* TODO %? %^{Tags}g\n:PROPERTIES:\n:ID:       %(org-id-new)\n:CREATED_AT: %U\n:END:\n:LOGBOOK:\n:END:"
+      :empty-lines 1)
+     ("s" "Someday" entry (file "~/Notizen/4_someday_maybe.org")
+      "* %? %^{Tags}g\n:PROPERTIES:\n:CREATED_AT: %U\n:END:"
+      :empty-lines 1)))
   
   :config
   (setq org-directory (expand-file-name "Notizen" (getenv "HOME")))
@@ -193,14 +204,10 @@
   (org-roam-capture-templates
    '(("d" "default" plain
       "%?"
-      :target (file+head "Roam/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
+      :target (file+head "Roam/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+filetags: %^G")
       :unnarrowed t)))
   :config
   (org-roam-db-autosync-enable)
-  ;; If you're using a vertical completion framework, you might want a more informative completion interface
-  (setq org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
-  ;; If using org-roam-protocol
-  (require 'org-roam-protocol)
 
   :bind (("C-c n l" . org-roam-buffer-toggle)
          ("C-c n f" . org-roam-node-find)
