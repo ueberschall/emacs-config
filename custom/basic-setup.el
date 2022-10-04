@@ -204,7 +204,7 @@
   (org-roam-capture-templates
    '(("d" "default" plain
       "%?"
-      :target (file+head "Roam/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+filetags: %^G")
+      :target (file+head "Roam/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+options ^:{}\n#+filetags: %^G")
       :unnarrowed t)))
   :config
   (org-roam-db-autosync-enable)
