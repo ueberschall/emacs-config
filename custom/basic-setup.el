@@ -136,25 +136,25 @@
 
   :custom
   (org-capture-templates
-   '(("i" "Input" entry (file "~/Notizen/0_input.org")
+   '(("i" "Input" entry (file "~/Notizen/00_input.org")
       "* %?\n:PROPERTIES:\n:CREATED_AT: %U\n:END:" :empty-lines 1)
-     ("p" "Project" entry (file "~/Notizen/1_projects.org")
-      "* %^{Project name} %^g\n:PROPERTIES:\n:ID:         %(org-id-new)\n:ARCHIVE:    Archiv/%^{Archive|default}.org::\n:CREATED_AT: %U\n:END:\n\n** Ziel\n\n%?\n\n** Resourcen" :empty-lines 1)
-     ("t" "Todo" entry (file "~/Notizen/2_next_actions.org")
-      "* TODO %? %^{Tags}g\n:PROPERTIES:\n:CREATED_AT: %U\n:END:\n:LOGBOOK:\n:END:"
-      :empty-lines 1)
-     ("s" "Someday" entry (file "~/Notizen/4_someday_maybe.org")
+     ("p" "Project" entry (file "~/Notizen/01_projects.org")
+      "* %^{Project name} %^g\n:PROPERTIES:\n:ID:         %(org-id-new)\n:ARCHIVE:    Archiv/%^{Archive|default}.org::\n:CREATED_AT: %U\n:END:\n\n** Goals\n\n%?\n\n** Resources" :empty-lines 1)
+     ("s" "Someday" entry (file "~/Notizen/02_someday_maybe.org")
       "* %? %^{Tags}g\n:PROPERTIES:\n:CREATED_AT: %U\n:END:"
+      :empty-lines 1)
+     ("t" "Todo" entry (file "~/Notizen/03_next_actions.org")
+      "* TODO %? %^{Tags}g\n:PROPERTIES:\n:ID:       %(org-id-new)\n:CREATED_AT: %U\n:END:\n:LOGBOOK:\n:END:"
       :empty-lines 1)))
-  
+
   :config
   (setq org-directory (expand-file-name "Notizen" (getenv "HOME")))
   (setq org-link-file-path-type 'relative)
-  (setq org-agenda-files (list (expand-file-name "0_input.org" org-directory)
-                               (expand-file-name "1_projects.org" org-directory)
-                               (expand-file-name "2_next_actions.org" org-directory)
-                               (expand-file-name "3_next_actions_recurring.org" org-directory)
-                               (expand-file-name "4_someday_maybe.org" org-directory)))
+  (setq org-agenda-files (list (expand-file-name "00_input.org" org-directory)
+                               (expand-file-name "01_projects.org" org-directory)
+                               (expand-file-name "02_someday_maybe.org" org-directory)
+                               (expand-file-name "03_next_actions.org" org-directory)
+                               (expand-file-name "04_next_actions_recurring.org" org-directory)))
   (setq org-tags-match-list-sublevels t)
   (setq org-support-shift-select t) ;; Enables region selection with shift and arrow key.
   (setq org-startup-indented t)
@@ -204,7 +204,7 @@
   (org-roam-capture-templates
    '(("d" "default" plain
       "%?"
-      :target (file+head "Roam/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+filetags: %^G")
+      :target (file+head "Roam/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+options ^:{}\n#+filetags: %^G")
       :unnarrowed t)))
   :config
   (org-roam-db-autosync-enable)
