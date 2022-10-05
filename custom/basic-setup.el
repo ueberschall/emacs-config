@@ -139,9 +139,9 @@
    '(("i" "Input" entry (file "~/Notizen/0_input.org")
       "* %?\n:PROPERTIES:\n:CREATED_AT: %U\n:END:" :empty-lines 1)
      ("p" "Project" entry (file "~/Notizen/1_projects.org")
-      "* %^{Project name} %^g\n:PROPERTIES:\n:ID:         %(org-id-new)\n:ARCHIVE:    Archiv/%^{Archive|default}.org::\n:CREATED_AT: %U\n:END:\n\n** Goals\n\n%?\n\n** Resources" :empty-lines 1)
+      "* %^{Project name} %^g\n:PROPERTIES:\n:ID:         %(org-id-new)\n:ARCHIVE:    Archiv/%^{Archive|default}.org::\n:CREATED_AT: %U\n:END:\n\n** Ziel\n\n%?\n\n** Resourcen" :empty-lines 1)
      ("t" "Todo" entry (file "~/Notizen/2_next_actions.org")
-      "* TODO %? %^{Tags}g\n:PROPERTIES:\n:ID:       %(org-id-new)\n:CREATED_AT: %U\n:END:\n:LOGBOOK:\n:END:"
+      "* TODO %? %^{Tags}g\n:PROPERTIES:\n:CREATED_AT: %U\n:END:\n:LOGBOOK:\n:END:"
       :empty-lines 1)
      ("s" "Someday" entry (file "~/Notizen/4_someday_maybe.org")
       "* %? %^{Tags}g\n:PROPERTIES:\n:CREATED_AT: %U\n:END:"
