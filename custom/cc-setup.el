@@ -59,10 +59,9 @@
               ("C-c f b" . clang-format-buffer)))
 
 (use-package rtags
-  :ensure nil
-  :pin manual
   :if (executable-find "rdm")
-  :load-path "/usr/local/share/emacs/site-lisp/rtags"
+  :ensure t
+  :pin manual
   :config
   (setq rtags-path "/usr/local/bin"
         rtags-use-helm t)
@@ -83,15 +82,17 @@
               ("C-;" . rtags-find-virtuals-at-point)
               ("C-c r r" . rtags-rename-symbol)))
 
+(setq use-package-always-pin "melpa")
+
 (use-package helm-rtags
-  :ensure nil
+  :ensure t
   :pin manual
   :requires helm rtags
   :config
   (setq rtags-display-result-backend 'helm))
 
 (use-package company-rtags
-  :ensure nil
+  :ensure t
   :pin manual
   :requires company rtags
   :config

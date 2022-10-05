@@ -9,6 +9,7 @@
 
 ;; Add the 'custom' directory to the load path. 
 (add-to-list 'load-path (expand-file-name "custom" user-emacs-directory))
+(add-to-list 'load-path "/usr/local/share/emacs/site-lisp/rtags")
 
 ;; Setup Emacs for all my workflows.
 (require 'basic-setup)
