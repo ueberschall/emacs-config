@@ -167,7 +167,7 @@
   (setq org-log-done 'time)
   (setq org-log-into-drawer 'LOGBOOK)
   (setq org-todo-keywords
-        '((sequence "TODO(t!)" "WAITING(w!)" "PROGRESSING(p!)" "|" "DONE(d!)" "CANCELLED(c!")))
+        '((sequence "TODO(t!)" "WAITING(w!)" "PROGRESSING(p!)" "|" "DONE(d!)" "CANCELLED(c!)")))
   
   :bind (:map org-mode-map
               ("C-c l" . org-store-link)

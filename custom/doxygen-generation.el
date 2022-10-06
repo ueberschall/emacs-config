@@ -1,4 +1,148 @@
-;; Functions for inserting Doxygen documentation into buffer
+(setq c-identifier-regex "\\_<[[:alpha:]][[:word:]_]*\\(?:::[[:alpha:]][[:word:]_]*\\)*")
+(setq c-type-regex "\\_<[[:alpha:]][[:word:]_<>:]*\\(?:&\\{0,2\\}\\|\\*\\)?")
+
+(defun doxygen-documentation-for-variable (variable-name)
+  "Return doxygen documentation for variable"
+  (list (format "\\brief Variable %s" variable-name)))
+
+(defun doxygen-documentation-for-function-parameters (parameter-list)
+  "Return doxygen documentation for function parameters"
+  (let (doc-string-list)
+    (dolist (param parameter-list doc-string-list)
+    (if (string-match "const[[:space:]]+" param)
+        (push (format "\\param[in]  %s" (substring param (match-end 0) nil)) doc-string-list)
+      (push (format "\\param[out] %s" param) doc-string-list)))
+    (nreverse doc-string-list)))
+
+(defun doxygen-documentation-for-function (function-name parameter-list return-value)
+  "Return doxygen documentation for function, its parameter list and return value"
+  (let ((doc-header (list (format "\\brief Function %s" function-name)))
+        (doc-parameters (doxygen-documentation-for-function-parameters parameter-list))
+        (doc-footer (list (format "\\returns "))))
+    (if return-value
+        (append doc-header doc-parameters doc-footer)
+      (append doc-header doc-parameters))))
+
+(defun doxygen-documentation-for-class (class-name)
+  "Return doxygen documentation for class"
+  (list (format "\\brief Class %s" class-name)))
+
+(defun doxygen-documentation-for-struct (struct-name)
+  "Return doxygen documentation for struct"
+  (list (format "\\brief Struct %s" class-name)))
+
+(defun doxygen-documentation-for-alias (alias-name)
+  "Return doxygen documentation for alias"
+  (list (format "\\brief Alias %s" alias-name)))
+
+(defun doxygen-documentation-for-template-parameters (tparam-list)
+  "Return doxygen documentation for a list of template parameters"
+  (let (doc-string-list)
+    (dolist (tparam tparam-list doc-string-list)
+      (push (format "\\tparam      %s" tparam) doc-string-list))
+    (nreverse doc-string-list)))
+
+(defun doxygen-documentation-for-template (template-name template-parameters function-parameters returns-p)
+  "Return doxygen documentation for template class or function"
+  (let ((doc-header (list (format "\\brief Template %s" template-name)))
+        (doc-tparams (doxygen-documentation-for-template-parameters template-parameters))
+        (doc-fparams (doxygen-documentation-for-function-parameters function-parameters))
+        (doc-footer (list "\\returns ")))
+    (if returns-p
+        (append doc-header doc-tparams doc-fparams doc-footer)
+      (append doc-header doc-tparams doc-fparams))))
+
+;;------------------------------------------------------------------------------
+;; Function for extracting information necessary for Doxygen documentation
+;; generation from buffer or string
+
+(setq comment-begin-regex "\\(?://\\)\\|\\(?:/\\*\\)")
+(setq template-regex "\\_<template<.*>")
+(setq class-regex "\\_<class\\_>")
+(setq struct-regex "\\_<struct\\_>")
+(setq alias-regex "\\_<using\\_>")
+
+(defun extract-parameters-from-string (parameter-string)
+  "Extract function parameters into list.
+If they have a 'const' as prefix word, it is forwarded into the list.
+The type however is not forwarded."
+  (let ((parameters ()))
+    (while (string-match
+            (format "\\(const[[:space:]]+\\)?[[:space:]]*\\(%s\\)\\.\\{0,3\\}[[:space:]]+\\(%s\\)[[:space:]]*[=,)]"
+                    c-type-regex c-identifier-regex)
+            parameter-string)
+      (if (match-end 1)
+          (push (concat "const " (match-string 3 parameter-string)) parameters)
+        (push (match-string 3 parameter-string) parameters))
+      (setq parameter-string (substring parameter-string (match-end 0))))
+    (nreverse parameters)))
+
+(defun extract-template-parameters-from-string (template-parameter-string)
+  "Extract template parameters from string into list"
+  (let (template-parameters)
+    (while (string-match
+           (format "[[:space:]\n]*%s\\.\\{0,3\\}[[:space:]\n]+\\(%s\\)[[:space:]\n]*[=,>]"
+                   c-type-regex c-identifier-regex)
+           template-parameter-string)
+      (push (match-string 1 template-parameter-string) template-parameters)
+      (setq template-parameter-string (substring template-parameter-string (match-end 0))))
+    (nreverse template-parameters)))
+
+(defun extract-doxygen-documentation-for-variable-after-point ()
+  "Reads variable declaration after point and returns its doxygen documentation"
+  (when (looking-at c-identifier-regex)
+    (doxygen-documentation-for-variable (match-string-no-properties 0))))
+
+(defun extract-doxygen-documentation-for-class-after-point ()
+  "Reads class declaration after point and returns its doxygen documentation"
+  (when (looking-at (format "%s[[:space:]\n]+\\(%s\\)" class-regex c-identifier-regex))
+    (doxygen-documentation-for-class (match-string-no-properties 1))))
+
+(defun extract-doxygen-documentation-for-struct-after-point ()
+  "Reads struct declaration after point and returns its doxygen documentation"
+  (when (looking-at (format "%s[[:space:]\n]+\\(%s\\)" struct-regex c-identifier-regex))
+    (doxygen-documentation-for-class (match-string-no-properties 1))))
+
+(defun extract-doxygen-documentation-for-alias-after-point ()
+  "Reads alias declaration after point and returns its doxygen documentation"
+  (when (looking-at (format "%s[[:space:]\n]+\\(%s\\)[[:space:]]*=" alias-regex c-identifier-regex))
+    (doxygen-documentation-for-alias (match-string-no-properties 1))))
+
+(defun extract-doxygen-documentation-for-function-after-point ()
+  "Reads function declaration after point and returns its doxygen documentation"
+  (when (looking-at (format "\\(%s\\)(\\(\\(?:.*?\n?\\)+)\\)" c-identifier-regex))
+    (doxygen-documentation-for-function (match-string-no-properties 1)
+                                        (extract-parameters-from-string (match-string-no-properties 2))
+                                        (and (looking-back (format "%s[[:space:]]+" c-type-regex))
+                                             (not (looking-back "void[[:space:]]+"))))))
+
+(defun extract-doxygen-documentation-for-template-after-point ()
+  "Reads template declaration after point and returns its doxygen documentation"
+  (if (looking-at
+       (format
+        "template<\\(.*>\\)[[:space:]\n]+\\(class\\|struct\\|using\\)[[:space:]\n]+\\(%s\\)"
+        c-identifier-regex))
+      (let ((ttype (match-string-no-properties 2))
+            (ttype-name (match-string-no-properties 3))
+            (tparam-string (match-string-no-properties 1)))
+        (doxygen-documentation-for-template
+         (concat ttype " " ttype-name)
+         (extract-template-parameters-from-string tparam-string)
+         nil nil))
+    (when
+        (looking-at
+         (format
+          "template<\\(.*>\\)[[:space:]\n]+\\(%s[[:space:]\n]\\)+?[[:space:]\n]*\\(%s\\)(\\(\\(?:.*?\n?\\)+)\\)"
+          c-type-regex c-identifier-regex))
+      (let ((tfunc-name (match-string-no-properties 3))
+            (tparam-string (match-string-no-properties 1))
+            (fparam-string (match-string-no-properties 4))
+            (return-p (not (string-match-p "\\<void\\>" (match-string-no-properties 2)))))
+        (doxygen-documentation-for-template
+         (concat "function " tfunc-name)
+         (extract-template-parameters-from-string tparam-string)
+         (extract-parameters-from-string fparam-string)
+         return-p)))))
 
 (defun insert-and-indent (args)
   "Insert args in buffer, adds new line and indents after that"
