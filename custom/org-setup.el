@@ -15,31 +15,11 @@
         (while t
           (org-metaup))
       (user-error nil)))
-
-  (defun generate-archive-file-path ()
-    "Generate the path to the corresponding archive file for a project name"
-    (re-search-backward "\\* \\(.*\\)\\> +:")
-    (concat "Archiv/" (downcase (string-replace " " "_" (match-string 1))) ".org::"))
-
-  :custom
-  (org-capture-templates
-   '(("i" "Input" entry (file "~/Notizen/00_input.org")
-      "* %?\n:PROPERTIES:\n:CREATED_AT: %U\n:END:" :empty-lines 1)
-     ("p" "Project" entry (file "~/Notizen/01_projects.org")
-      "* %^{Project name} %^g\n:PROPERTIES:\n:ID:         %(org-id-new)\n:ARCHIVE:    Archiv/%^{Archive|default}.org::\n:CREATED_AT: %U\n:END:\n\n** Goals\n\n%?\n\n** Resources" :empty-lines 1)
-     ("s" "Someday" entry (file "~/Notizen/02_someday_maybe.org")
-      "* %? %^{Tags}g\n:PROPERTIES:\n:CREATED_AT: %U\n:END:"
-      :empty-lines 1)
-     ("t" "Todo" entry (file "~/Notizen/03_next_actions.org")
-      "* TODO %? %^{Tags}g\n:PROPERTIES:\n:ID:       %(org-id-new)\n:CREATED_AT: %U\n:END:\n:LOGBOOK:\n:END:"
-      :empty-lines 1)))
-
   :config
   (setq org-directory (expand-file-name "Neue_Notizen" (getenv "HOME")))
   (setq org-link-file-path-type 'relative)
   (setq org-agenda-files (list (expand-file-name "inbox.org" org-directory)
                                (expand-file-name "next_actions.org" org-directory)
-                               (expand-file-name "archived_actions.org" org-directory)
                                (expand-file-name "Projects" org-directory)
                                (expand-file-name "Someday_Maybe" org-directory)
                                ))
@@ -56,13 +36,11 @@
   (setq org-log-into-drawer 'LOGBOOK)
   (setq org-todo-keywords
         '((sequence "TODO(t!)" "WAITING(w!)" "PROGRESSING(p!)" "|" "DONE(d!)" "CANCELLED(c!)")))
-
-  :bind (:map org-mode-map
-              ("C-c l" . org-store-link)
-              ("C-c a" . org-agenda)
-              ("C-c c" . org-capture)
-              ("<M-s-up>" . org-metaup-to-beginning)
-              ("<M-s-down>" . org-metadown-to-bottom))
+  :bind (("C-c l" . org-store-link)
+         ("C-c a" . org-agenda)
+         :map org-mode-map
+         ("<M-s-up>" . org-metaup-to-beginning)
+         ("<M-s-down>" . org-metadown-to-bottom))
   :custom-face
   (org-level-4
    ((t (:foreground "DarkRed"))))
@@ -84,19 +62,43 @@
                              (org-superstar-mode 1))))
 
 (use-package org-roam
-  :after org
   :ensure t
-  :custom
-  (org-roam-directory (file-truename org-directory))
-  (org-roam-completion-everywhere t)
-  (org-roam-capture-templates
-   '(("d" "default" plain
-      "%?"
-      :target (file+head "Roam/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+options ^:{}\n#+filetags: %^G")
-      :unnarrowed t)))
   :config
+  (setq org-roam-directory org-directory)
+  (setq org-roam-completion-everywhere t)
+  (setq org-roam-capture-templates
+   '(("i" "Inbox" plain
+      "* ${title}\n:PROPERTIES:\n:CREATED_AT: %U\n:END:\n\n%?"
+      :target (file+head "inbox.org" "#+title: 0 Inbox\n#+options: ^:{}")
+      :unnarrowed t :empty-lines 1 :jump-to-captured nil)
+     ("t" "Todo" plain
+      "* TODO ${title}\n:PROPERTIES:\n:CREATED_AT: %U\n:END:\n\n%?"
+      :target (file+head "next_actions.org" "#+title: 1 Next Actions\n#+options ^:{}") :unnarrowed t :empty-lines 1 :jump-to-captured nil)
+      ("w" "Recurring Todo" plain
+      "* TODO ${title} :recurring:\n:PROPERTIES:\n:CREATED_AT: %U\n:END:\n\n%?"
+      :target (file+head "next_actions.org" "#+title: 1 Next Actions\n#+options ^:{}")
+      :unnarrowed t :empty-lines 1)
+     ("p" "Project" plain
+      "* Ziele\n\n%?\n\n* Aufgaben :projects:\n\n"
+      :target (file+head "Projects/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+options ^:{}\n#+filetags: :projects:")
+      :unnarrowed t)
+     ("s" "Someday maybe" plain
+      "%?"
+      :target (file+head "Someday_Maybe/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+options ^:{}\n#+filetags: :someday_maybe:")
+      :unnarrowed t)
+     ("r" "Reference" plain
+      "%?"
+      :target (file+head "References/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+options ^:{}\n#+filetags: :references:")
+      :unnarrowed t)
+     ("m" "Merge Request Review" plain
+      "* Link\n\n %?\n\n* Aufgaben\n\n** TODO Änderungen überprüfen\n\n** TODO Kommentare diskutieren\n\n** TODO Approven"
+      :target (file+head "Projects/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+options ^:{}\n#+filetags: :projects:mr_review:")
+      :unnarrowed t)
+     ("j" "Jira Story" plain
+      "* Link\n\n %?\n\n* Aufgaben\n\n"
+      :target (file+head "Projects/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+options ^:{}\n#+filetags: :projects:jira:")
+      :unnarrowed t)))
   (org-roam-db-autosync-enable)
-
   :bind (("C-c n l" . org-roam-buffer-toggle)
          ("C-c n f" . org-roam-node-find)
          ("C-c n g" . org-roam-graph)
@@ -105,6 +107,6 @@
          ;; Dailies
          ("C-c n j" . org-roam-dailies-capture-today)
          :map org-mode-map
-         ("C-M-i"   . completion-at-point)))
+         ("C-M-i" . completion-at-point)))
 
 (provide 'org-setup)

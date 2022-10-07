@@ -67,11 +67,11 @@
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 (add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/"))
-(package-initialize)
+;;(package-initialize)
 
 ;; Make sure that 'use-package' is installed.
 (unless (package-installed-p 'use-package)
-  (package-refresh-contents)
+  ;;(package-refresh-contents)
   (package-install 'use-package))
 (require 'use-package)
 
