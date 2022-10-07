@@ -61,11 +61,6 @@
 ;; Loading custom themes is considered safe
 (setq custom-safe-themes t)
 
-;;---------------------------------Hooks------------------------------------------------
-
-(add-hook 'after-init-hook (lambda () (server-start)))
-(add-hook 'prog-mode-hook (lambda () (setq show-trailing-whitespace 1)))
-
 ;;---------------------------------Package Management-----------------------------------
 
 ;; Initialize package manager
@@ -381,6 +376,11 @@
 ;; modeline-posn cannot be configured using use-package.
 (add-to-list 'load-path (expand-file-name "modeline-posn" user-emacs-directory))
 (require 'modeline-posn)
+
+;;---------------------------------Hooks------------------------------------------------
+
+(add-hook 'after-init-hook (lambda () (server-start)))
+(add-hook 'prog-mode-hook (lambda () (setq show-trailing-whitespace 1)))
 
 ;;-------------------------------Global key bindings-------------------------------------
 
