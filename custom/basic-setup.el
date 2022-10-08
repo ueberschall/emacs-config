@@ -68,7 +68,7 @@
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 (add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/"))
 
-(when (y-or-n-p "Check whether packages are installed")
+(when (y-or-n-p "Skip packages refresh")
   ;; Make sure that 'use-package' is installed.
   (unless (package-installed-p 'use-package)
     (package-initialize)
