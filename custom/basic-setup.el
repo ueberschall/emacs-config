@@ -67,17 +67,18 @@
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 (add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/"))
-;;(package-initialize)
 
-;; Make sure that 'use-package' is installed.
-(unless (package-installed-p 'use-package)
-  ;;(package-refresh-contents)
-  (package-install 'use-package))
+(when (y-or-n-p "Check whether packages are installed")
+  ;; Make sure that 'use-package' is installed.
+  (unless (package-installed-p 'use-package)
+    (package-initialize)
+    (package-refresh-contents)
+    (package-install 'use-package))
+  ;; Make sure that every package which is loaded by use-package is actually installed.
+  (setq use-package-always-ensure t)
+  (setq use-package-always-pin "melpa"))
+
 (require 'use-package)
-
-;; Make sure that every package which is loaded by use-package is actually installed.
-(setq use-package-always-ensure t)
-(setq use-package-always-pin "melpa")
 
 (use-package exec-path-from-shell)
 
@@ -154,7 +155,7 @@
   :config
   (require 'helm-config)
   (setq helm-echo-input-in-header-line t)
-  
+
   (defun helm-hide-minibuffer-maybe ()
     (when (with-helm-buffer helm-echo-input-in-header-line)
       (let ((ov (make-overlay (point-min) (point-max) nil nil t)))
@@ -202,7 +203,7 @@
          ("<return>" . helm-grep-mode-jump-other-window)
          ("n" . helm-grep-mode-jump-other-window-forward)
          ("p" . helm-grep-mode-jump-other-window-backward))
-  
+
   :custom-face
   (helm-source-header ((nil (:foreground "dark magenta" (:weight bold (:background black (:font "Ubuntu-Mono 14")))))))
   (helm-selection ((nil (:foreground "white" (:background "SpringGreen4")))))
