@@ -16,6 +16,7 @@
           (org-metaup))
       (user-error nil)))
   :config
+  (add-hook 'org-mode-hook (lambda () (linum-mode -1)))
   (setq org-directory (expand-file-name "Notizen" (getenv "HOME")))
   (setq org-link-file-path-type 'relative)
   (setq org-agenda-files (list (expand-file-name "inbox.org" org-directory)
@@ -71,30 +72,30 @@
       :unnarrowed t :empty-lines 1)
      ("t" "Todo" plain
       "* TODO ${title}\n:PROPERTIES:\n:CREATED_AT: %U\n:END:\n\n%?"
-      :target (file+head "next_actions.org" "#+title: 1 Next Actions\n#+options ^:{}") :unnarrowed t :empty-lines 1 :jump-to-captured nil)
+      :target (file+head "next_actions.org" "#+title: 1 Next Actions\n#+options: ^:{}") :unnarrowed t :empty-lines 1)
       ("w" "Recurring Todo" plain
       "* TODO ${title} :recurring:\n:PROPERTIES:\n:CREATED_AT: %U\n:END:\n\n%?"
-      :target (file+head "next_actions.org" "#+title: 1 Next Actions\n#+options ^:{}")
+      :target (file+head "next_actions.org" "#+title: 1 Next Actions\n#+options: ^:{}")
       :unnarrowed t :empty-lines 1)
      ("p" "Project" plain
       "* Beschreibung :projects:\n\n** Ziele\n\n%?\n\n* Aufgaben :projects:\n\n"
-      :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: Project: ${title}\n#+options ^:{}\n#+filetags: :projects:")
+      :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: Project: ${title}\n#+options: ^:{}\n#+filetags: :projects:")
       :unnarrowed t)
      ("s" "Someday maybe" plain
       "%?"
-      :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+options ^:{}\n#+filetags: :someday_maybe:")
+      :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+options: ^:{}\n#+filetags: :someday_maybe:")
       :unnarrowed t)
      ("r" "Reference" plain
       "%?"
-      :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+options ^:{}\n#+filetags: :references:")
+      :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+options: ^:{}\n#+filetags: :references:")
       :unnarrowed t)
      ("m" "Merge Request Review" plain
       "* Link\n\n %?\n\n* Aufgaben\n\n** TODO Änderungen überprüfen\n\n** TODO Kommentare diskutieren\n\n** TODO Approven"
-      :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+options ^:{}\n#+filetags: :mr_review:")
+      :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+options: ^:{}\n#+filetags: :mr_review:")
       :unnarrowed t)
      ("j" "Jira Story" plain
       "* Link\n\n %?\n\n* Aufgaben\n\n"
-      :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+options ^:{}\n#+filetags: :jira:")
+      :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+options: ^:{}\n#+filetags: :jira:")
       :unnarrowed t)))
   (org-roam-db-autosync-enable)
   :bind (("C-c n l" . org-roam-buffer-toggle)
