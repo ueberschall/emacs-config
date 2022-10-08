@@ -67,37 +67,42 @@
   (setq org-roam-directory org-directory)
   (setq org-roam-completion-everywhere t)
   (setq org-roam-capture-templates
-   '(("i" "Inbox" plain
-      "* ${title}\n:PROPERTIES:\n:CREATED_AT: %U\n:END:\n\n%?"
-      :target (file+head "inbox.org" "#+title: 0 Inbox")
-      :unnarrowed t :empty-lines 1)
-     ("t" "Todo" plain
-      "* TODO ${title}\n:PROPERTIES:\n:CREATED_AT: %U\n:END:\n\n%?"
-      :target (file+head "next_actions.org" "#+title: 1 Next Actions") :unnarrowed t :empty-lines 1)
-      ("w" "Recurring Todo" plain
-      "* TODO ${title} :recurring:\n:PROPERTIES:\n:CREATED_AT: %U\n:END:\n\n%?"
-      :target (file+head "next_actions.org" "#+title: 1 Next Actions")
-      :unnarrowed t :empty-lines 1)
-     ("p" "Project" plain
-      "* Beschreibung :projects:\n\n** Ziele\n\n%?\n\n* Aufgaben :projects:\n\n"
-      :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: Project: ${title}\n#+filetags: :projects:")
-      :unnarrowed t)
-     ("s" "Someday maybe" plain
-      "%?"
-      :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+filetags: :someday_maybe:")
-      :unnarrowed t)
-     ("r" "Reference" plain
-      "%?"
-      :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+filetags: :references:")
-      :unnarrowed t)
-     ("m" "Merge Request Review" plain
-      "* Link\n\n %?\n\n* Aufgaben\n\n** TODO Änderungen überprüfen\n\n** TODO Kommentare diskutieren\n\n** TODO Approven"
-      :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+filetags: :mr_review:")
-      :unnarrowed t)
-     ("j" "Jira Story" plain
-      "* Link\n\n %?\n\n* Aufgaben\n\n"
-      :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+filetags: :jira:")
-      :unnarrowed t)))
+        '(("i" "Inbox" plain
+           "* ${title}\n:PROPERTIES:\n:CREATED_AT: %U\n:END:\n\n%?"
+           :target (file+head "inbox.org" "#+title: 0 Inbox")
+           :unnarrowed t :empty-lines 1)
+          ("t" "Todo" plain
+           "* TODO ${title}\n:PROPERTIES:\n:CREATED_AT: %U\n:END:\n\n%?"
+           :target (file+head "next_actions.org" "#+title: 1 Next Actions") :unnarrowed t :empty-lines 1)
+          ("w" "Recurring Todo" plain
+           "* TODO ${title} :recurring:\n:PROPERTIES:\n:CREATED_AT: %U\n:END:\n\n%?"
+           :target (file+head "next_actions.org" "#+title: 1 Next Actions")
+           :unnarrowed t :empty-lines 1)
+          ("p" "Project" plain
+           "* Beschreibung :projects:\n\n** Ziele\n\n%?\n\n* Aufgaben :projects:\n\n"
+           :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: Project: ${title}\n#+filetags: :projects:")
+           :unnarrowed t)
+          ("s" "Someday maybe" plain
+           "%?"
+           :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+filetags: :someday_maybe:")
+           :unnarrowed t)
+          ("r" "Reference" plain
+           "%?"
+           :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+filetags: :references:")
+           :unnarrowed t)
+          ("m" "Merge Request Review" plain
+           "* Link\n\n %?\n\n* Aufgaben\n\n** TODO Änderungen überprüfen\n\n** TODO Kommentare diskutieren\n\n** TODO Approven"
+           :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+filetags: :mr_review:")
+           :unnarrowed t)
+          ("j" "Jira Story" plain
+           "* Link\n\n %?\n\n* Aufgaben\n\n"
+           :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+filetags: :jira:")
+           :unnarrowed t)))
+  (setq org-roam-dailies-directory "Diary/")
+  (setq org-roam-dailies-capture-templates
+        '(("d" "default" entry "* %?" :target
+           (file+head "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>
+") :unnarrowed t)))
   (org-roam-db-autosync-enable)
   :bind (("C-c n l" . org-roam-buffer-toggle)
          ("C-c n f" . org-roam-node-find)
