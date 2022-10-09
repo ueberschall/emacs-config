@@ -78,29 +78,29 @@
            "* TODO ${title} :recurring:\n:PROPERTIES:\n:CREATED_AT: %U\n:END:\n\n%?"
            :target (file+head "next_actions.org" "#+title: 1 Next Actions")
            :unnarrowed t :empty-lines 1)
+          ("s" "Someday maybe" plain
+           "* Someday Maybe: ${title} :someday_maybe:\n:PROPERTIES:\n:ID:        %(org-id-new)\n:CREATED_AT: %U\n:END:\n\n%?"
+           :target (file+head "someday_maybe.org" "#+title: 2 Someday Maybe\n#+filetags: :someday_maybe:")
+           :unnarrowed t :empty-lines 1)
           ("p" "Project" plain
            "* Beschreibung :projects:\n\n** Ziele\n\n%?\n\n* Aufgaben :projects:\n\n"
-           :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: Project: ${title}\n#+filetags: :projects:")
-           :unnarrowed t)
-          ("s" "Someday maybe" plain
-           "%?"
-           :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+filetags: :someday_maybe:")
+           :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: 3 Project: ${title}\n#+category: \n#+filetags: :projects:")
            :unnarrowed t)
           ("r" "Reference" plain
            "%?"
-           :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+filetags: :references:")
+           :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: 4 Reference: ${title}\n#+category: \n#+filetags: :references:")
            :unnarrowed t)
           ("m" "Merge Request Review" plain
            "* Link\n\n %?\n\n* Aufgaben\n\n** TODO Änderungen überprüfen\n\n** TODO Kommentare diskutieren\n\n** TODO Approven"
-           :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+filetags: :mr_review:")
+           :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+category: Merge Request\n#+filetags: :mr_review:")
            :unnarrowed t)
           ("j" "Jira Story" plain
            "* Link\n\n %?\n\n* Aufgaben\n\n"
-           :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+filetags: :jira:")
+           :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+category: Jira\n#+filetags: :jira:")
            :unnarrowed t)))
   (setq org-roam-dailies-directory "Diary/")
   (setq org-roam-dailies-capture-templates
-        '(("d" "default" entry "* %?" :target
+        '(("d" "Diary" entry "%?" :target
            (file+head "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>
 ") :unnarrowed t)))
   (org-roam-db-autosync-enable)
@@ -113,5 +113,23 @@
          ("C-c n j" . org-roam-dailies-capture-today)
          :map org-mode-map
          ("C-M-i" . completion-at-point)))
+
+;; Filtering of the Org Roam nodes with respect to a tags
+;;---------------------------------------------------------------
+;; (defun my/org-roam-filter-by-tag (tag-name)
+;;   (lambda (node)
+;;     (member tag-name (org-roam-node-tags node))))
+
+;; (defun my/org-roam-list-notes-by-tag (tag-name)
+;;   (mapcar #'org-roam-node-file
+;;           (seq-filter
+;;            (my/org-roam-filter-by-tag tag-name)
+;;            (org-roam-node-list))))
+
+;; (defun my/org-roam-refresh-agenda-list ()
+;;   (interactive)
+;;   (setq org-agenda-files (my/org-roam-list-notes-by-tag "projects")))
+
+;;------------------------------------------------------------------
 
 (provide 'org-setup)
