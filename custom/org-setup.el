@@ -88,7 +88,7 @@
            :unnarrowed t)
           ("r" "Reference" plain
            "%?"
-           :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+category: \n#+filetags: :references:")
+           :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+filetags: :references:")
            :unnarrowed t)
           ("m" "Merge Request Review" plain
            "* Link\n\n %?\n\n* Aufgaben\n\n** TODO Anpassungen reviewen\n\n** TODO Kommentare diskutieren\n\n** TODO Approven"
