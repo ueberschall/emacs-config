@@ -61,28 +61,24 @@
 ;; Loading custom themes is considered safe
 (setq custom-safe-themes t)
 
-;;---------------------------------Hooks------------------------------------------------
-
-(add-hook 'after-init-hook (lambda () (server-start)))
-(add-hook 'prog-mode-hook (lambda () (setq show-trailing-whitespace 1)))
-
 ;;---------------------------------Package Management-----------------------------------
 
 ;; Initialize package manager
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 (add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/"))
-(package-initialize)
 
-;; Make sure that 'use-package' is installed.
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
+(unless (y-or-n-p "Skip packages refresh")
+  ;; Make sure that 'use-package' is installed.
+  (unless (package-installed-p 'use-package)
+    (package-initialize)
+    (package-refresh-contents)
+    (package-install 'use-package))
+  ;; Make sure that every package which is loaded by use-package is actually installed.
+  (setq use-package-always-ensure t)
+  (setq use-package-always-pin "melpa"))
+
 (require 'use-package)
-
-;; Make sure that every package which is loaded by use-package is actually installed.
-(setq use-package-always-ensure t)
-(setq use-package-always-pin "melpa")
 
 (use-package exec-path-from-shell)
 
@@ -109,115 +105,6 @@
 
 ;; Configure treemacs
 (use-package treemacs)
-
-;; Configure org
-(use-package org
-  :preface
-  (defun org-metadown-to-bottom ()
-    "Moves the item, row or subtree to the bottom of its parent struct"
-    (interactive)
-    (condition-case nil
-        (while t
-          (org-metadown))
-      (user-error nil)))
-  
-  (defun org-metaup-to-beginning ()
-    "Moves the item, row or subtree to the bottom of its parent struct"
-    (interactive)
-    (condition-case nil
-        (while t
-          (org-metaup))
-      (user-error nil)))
-
-  (defun generate-archive-file-path ()
-    "Generate the path to the corresponding archive file for a project name"
-    (re-search-backward "\\* \\(.*\\)\\> +:")
-    (concat "Archiv/" (downcase (string-replace " " "_" (match-string 1))) ".org::"))
-
-  :custom
-  (org-capture-templates
-   '(("i" "Input" entry (file "~/Notizen/00_input.org")
-      "* %?\n:PROPERTIES:\n:CREATED_AT: %U\n:END:" :empty-lines 1)
-     ("p" "Project" entry (file "~/Notizen/01_projects.org")
-      "* %^{Project name} %^g\n:PROPERTIES:\n:ID:         %(org-id-new)\n:ARCHIVE:    Archiv/%^{Archive|default}.org::\n:CREATED_AT: %U\n:END:\n\n** Goals\n\n%?\n\n** Resources" :empty-lines 1)
-     ("s" "Someday" entry (file "~/Notizen/02_someday_maybe.org")
-      "* %? %^{Tags}g\n:PROPERTIES:\n:CREATED_AT: %U\n:END:"
-      :empty-lines 1)
-     ("t" "Todo" entry (file "~/Notizen/03_next_actions.org")
-      "* TODO %? %^{Tags}g\n:PROPERTIES:\n:ID:       %(org-id-new)\n:CREATED_AT: %U\n:END:\n:LOGBOOK:\n:END:"
-      :empty-lines 1)))
-
-  :config
-  (setq org-directory (expand-file-name "Notizen" (getenv "HOME")))
-  (setq org-link-file-path-type 'relative)
-  (setq org-agenda-files (list (expand-file-name "00_input.org" org-directory)
-                               (expand-file-name "01_projects.org" org-directory)
-                               (expand-file-name "02_someday_maybe.org" org-directory)
-                               (expand-file-name "03_next_actions.org" org-directory)
-                               (expand-file-name "04_next_actions_recurring.org" org-directory)))
-  (setq org-tags-match-list-sublevels t)
-  (setq org-support-shift-select t) ;; Enables region selection with shift and arrow key.
-  (setq org-startup-indented t)
-  (setq org-pretty-entities t)
-  (setq org-hide-emphasis-markers t)
-  (setq org-startup-with-inline-images t)
-  (setq org-image-actual-width t)
-  (setq org-keep-stored-link-after-insertion t)
-  (setq org-fontify-done-headline t)
-  (setq org-log-done 'time)
-  (setq org-log-into-drawer 'LOGBOOK)
-  (setq org-todo-keywords
-        '((sequence "TODO(t!)" "WAITING(w!)" "PROGRESSING(p!)" "|" "DONE(d!)" "CANCELLED(c!)")))
-  
-  :bind (:map org-mode-map
-              ("C-c l" . org-store-link)
-              ("C-c a" . org-agenda)
-              ("C-c c" . org-capture)
-              ("<M-s-up>" . org-metaup-to-beginning)
-              ("<M-s-down>" . org-metadown-to-bottom))
-  :custom-face
-  (org-level-4
-   ((t (:foreground "DarkRed"))))
-  (org-headline-done
-   ((t (:foreground "Green" :strike-through "t")))))
-
-;; Show hidden emphasis markers
-(use-package org-appear
-  :hook (org-mode . org-appear-mode))
-
-(use-package org-superstar
-  :after org
-  :config
-  ;; Select the bullet list, which shall be in front of all the TODO keywords
-  (setq org-superstar-todo-bullet-alist
-        '(("TODO" . 9744) ("WAITING" . 8987) ("PROGRESSING" . 8599) ("DONE" . 9745) ("CANCELLED" . 9747)))
-  (setq org-superstar-special-todo-items t)
-  (add-hook 'org-mode-hook (lambda ()
-                             (org-superstar-mode 1))))
-
-(use-package org-roam
-  :after org
-  :ensure t
-  :custom
-  (org-roam-directory (file-truename org-directory))
-  (org-roam-completion-everywhere t)
-  (org-roam-capture-templates
-   '(("d" "default" plain
-      "%?"
-      :target (file+head "Roam/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+options ^:{}\n#+filetags: %^G")
-      :unnarrowed t)))
-  :config
-  (org-roam-db-autosync-enable)
-
-  :bind (("C-c n l" . org-roam-buffer-toggle)
-         ("C-c n f" . org-roam-node-find)
-         ("C-c n g" . org-roam-graph)
-         ("C-c n i" . org-roam-node-insert)
-         ("C-c n c" . org-roam-capture)
-         ;; Dailies
-         ("C-c n j" . org-roam-dailies-capture-today)
-         :map org-mode-map
-         ("C-M-i"   . completion-at-point)))
 
 ;; Configure company
 (use-package company
@@ -268,7 +155,7 @@
   :config
   (require 'helm-config)
   (setq helm-echo-input-in-header-line t)
-  
+
   (defun helm-hide-minibuffer-maybe ()
     (when (with-helm-buffer helm-echo-input-in-header-line)
       (let ((ov (make-overlay (point-min) (point-max) nil nil t)))
@@ -316,7 +203,7 @@
          ("<return>" . helm-grep-mode-jump-other-window)
          ("n" . helm-grep-mode-jump-other-window-forward)
          ("p" . helm-grep-mode-jump-other-window-backward))
-  
+
   :custom-face
   (helm-source-header ((nil (:foreground "dark magenta" (:weight bold (:background black (:font "Ubuntu-Mono 14")))))))
   (helm-selection ((nil (:foreground "white" (:background "SpringGreen4")))))
@@ -381,6 +268,13 @@
 ;; modeline-posn cannot be configured using use-package.
 (add-to-list 'load-path (expand-file-name "modeline-posn" user-emacs-directory))
 (require 'modeline-posn)
+
+(require 'org-setup)
+
+;;---------------------------------Hooks------------------------------------------------
+
+(add-hook 'after-init-hook (lambda () (server-start)))
+(add-hook 'prog-mode-hook (lambda () (setq show-trailing-whitespace 1)))
 
 ;;-------------------------------Global key bindings-------------------------------------
 

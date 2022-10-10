@@ -54,7 +54,6 @@
 
 (use-package rtags
   :if (executable-find "rdm")
-  :ensure t
   :pin manual
   :config
   (setq rtags-path "/usr/local/bin"
@@ -79,14 +78,12 @@
 (setq use-package-always-pin "melpa")
 
 (use-package helm-rtags
-  :ensure t
   :pin manual
   :requires helm rtags
   :config
   (setq rtags-display-result-backend 'helm))
 
 (use-package company-rtags
-  :ensure t
   :pin manual
   :requires company rtags
   :config
