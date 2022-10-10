@@ -49,7 +49,7 @@
 (winner-mode 1) ;; Window actions can be undone.
 (global-visual-line-mode 1) ;; Visual line mode is activated globally
 (show-paren-mode 1) ;; Display paired parentheses.
-(setq show-paren-delay 0) 
+(setq show-paren-delay 0)
 
 ;; Make 'yes-or-no' queries easier to confirm.
 (defalias 'yes-or-no-p 'y-or-n-p)
