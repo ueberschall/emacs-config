@@ -19,7 +19,8 @@
   (setq org-directory (expand-file-name "Notizen" (getenv "HOME")))
   (setq org-link-file-path-type 'relative)
   (setq org-agenda-files (list (expand-file-name "inbox.org" org-directory)
-                               (expand-file-name "next_actions.org" org-directory)))
+                               (expand-file-name "next_actions.org" org-directory)
+                               (expand-file-name "meetings.org" org-directory)))
   (setq org-use-sub-superscripts "{}")
   (setq org-tags-match-list-sublevels t)
   (setq org-support-shift-select t) ;; Enables region selection with shift and arrow key.
