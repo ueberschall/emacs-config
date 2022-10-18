@@ -16,7 +16,6 @@
           (org-metaup))
       (user-error nil)))
   :config
-  (add-hook 'org-mode-hook (lambda () (linum-mode -1)))
   (setq org-directory (expand-file-name "Notizen" (getenv "HOME")))
   (setq org-link-file-path-type 'relative)
   (setq org-agenda-files (list (expand-file-name "inbox.org" org-directory)
@@ -40,6 +39,14 @@
          :map org-mode-map
          ("<M-s-up>" . org-metaup-to-beginning)
          ("<M-s-down>" . org-metadown-to-bottom))
+  (add-hook 'org-mode-hook (lambda () (linum-mode -1)))
+  (add-hook 'org-clock-in-hook (lambda ()
+                                 (save-excursion
+                                   (org-back-to-heading t)
+                                   (let* ((element (org-element-at-point))
+                                          (todo-state (org-element-property :todo-keyword element)))
+                                     (unless (string= (substring-no-properties todo-state) "PROGRESSING")
+                                       (org-todo "PROGRESSING"))))))
   :custom-face
   (org-level-4
    ((t (:foreground "DarkRed"))))
