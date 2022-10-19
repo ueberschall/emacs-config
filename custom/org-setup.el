@@ -31,7 +31,7 @@
   (setq org-keep-stored-link-after-insertion t)
   (setq org-fontify-done-headline t)
   (setq org-log-done 'time)
-  (setq org-log-into-drawer 'LOGBOOK)
+  (setq org-log-into-drawer 'CLOCKS)
   (setq org-todo-keywords
         '((sequence "TODO(t!)" "WAITING(w!)" "PROGRESSING(p!)" "|" "DONE(d!)" "CANCELLED(c!)")))
   :bind (("C-c l" . org-store-link)
