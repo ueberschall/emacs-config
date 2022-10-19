@@ -18,7 +18,7 @@ irony/*
 recentf
 elpy/*
 tramp
-.pyvenv_path
+.pyvenv-path
 .org-id-locations
 .cache/*
 .org-id-locations
