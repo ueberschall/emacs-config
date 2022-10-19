@@ -1,3 +1,13 @@
+(defun read-path-from-file (file)
+  "Read the first path from file"
+  (when (file-exists-p file)
+    (save-excursion
+      (let ((buf (find-file-literally file)))
+        (set-buffer buf)
+        (setq path (buffer-string))
+        (kill-buffer)
+        (replace-regexp-in-string "\n$" "" path)))))
+
 (defun revert-all-file-buffers ()
   "Refresh all open file buffers without confirmation.
 Buffers in modified (not yet saved) state in emacs will not be reverted. They

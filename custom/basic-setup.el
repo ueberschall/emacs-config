@@ -257,6 +257,9 @@
 
 ;; Configure shell
 (use-package shell
+  :init
+  (add-hook 'shell-mode-hook (lambda ()
+                               (linum-mode -1)))
   :bind (:map shell-mode-map
               ("<C-right>" . windmove-right)
               ("<C-left>" . windmove-left)
@@ -274,6 +277,7 @@
 
 (add-hook 'after-init-hook (lambda () (server-start)))
 (add-hook 'prog-mode-hook (lambda () (setq show-trailing-whitespace 1)))
+(add-hook 'doc-view-mode-hook (lambda () (linum-mode -1)))
 
 ;;-------------------------------Global key bindings-------------------------------------
 
