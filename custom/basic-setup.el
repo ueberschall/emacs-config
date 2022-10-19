@@ -63,6 +63,28 @@
 
 ;;---------------------------------Package Management-----------------------------------
 
+(defun download-dired+-from-emacswiki ()
+  "Dired+ has to be downloaded from EmacsWiki."
+  (let* ((diredplus-file (expand-file-name "dired+/dired+.el" user-emacs-directory))
+         (diredplus-dir (file-name-directory diredplus-file)))
+    (if (file-exists-p diredplus-file)
+        (message "Dired+ does already exist")
+      (unless (file-directory-p diredplus-dir)
+        (make-directory diredplus-dir))
+      (url-copy-file "https://www.emacswiki.org/emacs/download/dired%2b.el"
+                     diredplus-file))))
+
+(defun download-modelineposn-from-emacswiki ()
+  "modeline-posn has to be downloaded from the EmacsWiki."
+  (let* ((modeline-file (expand-file-name "modeline-posn/modeline-posn.el" user-emacs-directory))
+         (modeline-dir (file-name-directory modeline-file)))
+    (if (file-exists-p modeline-file)
+        (message "Modeline-Posn does already exist")
+      (unless (file-directory-p modeline-dir)
+        (make-directory modeline-dir))
+      (url-copy-file "https://www.emacswiki.org/emacs/download/modeline-posn.el"
+                     modeline-file))))
+
 ;; Initialize package manager
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
@@ -76,9 +98,25 @@
     (package-install 'use-package))
   ;; Make sure that every package which is loaded by use-package is actually installed.
   (setq use-package-always-ensure t)
-  (setq use-package-always-pin "melpa"))
+  (setq use-package-always-pin "melpa")
+  (download-dired+-from-emacswiki)
+  (download-modelineposn-from-emacswiki))
+
+;; modeline-posn cannot be configured using use-package.
+(add-to-list 'load-path (expand-file-name "modeline-posn" user-emacs-directory))
+(require 'modeline-posn)
 
 (require 'use-package)
+
+;; Configure Dired+
+(use-package dired+
+  :load-path "dired+"
+  :config (diredp-toggle-find-file-reuse-dir 1)
+  :bind (:map dired-mode-map
+              ("<C-right>" . windmove-right)
+              ("<C-left>" . windmove-left)
+              ("<C-up>" . windmove-up)
+              ("<C-down>" . windmove-down)))
 
 (use-package exec-path-from-shell)
 
@@ -112,7 +150,8 @@
   (setq-default company-backends
                 '(company-files
                   (company-capf company-dabbrev)))
-
+  :hook ((prog-mode . company-mode)
+         (text-mode . company-mode))
   :config
   (setq company-tooltip-align-annotations t
         company-tooltip-flip-when-above t
@@ -123,15 +162,10 @@
         company-dabbrev-other-buffers 'all
         company-dabbrev-downcase nil
         company-files-exclusions '(".git/"))
-
-  :hook ((prog-mode . company-mode)
-         (text-mode . company-mode))
-
   :bind (("<C-tab>" . company-complete)
          :map company-active-map
          ("C-n" . company-select-next)
          ("C-p" . company-select-previous))
-
   :custom-face
   (company-tooltip
    ((t (:background "black" :foreground "white"))))
@@ -232,42 +266,7 @@
 (use-package zygospore
   :bind (("C-x 1" . zygospore-toggle-delete-other-windows)))
 
-;; Dired+ has to be downloaded from EmacsWiki.
-(let* ((diredplus-file (expand-file-name "dired+/dired+.el" user-emacs-directory))
-      (diredplus-dir (file-name-directory diredplus-file)))
-  (if (file-exists-p diredplus-file)
-    (message "Dired+ does already exist")
-  (unless (file-directory-p diredplus-dir)
-    (make-directory diredplus-dir))
-  (url-copy-file "https://www.emacswiki.org/emacs/download/dired%2b.el"
-                 diredplus-file)))
-
 (use-package flycheck)
-
-;; Configure Dired+
-(use-package dired+
-  :load-path "dired+"
-  :config (diredp-toggle-find-file-reuse-dir 1)
-  :bind (:map dired-mode-map
-              ("<C-right>" . windmove-right)
-              ("<C-left>" . windmove-left)
-              ("<C-up>" . windmove-up)
-              ("<C-down>" . windmove-down)))
-
-;; modeline-posn has to be downloaded from the EmacsWiki.
-(let* ((modeline-file (expand-file-name "modeline-posn/modeline-posn.el" user-emacs-directory))
-      (modeline-dir (file-name-directory modeline-file)))
-  (if (file-exists-p modeline-file)
-    (message "Modeline-Posn does already exist")
-  (unless (file-directory-p modeline-dir)
-    (make-directory modeline-dir))
-  (url-copy-file "https://www.emacswiki.org/emacs/download/modeline-posn.el"
-                 modeline-file)))
-
-
-;; modeline-posn cannot be configured using use-package.
-(add-to-list 'load-path (expand-file-name "modeline-posn" user-emacs-directory))
-(require 'modeline-posn)
 
 (require 'org-setup)
 
