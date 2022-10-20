@@ -1,6 +1,7 @@
 ;; Configure org
 (use-package org
   :mode ("\\.org$" . org-mode)
+  :demand t
   :preface
   (defun org-metadown-to-bottom ()
     "Moves the item, row or subtree to the bottom of its parent struct"
@@ -126,7 +127,7 @@
   (org-roam-dailies-directory "Diary/")
   (org-roam-dailies-capture-templates
         '(("d" "Diary" entry "%?" :target
-           (file+head "%<%Y-%m-%d>.org.gpg" "#+title: %<%Y-%m-%d>") :unnarrowed t)))
+           (file+head "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>") :unnarrowed t))) ;; GPG-Verschlüsselung hinzufügen.
   :bind (("C-c n l" . org-roam-buffer-toggle)
          ("C-c n f" . org-roam-node-find)
          ("C-c n g" . org-roam-graph)
