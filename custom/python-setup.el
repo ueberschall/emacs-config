@@ -69,6 +69,9 @@
               ("<C-down>" . windmove-down)
               ("C-c p p" . query-and-load-and-store-pyvenv-path-file)))
 
+(use-package ein
+  :after python)
+
 (use-package realgud
   :after elpy
   :bind (:map elpy-mode-map
