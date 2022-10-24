@@ -70,7 +70,9 @@
               ("C-c p p" . query-and-load-and-store-pyvenv-path-file)))
 
 (use-package ein
-  :after python)
+  :after python
+  :custom
+  (ein:output-area-inlined-images t))
 
 (use-package realgud
   :after elpy
