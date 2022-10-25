@@ -72,7 +72,8 @@
 (use-package ein
   :after python
   :custom
-  (ein:output-area-inlined-images t))
+  (ein:output-area-inlined-images t)
+  (ein:org-inline-image-directory (expand-file-name "ein-images/" user-emacs-directory)))
 
 (use-package realgud
   :after elpy
