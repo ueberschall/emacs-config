@@ -27,7 +27,7 @@
                                      (unless (string= (substring-no-properties todo-state) "PROGRESSING")
                                        (org-todo "PROGRESSING"))))))
   :custom
-  (org-directory (expand-file-name "Notizen" (getenv "HOME")))
+  (org-directory (expand-file-name "2_Notizen" (getenv "HOME")))
   (org-link-file-path-type 'relative)
   (org-agenda-files (list (expand-file-name "inbox.org" org-directory)
                                (expand-file-name "next_actions.org" org-directory)))
