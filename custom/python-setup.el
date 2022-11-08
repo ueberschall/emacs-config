@@ -14,7 +14,8 @@
   :after elpy)
 
 (use-package py-autopep8
-  :after python)
+  :after python
+  :hook (python-mode . py-autopep8-mode))
 
 (use-package elpy
   :after (python flycheck)
@@ -46,7 +47,6 @@
                               (add-hook 'before-save-hook
                                         'elpy-format-code nil t)))
   (add-hook 'elpy-mode-hook (lambda () (flycheck-mode 1)))
-  (add-hook 'elpy-mode-hook (lambda () (py-autopep8-mode 1)))
   :config
   (setq python-shell-interpreter "jupyter"
         python-shell-interpreter-args "console --simple-prompt"
