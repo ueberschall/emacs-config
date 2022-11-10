@@ -61,6 +61,9 @@
 ;; Loading custom themes is considered safe
 (setq custom-safe-themes t)
 
+;; Encrypt all files with my private key
+(setq epa-file-encrypt-to '("nasser.attar@hotmail.com"))
+
 ;;---------------------------------Package Management-----------------------------------
 
 (defun download-dired+-from-emacswiki ()
