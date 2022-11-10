@@ -64,9 +64,7 @@
 ;; Encrypt all files with my private key
 (setq epa-file-encrypt-to '("nasser.attar@hotmail.com"))
 
-;; It seems that when Emacs decrypts a file it removes the UTF-8 encoding, which leads to the wrong displaying of non-ASCII letters. This is try to fix this behavior, however it does not work yet.
-;; TODO Fix the encoding of .org.gpg files
-;; Workaround: Use the "revert-buffer-with-coding-system" function
+;; Set the encoding for the encrypted files to UTF-8 (like the other files)
 (add-to-list 'file-coding-system-alist '("\\.org\\.gpg\\'" . utf-8))
 
 ;;---------------------------------Package Management-----------------------------------
