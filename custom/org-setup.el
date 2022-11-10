@@ -130,7 +130,7 @@
            :unnarrowed t)))
   (org-roam-dailies-directory "Diary/")
   (org-roam-dailies-capture-templates
-        '(("d" "Diary" entry "%?" :target
+        '(("d" "Diary" plain "%?" :target
            (file+head "%<%Y-%m-%d>.org.gpg" "#+title: %<%Y-%m-%d>\n#+category: Diary\n#+filetags: :diary:") :unnarrowed t))) ;; GPG-Verschlüsselung hinzufügen.
   :bind (("C-c n l" . org-roam-buffer-toggle)
          ("C-c n f" . org-roam-node-find)
