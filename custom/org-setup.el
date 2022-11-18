@@ -95,6 +95,8 @@
   :hook (org-mode . org-roam-db-autosync-enable)
   :custom
   (org-roam-directory org-directory)
+  (org-roam-file-exclude-regexp
+      (concat "^" (expand-file-name org-roam-directory) "/Archive/"))
   (org-roam-completion-everywhere t)
   (org-roam-capture-templates
         '(("i" "Inbox" plain
