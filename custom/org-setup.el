@@ -85,7 +85,7 @@
     (lambda (node)
       (member tag-name (org-roam-node-tags node))))
   (defun my/org-roam-list-notes-by-tag (tag-name)
-    "Determine the the file names of the org-roam-nodes which contain TAG-NAME as tag."
+    "Determine the file names of the org-roam-nodes which contain TAG-NAME as tag."
     (mapcar #'org-roam-node-file
             (seq-filter
              (my/org-roam-filter-by-tag tag-name)
@@ -125,13 +125,13 @@
           ("m" "Merge Request Review" plain
            "* Link\n\n %?\n\n* Aufgaben\n\n** TODO Anpassungen reviewen\n\n** TODO Kommentare diskutieren\n\n** TODO Approven"
            :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+category: Merge Request\n#+filetags: :mr_review:")
-           :unnarrowed t)
-          ("d" "Diary" plain "%?" :target
-           (file+head "Diary/%<%Y-%m-%d>.org.gpg" "#+title: %<%Y-%m-%d>\n#+category: Diary\n#+filetags: :diary:") :unnarrowed t))) ;; GPG-Verschlüsselung hinzufügen.
-  (org-roam-dailies-directory "Dailies/")
+           :unnarrowed t))) ;; GPG-Verschlüsselung hinzufügen.
+  (org-roam-dailies-directory "Dailies_Diary/")
   (org-roam-dailies-capture-templates
         '(("d" "Daily" plain "%?" :target
-           (file+head "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n#+category: Daily\n#+filetags: :daily:") :unnarrowed t)))
+           (file+head "%<%Y-%m-%d>.org" "#+title: Daily-Eintrag %<%Y-%m-%d>\n#+category: Daily\n#+filetags: :daily:") :unnarrowed t :kill-buffer t)
+          ("t" "Diary" plain "%?" :target
+           (file+head "%<%Y-%m-%d>.org.gpg" "#+title: Tagebucheintrag %<%Y-%m-%d>\n#+category: Diary\n#+filetags: :diary:") :unnarrowed t :kill-buffer t)))
   :bind (("C-c n l" . org-roam-buffer-toggle)
          ("C-c n f" . org-roam-node-find)
          ("C-c n g" . org-roam-graph)
