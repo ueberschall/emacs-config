@@ -125,7 +125,7 @@
           ("m" "Merge Request Review" plain
            "* Link\n\n %?\n\n* Aufgaben\n\n** TODO Anpassungen reviewen\n\n** TODO Kommentare diskutieren\n\n** TODO Approven"
            :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+category: Merge Request\n#+filetags: :mr_review:")
-           :unnarrowed t))) ;; GPG-Verschlüsselung hinzufügen.
+           :unnarrowed t)))
   (org-roam-dailies-directory "Dailies_Diary/")
   (org-roam-dailies-capture-templates
         '(("d" "Daily" plain "%?" :target
