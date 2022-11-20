@@ -61,8 +61,18 @@
 ;; Loading custom themes is considered safe
 (setq custom-safe-themes t)
 
+;; Set the directory where the GPG keys are stored
+(setq epg-gpg-home-directory "/home/zufall/.gnupg")
+
 ;; Encrypt all files with my private key
+;; CAUTION: It seems there is a bug in the EPG package.
+;; According to its documentation, setting "epa-file-select-keys" to nil
+;; is supposed to skip the key-selection dialogue, when "epa-file-encrypt-to" is set.
+;; However, it does not work. Only setting it to a non-nil value, except t, is giving the
+;; desired result (Emacs 28.1). See the last answer in the stack-overflow thread:
+;; https://superuser.com/questions/1204820/emacs-easypg-asks-what-key-to-use-although-epa-file-encrypt-to-already-specified
 (setq epa-file-encrypt-to '("nasser.attar@hotmail.com"))
+(setq epa-file-select-keys 1)
 
 ;; Set the encoding for the encrypted files to UTF-8 (like the other files)
 (add-to-list 'file-coding-system-alist '("\\.org\\.gpg\\'" . utf-8))
