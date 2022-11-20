@@ -96,7 +96,7 @@
   :custom
   (org-roam-directory org-directory)
   (org-roam-file-exclude-regexp
-      (concat "^" (expand-file-name org-roam-directory) "/Archive/"))
+      (concat "^" (expand-file-name org-roam-directory) "/Archive/\\|.*\\.org\\.gpg"))
   (org-roam-completion-everywhere t)
   (org-roam-capture-templates
         '(("i" "Inbox" plain
