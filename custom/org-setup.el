@@ -102,18 +102,18 @@
         '(("i" "Inbox" plain
            "* ${title}\n:PROPERTIES:\n:CREATED_AT: %U\n:END:\n\n%?"
            :target (file+head "inbox.org" "#+title: 0 Inbox")
-           :unnarrowed t :empty-lines 1)
+           :unnarrowed t)
           ("t" "Todo" plain
            "* TODO ${title}\n:PROPERTIES:\n:ID:        %(org-id-new)\n:CREATED_AT: %U\n:END:\n\n%?"
-           :target (file+head "next_actions.org" "#+title: 1 Next Actions") :unnarrowed t :empty-lines 1)
+           :target (file+head "next_actions.org" "#+title: 1 Next Actions") :unnarrowed t)
           ("w" "Recurring Todo" plain
            "* TODO ${title} :recurring:\n:PROPERTIES:\n:ID:        %(org-id-new)\n:CREATED_AT: %U\n:END:\n\n%?"
            :target (file+head "next_actions.org" "#+title: 1 Next Actions")
-           :unnarrowed t :empty-lines 1)
+           :unnarrowed t)
           ("s" "Someday maybe" plain
            "* ${title} :someday_maybe:\n:PROPERTIES:\n:ID:        %(org-id-new)\n:CREATED_AT: %U\n:END:\n\n%?"
            :target (file+head "someday_maybe.org" "#+title: 2 Someday Maybe\n#+filetags: :someday_maybe:")
-           :unnarrowed t :empty-lines 1)
+           :unnarrowed t)
           ("p" "Project" plain
            "* Beschreibung :projects:\n\n** Ziele\n\n%?\n\n* Aufgaben :projects:\n\n"
            :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+category: \n#+filetags: :projects:")
@@ -125,11 +125,13 @@
           ("m" "Merge Request Review" plain
            "* Link\n\n %?\n\n* Aufgaben\n\n** TODO Anpassungen reviewen\n\n** TODO Kommentare diskutieren\n\n** TODO Approven"
            :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+category: Merge Request\n#+filetags: :mr_review:")
-           :unnarrowed t)))
-  (org-roam-dailies-directory "Diary/")
+           :unnarrowed t)
+          ("d" "Diary" plain "%?" :target
+           (file+head "Diary/%<%Y-%m-%d>.org.gpg" "#+title: %<%Y-%m-%d>\n#+category: Diary\n#+filetags: :diary:") :unnarrowed t))) ;; GPG-Verschlüsselung hinzufügen.
+  (org-roam-dailies-directory "Dailies/")
   (org-roam-dailies-capture-templates
-        '(("d" "Diary" plain "%?" :target
-           (file+head "%<%Y-%m-%d>.org.gpg" "#+title: %<%Y-%m-%d>\n#+category: Diary\n#+filetags: :diary:") :unnarrowed t))) ;; GPG-Verschlüsselung hinzufügen.
+        '(("d" "Daily" plain "%?" :target
+           (file+head "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n#+category: Daily\n#+filetags: :daily:") :unnarrowed t)))
   :bind (("C-c n l" . org-roam-buffer-toggle)
          ("C-c n f" . org-roam-node-find)
          ("C-c n g" . org-roam-graph)
