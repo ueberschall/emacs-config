@@ -27,3 +27,5 @@ url/*
 org-roam.db
 request/
 .#*
+.ein-python.ipynb
+.ipynb_checkpoints/*
