@@ -129,7 +129,8 @@
   (org-roam-dailies-directory "Dailies_Diary/")
   (org-roam-dailies-capture-templates
         '(("d" "Daily" plain "%?" :target
-           (file+head "%<%Y-%m-%d>.org" "#+title: Daily-Eintrag %<%Y-%m-%d>\n#+category: Daily\n#+filetags: :daily:") :unnarrowed t :kill-buffer t)
+           (file+head "%<%Y-%m-%d>.org" (concat "#+title: Daily-Eintrag %<%Y-%m-%d>\n#+category: Daily\n#+filetags: :daily:"
+                                                )) :unnarrowed t :kill-buffer t)
           ("t" "Diary" plain "%?" :target
            (file+head "%<%Y-%m-%d>.org.gpg" "#+title: Tagebucheintrag %<%Y-%m-%d>\n#+category: Diary\n#+filetags: :diary:") :unnarrowed t :kill-buffer t)))
   :bind (("C-c n l" . org-roam-buffer-toggle)
