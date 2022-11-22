@@ -29,8 +29,7 @@
   :custom
   (org-directory (expand-file-name "2_Notizen" (getenv "HOME")))
   (org-link-file-path-type 'relative)
-  (org-agenda-files (list (expand-file-name "inbox.org" org-directory)
-                               (expand-file-name "next_actions.org" org-directory)))
+  (org-agenda-files (list (expand-file-name "next_actions.org" org-directory)))
   (org-use-sub-superscripts "{}")
   (org-tags-match-list-sublevels t)
   ;; Enable region selection with shift and arrow key.
@@ -66,7 +65,7 @@
   :after org
   :hook (org-mode . org-appear-mode)
   :custom
-  (org-appear-autolinks t))
+  (org-appear-autolinks nil))
 
 (use-package org-superstar
   :after org
@@ -128,11 +127,11 @@
            :unnarrowed t)))
   (org-roam-dailies-directory "Dailies_Diary/")
   (org-roam-dailies-capture-templates
-        '(("d" "Daily" plain "%?" :target
-           (file+head "%<%Y-%m-%d>.org" (concat "#+title: Daily-Eintrag %<%Y-%m-%d>\n#+category: Daily\n#+filetags: :daily:"
-                                                )) :unnarrowed t :kill-buffer t)
-          ("t" "Diary" plain "%?" :target
-           (file+head "%<%Y-%m-%d>.org.gpg" "#+title: Tagebucheintrag %<%Y-%m-%d>\n#+category: Diary\n#+filetags: :diary:") :unnarrowed t :kill-buffer t)))
+   '(("d" "Daily" plain
+      "#+begin: clocktable :scope agenda :block %<%Y-%m-%d> :link t%?\n|Headline   | Time |\n|------------+------|\n| *Total time* | *0:00* |\n#+end: clocktable\n"
+      :target (file+head "%<%Y-%m-%d>.org" "#+title: Daily-Eintrag %<%Y-%m-%d>\n#+category: Daily\n#+filetags: :daily:") :unnarrowed t)
+     ("t" "Diary" plain "%?" :target
+      (file+head "%<%Y-%m-%d>.org.gpg" "#+title: Tagebucheintrag %<%Y-%m-%d>\n#+category: Diary\n#+filetags: :diary:") :unnarrowed t :kill-buffer t)))
   :bind (("C-c n l" . org-roam-buffer-toggle)
          ("C-c n f" . org-roam-node-find)
          ("C-c n g" . org-roam-graph)
