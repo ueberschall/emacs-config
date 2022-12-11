@@ -131,7 +131,7 @@
            :target (file+head "inbox.org" "#+title: 0 Inbox")
            :unnarrowed t)
           ("t" "Todo" plain
-           "* TODO ${title}\n:PROPERTIES:\n:ID:        %(org-id-new)\n:ARCHIVE: archived_actions.org::\n:CREATED_AT: %U\n:END:\n\n%?"
+           "* TODO ${title}\n:PROPERTIES:\n:ID:        %(org-id-new)\n:CREATED_AT: %U\n:END:\n\n%?"
            :target (file+head "next_actions.org" "#+title: 1 Next Actions") :unnarrowed t)
           ("w" "Recurring Todo" plain
            "* TODO ${title} :recurring:\n:PROPERTIES:\n:ID:        %(org-id-new)\n:CREATED_AT: %U\n:END:\n\n%?"
