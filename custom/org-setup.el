@@ -26,6 +26,20 @@
                                           (todo-state (org-element-property :todo-keyword element)))
                                      (unless (string= (substring-no-properties todo-state) "PROGRESSING")
                                        (org-todo "PROGRESSING"))))))
+  (add-hook 'org-clock-out-hook (lambda ()
+                                  (save-excursion
+                                    (org-roam-dailies-goto-today "d")
+                                    (beginning-of-buffer)
+                                    (search-forward "#+begin: clocktable")
+                                    (org-dblock-update)
+                                    (save-buffer)
+                                    (kill-buffer))))
+  (add-hook 'org-after-todo-state-change-hook (lambda ()
+                                                (let ((active-buffer (file-name-nondirectory (buffer-file-name))))
+                                                  (when (and (or (string= org-state "DONE") (string= org-state "CANCELLED"))
+                                                             (string= active-buffer "next_actions.org"))
+                                                    (org-archive-subtree)
+                                                    (save-buffer)))))
   :custom
   (org-directory (expand-file-name "2_Notizen" (getenv "HOME")))
   (org-link-file-path-type 'relative)
@@ -91,6 +105,20 @@
              (org-roam-node-list))))
   (defun my/org-roam-project-note-list ()
     (my/org-roam-list-notes-by-tag "projects"))
+  (defun my/org-roam-disable-db-sync (&rest ignore)
+    "Disable the org data base sync"
+    (interactive)
+    (org-roam-db-autosync-disable))
+  (defun my/org-roam-enable-db-sync (&rest ignore)
+    "Enable the org data base sync"
+    (interactive)
+    (org-roam-db-autosync-enable))
+  :init
+  ;; These two advice functions are the workaround for the error which
+  ;; causes the org-roam-database to loose all its entries when
+  ;; "org-roam-dailies-capture-today" is invoked.
+  (advice-add 'org-roam-dailies-capture-today :before #'my/org-roam-disable-db-sync)
+  (advice-add 'org-roam-dailies-capture-today :after #'my/org-roam-enable-db-sync)
   :hook (org-mode . org-roam-db-autosync-enable)
   :custom
   (org-roam-directory org-directory)
@@ -103,7 +131,7 @@
            :target (file+head "inbox.org" "#+title: 0 Inbox")
            :unnarrowed t)
           ("t" "Todo" plain
-           "* TODO ${title}\n:PROPERTIES:\n:ID:        %(org-id-new)\n:CREATED_AT: %U\n:END:\n\n%?"
+           "* TODO ${title}\n:PROPERTIES:\n:ID:        %(org-id-new)\n:ARCHIVE: archived_actions.org::\n:CREATED_AT: %U\n:END:\n\n%?"
            :target (file+head "next_actions.org" "#+title: 1 Next Actions") :unnarrowed t)
           ("w" "Recurring Todo" plain
            "* TODO ${title} :recurring:\n:PROPERTIES:\n:ID:        %(org-id-new)\n:CREATED_AT: %U\n:END:\n\n%?"
@@ -128,8 +156,8 @@
   (org-roam-dailies-directory "Dailies_Diary/")
   (org-roam-dailies-capture-templates
    '(("d" "Daily" plain
-      "#+begin: clocktable :scope agenda :block %<%Y-%m-%d> :link t%?\n|Headline   | Time |\n|------------+------|\n| *Total time* | *0:00* |\n#+end: clocktable\n"
-      :target (file+head "%<%Y-%m-%d>.org" "#+title: Daily-Eintrag %<%Y-%m-%d>\n#+category: Daily\n#+filetags: :daily:") :unnarrowed t)
+      "%?"
+      :target (file+head "%<%Y-%m-%d>.org" "#+title: Daily-Eintrag %<%Y-%m-%d>\n#+category: Daily\n#+filetags: :daily:\n#+begin: clocktable :scope agenda :block %<%Y-%m-%d> :link t\n|Headline   | Time |\n|------------+------|\n| *Total time* | *0:00* |\n#+end: clocktable\n") :unnarrowed t)
      ("t" "Diary" plain "%?" :target
       (file+head "%<%Y-%m-%d>.org.gpg" "#+title: Tagebucheintrag %<%Y-%m-%d>\n#+category: Diary\n#+filetags: :diary:") :unnarrowed t :kill-buffer t)))
   :bind (("C-c n l" . org-roam-buffer-toggle)
