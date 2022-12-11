@@ -54,6 +54,7 @@
   (org-startup-with-inline-images t)
   (org-image-actual-width t)
   (org-keep-stored-link-after-insertion t)
+  (org-fontify-todo-headline t)
   (org-fontify-done-headline t)
   (org-log-done 'time)
   (org-log-into-drawer 'CLOCKS)
@@ -71,6 +72,8 @@
   :custom-face
   (org-level-4
    ((t (:foreground "DarkRed"))))
+  (org-headline-todo
+   ((t (:foreground "#ffa500"))))
   (org-headline-done
    ((t (:foreground "Green" :strike-through "t")))))
 
