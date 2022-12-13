@@ -145,7 +145,7 @@
            :target (file+head "someday_maybe.org" "#+title: 2 Someday Maybe\n#+filetags: :someday_maybe:")
            :unnarrowed t)
           ("p" "Project" plain
-           "* Beschreibung :projects:\n\n** Ziele\n\n%?\n\n* Aufgaben :projects:\n\n"
+           "%?\n\n* Aufgaben :projects:\n\n"
            :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+category: \n#+filetags: :projects:")
            :unnarrowed t)
           ("r" "Reference" plain
@@ -155,6 +155,14 @@
           ("m" "Merge Request Review" plain
            "* Link\n\n %?\n\n* Aufgaben\n\n** TODO Anpassungen reviewen\n\n** TODO Kommentare diskutieren\n\n** TODO Approven"
            :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+category: Merge Request\n#+filetags: :mr_review:")
+           :unnarrowed t)
+          ("k" "Kochrezept" plain
+           "%?\n\n* Zutaten :kochen:\n\n* Zubereitung"
+           :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+filetags: :kochen:")
+           :unnarrowed t)
+          ("b" "Backrezept" plain
+           "%?\n\n* Zutaten :backen:\n\n* Zubereitung"
+           :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+filetags: :backen:")
            :unnarrowed t)))
   (org-roam-dailies-directory "Dailies_Diary/")
   (org-roam-dailies-capture-templates
