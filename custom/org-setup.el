@@ -10,6 +10,7 @@
         (while t
           (org-metadown))
       (user-error nil)))
+
   (defun org-metaup-to-beginning ()
     "Moves the item, row or subtree to the bottom of its parent struct"
     (interactive)
@@ -17,6 +18,12 @@
         (while t
           (org-metaup))
       (user-error nil)))
+
+  (defun my/skip-recurring-todos ()
+    (let ((subtree-end (save-excursion (org-end-of-subtree t))))
+      (if (not (re-search-forward ":recurring:" subtree-end t))
+          nil     ; tag found, skip it
+        subtree-end)))
   :init
   (add-hook 'org-mode-hook (lambda () (linum-mode -1)))
   (add-hook 'org-clock-in-hook (lambda ()
@@ -60,6 +67,18 @@
   (org-log-into-drawer 'CLOCKS)
   (org-todo-keywords
    '((sequence "TODO(t!)" "WAITING(w!)" "PROGRESSING(p!)" "|" "DONE(d!)" "CANCELLED(c!)")))
+  (org-agenda-prefix-format
+   '((agenda . " - ")
+     (todo . " - ")
+     (tags . "")))
+  (org-agenda-custom-commands
+   '(("G" "Next Actions and Project Actions"
+      ((alltodo ""
+                ((org-agenda-files `(,(concat org-directory "/next_actions.org")))
+                 (org-agenda-skip-function 'my/skip-recurring-todos)))
+       (tags-todo "projects" ((org-agenda-hide-tags-regexp "projects")))))
+     ("D" "Daily" search ""
+      ((org-agenda-files `(,(concat org-directory "/Dailies_Diary/" (format-time-string "%Y-%m-%d") ".org")))))))
   :config
   (org-babel-do-load-languages
    'org-babel-load-languages
@@ -100,22 +119,56 @@
     "Return function which tells whether NODE contains TAG-NAME as tag."
     (lambda (node)
       (member tag-name (org-roam-node-tags node))))
+
   (defun my/org-roam-list-notes-by-tag (tag-name)
     "Determine the file names of the org-roam-nodes which contain TAG-NAME as tag."
     (mapcar #'org-roam-node-file
             (seq-filter
              (my/org-roam-filter-by-tag tag-name)
              (org-roam-node-list))))
+
   (defun my/org-roam-project-note-list ()
     (my/org-roam-list-notes-by-tag "projects"))
+
+  (defun my/org-roam-archived-note-list ()
+    (my/org-roam-list-notes-by-tag "archived"))
+  
   (defun my/org-roam-disable-db-sync (&rest ignore)
     "Disable the org data base sync"
     (interactive)
     (org-roam-db-autosync-disable))
+
   (defun my/org-roam-enable-db-sync (&rest ignore)
     "Enable the org data base sync"
     (interactive)
     (org-roam-db-autosync-enable))
+
+  (defun my/org-roam-project-finalize-hook ()
+    "Adds the captured project file to `org-agenda-files' if the
+capture was not aborted."
+    ;; Remove the hook since it was added temporarily
+    (remove-hook 'org-capture-after-finalize-hook #'my/org-roam-project-finalize-hook)
+    ;; Add project file to the agenda list if the capture was confirmed
+    (unless org-note-abort
+      (with-current-buffer (org-capture-get :buffer)
+        (add-to-list 'org-agenda-files (buffer-file-name)))))
+
+  (defun my/org-roam-find-project ()
+    (interactive)
+    ;; Add the project file to the agenda after capture is finished
+    (add-hook 'org-capture-after-finalize-hook #'my/org-roam-project-finalize-hook)
+
+    ;; Select a project file to open, creating it if necessary
+    (org-roam-node-find nil nil
+     (lambda (node)
+       (and (member "projects" (org-roam-node-tags node))
+            (not (member "archived" (org-roam-node-tags node)))))
+     nil
+     :templates
+     '(("p" "Project" plain
+        "%?\n\n* Aufgaben :projects:\n\n"
+        :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+category: ${title}\n#+filetags: :projects:")
+        :unnarrowed t))))
   :init
   ;; These two advice functions are the workaround for the error which
   ;; causes the org-roam-database to loose all its entries when
@@ -146,7 +199,7 @@
            :unnarrowed t)
           ("p" "Project" plain
            "%?\n\n* Aufgaben :projects:\n\n"
-           :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+category: \n#+filetags: :projects:")
+           :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+category: ${title}\n#+filetags: :projects:")
            :unnarrowed t)
           ("r" "Reference" plain
            "%?"
@@ -171,8 +224,13 @@
       :target (file+head "%<%Y-%m-%d>.org" "#+title: Daily-Eintrag %<%Y-%m-%d>\n#+category: Daily\n#+filetags: :daily:\n#+begin: clocktable :scope agenda :block %<%Y-%m-%d> :link t\n|Headline   | Time |\n|------------+------|\n| *Total time* | *0:00* |\n#+end: clocktable\n") :unnarrowed t)
      ("t" "Diary" plain "%?" :target
       (file+head "%<%Y-%m-%d>.org.gpg" "#+title: Tagebucheintrag %<%Y-%m-%d>\n#+category: Diary\n#+filetags: :diary:") :unnarrowed t :kill-buffer t)))
+  :config
+  (setq org-agenda-files
+        (append org-agenda-files
+                (cl-set-difference (my/org-roam-project-note-list) (my/org-roam-archived-note-list) :test 'string=)))
   :bind (("C-c n l" . org-roam-buffer-toggle)
          ("C-c n f" . org-roam-node-find)
+         ("C-c n p" . my/org-roam-find-project)
          ("C-c n g" . org-roam-graph)
          ("C-c n i" . org-roam-node-insert)
          ("C-c n c" . org-roam-capture)
