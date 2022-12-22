@@ -10,6 +10,7 @@ bookmarks
 session.*
 dired+/*
 modeline-posn/*
+openwith/*
 backups/*
 transient/*
 # Auto-generiert von CEDET
