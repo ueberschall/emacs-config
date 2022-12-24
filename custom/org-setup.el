@@ -1,3 +1,7 @@
+;; Ensure that the my/org-roam-filter-by-tag function is working
+
+;; -*- lexical-binding: t; -*-
+
 ;; Configure org
 (use-package org
   :mode ("\\.org$" . org-mode)
@@ -24,6 +28,11 @@
       (if (not (re-search-forward ":recurring:" subtree-end t))
           nil     ; tag found, skip it
         subtree-end)))
+
+  (defun my/archive-org-file ()
+    (interactive)
+    (if (re-search-forward "#+filetags: +.*:?" nil t)
+        (insert "archived:")))
   :init
   (add-hook 'org-mode-hook (lambda () (linum-mode -1)))
   (add-hook 'org-clock-in-hook (lambda ()
@@ -132,7 +141,7 @@
 
   (defun my/org-roam-archived-note-list ()
     (my/org-roam-list-notes-by-tag "archived"))
-  
+
   (defun my/org-roam-disable-db-sync (&rest ignore)
     "Disable the org data base sync"
     (interactive)
@@ -161,8 +170,7 @@ capture was not aborted."
     ;; Select a project file to open, creating it if necessary
     (org-roam-node-find nil nil
      (lambda (node)
-       (and (member "projects" (org-roam-node-tags node))
-            (not (member "archived" (org-roam-node-tags node)))))
+       (member "projects" (org-roam-node-tags node)))
      nil
      :templates
      '(("p" "Project" plain
