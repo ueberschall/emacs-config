@@ -101,6 +101,17 @@
       (url-copy-file "https://www.emacswiki.org/emacs/download/modeline-posn.el"
                      modeline-file))))
 
+(defun download-openwith-from-emacswiki ()
+  "openwith has to be downloaded from the EmacsWiki."
+  (let* ((openwith-file (expand-file-name "openwith/openwith.el" user-emacs-directory))
+         (openwith-dir (file-name-directory openwith-file)))
+    (if (file-exists-p openwith-file)
+        (message "Openwith does already exist")
+      (unless (file-directory-p openwith-dir)
+        (make-directory openwith-dir))
+      (url-copy-file "https://www.metalevel.at/misc/openwith.el"
+                     openwith-file))))
+
 ;; Initialize package manager
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
@@ -116,11 +127,18 @@
   (setq use-package-always-ensure t)
   (setq use-package-always-pin "melpa")
   (download-dired+-from-emacswiki)
-  (download-modelineposn-from-emacswiki))
+  (download-modelineposn-from-emacswiki)
+  (download-openwith-from-emacswiki))
 
 ;; modeline-posn cannot be configured using use-package.
 (add-to-list 'load-path (expand-file-name "modeline-posn" user-emacs-directory))
 (require 'modeline-posn)
+
+;; openwith cannot be configured using use-package.
+(add-to-list 'load-path (expand-file-name "openwith" user-emacs-directory))
+(require 'openwith)
+(openwith-mode t)
+(setq openwith-associations '(("\\.pdf\\'" "xreader" (file))))
 
 (require 'use-package)
 
