@@ -5,7 +5,9 @@
 ;; Configure org
 (use-package org
   :mode ("\\.org$" . org-mode)
+
   :demand t
+
   :preface
   (defun org-metadown-to-bottom ()
     "Moves the item, row or subtree to the bottom of its parent struct"
@@ -29,10 +31,30 @@
           nil     ; tag found, skip it
         subtree-end)))
 
-  (defun my/archive-org-file ()
+  (defun my/archive-projects-org-file ()
     (interactive)
-    (if (re-search-forward "#+filetags: +.*:?" nil t)
-        (insert "archived:")))
+    (let ((current-file (buffer-file-name)))
+      (goto-char (point-min))
+      (if (re-search-forward "#\\+FILETAGS:.*:projects.*:" nil t)
+          (insert (concat "archived:\n#+ARCHIVED_AT: " (format-time-string "[%Y-%m-%d %a %H:%M]")))
+        (display-warning "This file is not a projects org file!"))
+      (save-buffer)
+      (kill-buffer)
+      (setq org-agenda-files (delete current-file org-agenda-files))))
+
+  (defun my/archive-done-todos ()
+    "Archive all done TODO items in the current org-mode buffer."
+    (interactive)
+    (save-excursion
+      (find-file (expand-file-name "next_actions.org" org-directory))
+      (let ((org-archive-location (expand-file-name (concat (format-time-string "%Y-%m-%d-%H-%M") ".org::") (expand-file-name "Archive" org-directory))))
+        (org-map-entries
+         (lambda ()
+           (org-archive-subtree)
+           (setq org-map-continue-from (outline-previous-heading)))
+         "/DONE" 'file))
+      (save-buffer)))
+
   :init
   (add-hook 'org-mode-hook (lambda () (linum-mode -1)))
   (add-hook 'org-clock-in-hook (lambda ()
@@ -50,19 +72,13 @@
                                     (org-dblock-update)
                                     (save-buffer)
                                     (kill-buffer))))
-  (add-hook 'org-after-todo-state-change-hook (lambda ()
-                                                (let ((active-buffer (file-name-nondirectory (buffer-file-name))))
-                                                  (when (and (or (string= org-state "DONE") (string= org-state "CANCELLED"))
-                                                             (string= active-buffer "next_actions.org"))
-                                                    (org-archive-subtree)
-                                                    (save-buffer)))))
+  (add-hook 'org-after-todo-state-change-hook 'my/archive-done-todos)
   :custom
-  (org-directory (expand-file-name "2_Notizen" (getenv "HOME")))
+  (org-directory (expand-file-name "Notizen" (getenv "HOME")))
   (org-link-file-path-type 'relative)
   (org-agenda-files (list (expand-file-name "next_actions.org" org-directory)))
   (org-use-sub-superscripts "{}")
   (org-tags-match-list-sublevels t)
-  ;; Enable region selection with shift and arrow key.
   (org-support-shift-select t)
   (org-startup-indented t)
   (org-pretty-entities t)
@@ -83,11 +99,12 @@
   (org-agenda-custom-commands
    '(("G" "Next Actions and Project Actions"
       ((alltodo ""
-                ((org-agenda-files `(,(concat org-directory "/next_actions.org")))
+                ((org-agenda-files `(,(expand-file-name "next_actions.org" org-directory)))
                  (org-agenda-skip-function 'my/skip-recurring-todos)))
        (tags-todo "projects" ((org-agenda-hide-tags-regexp "projects")))))
      ("D" "Daily" search ""
-      ((org-agenda-files `(,(concat org-directory "/Dailies_Diary/" (format-time-string "%Y-%m-%d") ".org")))))))
+      ((org-agenda-files `(,(expand-file-name (concat (format-time-string "%Y-%m-%d") ".org")
+                                              (expand-file-name "Dailies" org-directory))))))))
   :config
   (org-babel-do-load-languages
    'org-babel-load-languages
@@ -169,13 +186,12 @@ capture was not aborted."
 
     ;; Select a project file to open, creating it if necessary
     (org-roam-node-find nil nil
-     (lambda (node)
-       (member "projects" (org-roam-node-tags node)))
+     (my/org-roam-filter-by-tag "projects")
      nil
      :templates
      '(("p" "Project" plain
         "%?\n\n* Aufgaben :projects:\n\n"
-        :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+category: ${title}\n#+filetags: :projects:")
+        :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+TITLE: ${title}\n#+CATEGORY: ${title}\n#+FILETAGS: :projects:")
         :unnarrowed t))))
   :init
   ;; These two advice functions are the workaround for the error which
@@ -192,38 +208,38 @@ capture was not aborted."
   (org-roam-capture-templates
         '(("i" "Inbox" plain
            "* ${title}\n:PROPERTIES:\n:CREATED_AT: %U\n:END:\n\n%?"
-           :target (file+head "inbox.org" "#+title: 0 Inbox")
+           :target (file+head "inbox.org" "#+TITLE: 0 Inbox")
            :unnarrowed t)
           ("t" "Todo" plain
            "* TODO ${title}\n:PROPERTIES:\n:ID:        %(org-id-new)\n:CREATED_AT: %U\n:END:\n\n%?"
-           :target (file+head "next_actions.org" "#+title: 1 Next Actions") :unnarrowed t)
+           :target (file+head "next_actions.org" "#+TITLE: 1 Next Actions") :unnarrowed t)
           ("w" "Recurring Todo" plain
            "* TODO ${title} :recurring:\n:PROPERTIES:\n:ID:        %(org-id-new)\n:CREATED_AT: %U\n:END:\n\n%?"
-           :target (file+head "next_actions.org" "#+title: 1 Next Actions")
+           :target (file+head "next_actions.org" "#+TITLE: 1 Next Actions")
            :unnarrowed t)
           ("s" "Someday maybe" plain
            "* ${title} :someday_maybe:\n:PROPERTIES:\n:ID:        %(org-id-new)\n:CREATED_AT: %U\n:END:\n\n%?"
-           :target (file+head "someday_maybe.org" "#+title: 2 Someday Maybe\n#+filetags: :someday_maybe:")
+           :target (file+head "someday_maybe.org" "#+TITLE: 2 Someday Maybe\n#+FILETAGS: :someday_maybe:")
            :unnarrowed t)
           ("p" "Project" plain
            "%?\n\n* Aufgaben :projects:\n\n"
-           :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+category: ${title}\n#+filetags: :projects:")
+           :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+TITLE: ${title}\n#+category: ${title}\n#+FILETAGS: :projects:")
            :unnarrowed t)
           ("r" "Reference" plain
            "%?"
-           :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+filetags: :references:")
+           :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+TITLE: ${title}\n#+FILETAGS: :references:")
            :unnarrowed t)
           ("m" "Merge Request Review" plain
            "* Link\n\n %?\n\n* Aufgaben\n\n** TODO Anpassungen reviewen\n\n** TODO Kommentare diskutieren\n\n** TODO Approven"
-           :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+category: Merge Request\n#+filetags: :mr_review:")
+           :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+TITLE: ${title}\n#+category: Merge Request\n#+FILETAGS: :mr_review:")
            :unnarrowed t)
           ("k" "Kochrezept" plain
            "%?\n\n* Zutaten :kochen:\n\n* Zubereitung"
-           :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+filetags: :kochen:")
+           :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+TITLE: ${title}\n#+FILETAGS: :kochen:")
            :unnarrowed t)
           ("b" "Backrezept" plain
            "%?\n\n* Zutaten :backen:\n\n* Zubereitung"
-           :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+filetags: :backen:")
+           :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+TITLE: ${title}\n#+FILETAGS: :backen:")
            :unnarrowed t)))
   (org-roam-dailies-directory "Dailies_Diary/")
   (org-roam-dailies-capture-templates
@@ -236,6 +252,7 @@ capture was not aborted."
   (setq org-agenda-files
         (append org-agenda-files
                 (cl-set-difference (my/org-roam-project-note-list) (my/org-roam-archived-note-list) :test 'string=)))
+  (my/archive-done-todos)
   :bind (("C-c n l" . org-roam-buffer-toggle)
          ("C-c n f" . org-roam-node-find)
          ("C-c n p" . my/org-roam-find-project)
