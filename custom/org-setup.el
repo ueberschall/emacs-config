@@ -72,7 +72,6 @@
                                     (org-dblock-update)
                                     (save-buffer)
                                     (kill-buffer))))
-  (add-hook 'org-after-todo-state-change-hook 'my/archive-done-todos)
   :custom
   (org-directory (expand-file-name "Notizen" (getenv "HOME")))
   (org-link-file-path-type 'relative)
