@@ -195,7 +195,7 @@ capture was not aborted."
      :templates
      '(("p" "Project" plain
         "%?\n\n* Aufgaben :projects:\n\n"
-        :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+TITLE: ${title}\n#+CATEGORY: ${title}\n#+FILETAGS: :projects:")
+        :target (file+head "Projects/%<%Y%m%d%H%M%S>-${slug}.org" "#+TITLE: ${title}\n#+CATEGORY: ${title}\n#+FILETAGS: :projects:")
         :unnarrowed t))))
   :init
   ;; These two advice functions are the workaround for the error which
@@ -226,24 +226,24 @@ capture was not aborted."
            :target (file+head "someday_maybe.org" "#+TITLE: 2 Someday Maybe\n#+FILETAGS: :someday_maybe:")
            :unnarrowed t)
           ("p" "Project" plain
-           "%?\n\n* Aufgaben :projects:\n\n"
-           :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+TITLE: ${title}\n#+CATEGORY: ${title}\n#+FILETAGS: :projects:")
+           "\n* Ziel :projects:\n\n%?\n\n* Aufgaben :projects:\n\n"
+           :target (file+head "Projects/%<%Y%m%d%H%M%S>-${slug}.org" "#+TITLE: ${title}\n#+CATEGORY: ${title}\n#+FILETAGS: :projects:")
            :unnarrowed t)
           ("r" "Reference" plain
            "%?"
-           :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+TITLE: ${title}\n#+FILETAGS: :references:")
+           :target (file+head "References/%<%Y%m%d%H%M%S>-${slug}.org" "#+TITLE: ${title}\n#+FILETAGS: :references:")
            :unnarrowed t)
           ("m" "Merge Request Review" plain
            "* Link\n\n %?\n\n* Aufgaben\n\n** TODO Anpassungen reviewen\n\n** TODO Kommentare diskutieren\n\n** TODO Approven"
-           :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+TITLE: ${title}\n#+CATEGORY: Merge Request\n#+FILETAGS: :projects:mr_review:")
+           :target (file+head "Projects/%<%Y%m%d%H%M%S>-${slug}.org" "#+TITLE: ${title}\n#+CATEGORY: Merge Request\n#+FILETAGS: :projects:mr_review:")
            :unnarrowed t)
           ("k" "Kochrezept" plain
            "%?\n\n* Zutaten :kochen:\n\n* Zubereitung"
-           :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+TITLE: ${title}\n#+CATEGORY: Kochrezepte\n#+FILETAGS: :references:kochen:")
+           :target (file+head "References/%<%Y%m%d%H%M%S>-${slug}.org" "#+TITLE: ${title}\n#+CATEGORY: Kochrezepte\n#+FILETAGS: :references:kochen:")
            :unnarrowed t)
           ("b" "Backrezept" plain
            "%?\n\n* Zutaten :backen:\n\n* Zubereitung"
-           :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+TITLE: ${title}\n#+CATEGORY: Backrezepte\n#+FILETAGS: :references:backen:")
+           :target (file+head "References/%<%Y%m%d%H%M%S>-${slug}.org" "#+TITLE: ${title}\n#+CATEGORY: Backrezepte\n#+FILETAGS: :references:backen:")
            :unnarrowed t)))
   (org-roam-dailies-directory org-roam-directory)
   (org-roam-dailies-capture-templates
