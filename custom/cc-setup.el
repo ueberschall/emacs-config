@@ -96,13 +96,13 @@
   (rtags-diagnostics)
   (setq rtags-completions-enabled t))
 
-(use-package yasnippet-snippets)
+;;(use-package yasnippet-snippets)
 
-(use-package yasnippet
-  :after yasnippet-snippets
-  :hook (c++-mode . yas-minor-mode)
-  :config
-  (yas-reload-all))
+;; (use-package yasnippet
+;;   :after yasnippet-snippets
+;;   :hook (c++-mode . yas-minor-mode)
+;;   :config
+;;   (yas-reload-all))
 
 (use-package flycheck-rtags
   :pin manual
