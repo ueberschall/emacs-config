@@ -35,8 +35,8 @@
     (interactive)
     (let ((current-file (buffer-file-name)))
       (goto-char (point-min))
-      (if (re-search-forward "#\\+FILETAGS:.*:projects.*:" nil t)
-          (insert (concat "archived:\n#+ARCHIVED_AT: " (format-time-string "[%Y-%m-%d %a %H:%M]")))
+      (if (re-search-forward "#\\+FILETAGS:.*:projekte.*:" nil t)
+          (insert (concat "archiviert:\n#+ARCHIVED_AT: " (format-time-string "[%Y-%m-%d %a %H:%M]")))
         (display-warning "This file is not a projects org file!"))
       (save-buffer)
       (kill-buffer)
@@ -47,7 +47,7 @@
     (interactive)
     (save-excursion
       (find-file (expand-file-name "next_actions.org" org-directory))
-      (let ((org-archive-location (expand-file-name (concat (format-time-string "%Y-%m-%d-%H-%M") ".org::") (expand-file-name "Archive" org-directory))))
+      (let ((org-archive-location (expand-file-name (concat (format-time-string "%Y-%m-%d-%H-%M") ".org::") (expand-file-name "Archiv" org-directory))))
         (org-map-entries
          (lambda ()
            (org-archive-subtree)
@@ -95,7 +95,7 @@
    '((agenda . " - ")
      (todo . " - ")))
   (org-agenda-custom-commands
-   '(("A" "Personal Agenda View"
+   '(("A" "Persönliche Agenda View"
       ((tags "PRIORITY=\"A\""
                 ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
                  (org-agenda-overriding-header "High-priority unfinished tasks:")))
@@ -103,7 +103,7 @@
        (alltodo ""
                 ((org-agenda-files `(,(expand-file-name "next_actions.org" org-directory)))
                  (org-agenda-skip-function 'my/skip-recurring-todos)))
-       (tags-todo "projects" ((org-agenda-hide-tags-regexp "projects")))))
+       (tags-todo "projekte" ((org-agenda-hide-tags-regexp "projekte")))))
      ("D" "Daily" search ""
       ((org-agenda-files `(,(expand-file-name (concat (format-time-string "%Y-%m-%d") ".org")
                                               (expand-file-name "Dailies" org-directory))))))))
@@ -156,10 +156,10 @@
              (org-roam-node-list))))
 
   (defun my/org-roam-project-note-list ()
-    (my/org-roam-list-notes-by-tag "projects"))
+    (my/org-roam-list-notes-by-tag "projekte"))
 
   (defun my/org-roam-archived-note-list ()
-    (my/org-roam-list-notes-by-tag "archived"))
+    (my/org-roam-list-notes-by-tag "archiviert"))
 
   (defun my/org-roam-disable-db-sync (&rest ignore)
     "Disable the org data base sync"
@@ -190,19 +190,14 @@ capture was not aborted."
     (org-roam-node-find
      nil nil
      (lambda (node)
-       (member "projects" (org-roam-node-tags node)))
+       (member "projekte" (org-roam-node-tags node)))
      nil
      :templates
-     '(("p" "Project" plain
-        "%?\n\n* Aufgaben :projects:\n\n"
-        :target (file+head "Projects/%<%Y%m%d%H%M%S>-${slug}.org" "#+TITLE: ${title}\n#+CATEGORY: ${title}\n#+FILETAGS: :projects:")
+     '(("p" "Projekt" plain
+        "%?\n\n* Aufgaben :projekte:\n\n"
+        :target (file+head "Projekte/%<%Y%m%d%H%M%S>-${slug}.org" "#+TITLE: ${title}\n#+CATEGORY: ${title}\n#+FILETAGS: :projekte:")
         :unnarrowed t))))
   :init
-  ;; These two advice functions are the workaround for the error which
-  ;; causes the org-roam-database to loose all its entries when
-  ;; "org-roam-dailies-capture-today" is invoked.
-  ;; (advice-add 'org-roam-dailies-capture-today :before #'my/org-roam-disable-db-sync)
-  ;; (advice-add 'org-roam-dailies-capture-today :after #'my/org-roam-enable-db-sync)
   :hook (org-mode . org-roam-db-autosync-enable)
   :custom
   (org-roam-directory org-directory)
@@ -217,41 +212,41 @@ capture was not aborted."
           ("t" "Todo" plain
            "* TODO ${title}\n:PROPERTIES:\n:ID:        %(org-id-new)\n:CREATED_AT: %U\n:END:\n\n%?"
            :target (file+head "next_actions.org" "#+TITLE: 1 Next Actions") :unnarrowed t)
-          ("w" "Recurring Todo" plain
+          ("w" "Wiederkehrendes Todo" plain
            "* TODO ${title} :recurring:\n:PROPERTIES:\n:ID:        %(org-id-new)\n:CREATED_AT: %U\n:END:\n\n%?"
            :target (file+head "next_actions.org" "#+TITLE: 1 Next Actions")
            :unnarrowed t)
-          ("s" "Someday maybe" plain
+          ("s" "Someday Maybe" plain
            "* ${title} :someday_maybe:\n:PROPERTIES:\n:ID:        %(org-id-new)\n:CREATED_AT: %U\n:END:\n\n%?"
            :target (file+head "someday_maybe.org" "#+TITLE: 2 Someday Maybe\n#+FILETAGS: :someday_maybe:")
            :unnarrowed t)
-          ("p" "Project" plain
-           "\n* Ziel :projects:\n\n%?\n\n* Aufgaben :projects:\n\n"
-           :target (file+head "Projects/%<%Y%m%d%H%M%S>-${slug}.org" "#+TITLE: ${title}\n#+CATEGORY: ${title}\n#+FILETAGS: :projects:")
+          ("p" "Projekt" plain
+           "\n* Ziel :projekte:\n\n%?\n\n* Aufgaben :projekte:\n\n"
+           :target (file+head "Projekte/%<%Y%m%d%H%M%S>-${slug}.org" "#+TITLE: ${title}\n#+CATEGORY: ${title}\n#+FILETAGS: :projekte:")
            :unnarrowed t)
-          ("r" "Reference" plain
+          ("r" "Referenz" plain
            "%?"
-           :target (file+head "References/%<%Y%m%d%H%M%S>-${slug}.org" "#+TITLE: ${title}\n#+FILETAGS: :references:")
+           :target (file+head "Referenzen/%<%Y%m%d%H%M%S>-${slug}.org" "#+TITLE: ${title}\n#+FILETAGS: :referenzen:")
            :unnarrowed t)
           ("m" "Merge Request Review" plain
            "* Link\n\n %?\n\n* Aufgaben\n\n** TODO Anpassungen reviewen\n\n** TODO Kommentare diskutieren\n\n** TODO Approven"
-           :target (file+head "Projects/%<%Y%m%d%H%M%S>-${slug}.org" "#+TITLE: ${title}\n#+CATEGORY: Merge Request\n#+FILETAGS: :projects:mr_review:")
+           :target (file+head "Projekte/%<%Y%m%d%H%M%S>-${slug}.org" "#+TITLE: ${title}\n#+CATEGORY: Merge Request\n#+FILETAGS: :projekte:mr_review:")
            :unnarrowed t)
           ("k" "Kochrezept" plain
            "%?\n\n* Zutaten :kochen:\n\n* Zubereitung"
-           :target (file+head "References/%<%Y%m%d%H%M%S>-${slug}.org" "#+TITLE: ${title}\n#+CATEGORY: Kochrezepte\n#+FILETAGS: :references:kochen:")
+           :target (file+head "Referenzen/%<%Y%m%d%H%M%S>-${slug}.org" "#+TITLE: ${title}\n#+CATEGORY: Kochrezepte\n#+FILETAGS: :referenzen:kochen:")
            :unnarrowed t)
           ("b" "Backrezept" plain
            "%?\n\n* Zutaten :backen:\n\n* Zubereitung"
-           :target (file+head "References/%<%Y%m%d%H%M%S>-${slug}.org" "#+TITLE: ${title}\n#+CATEGORY: Backrezepte\n#+FILETAGS: :references:backen:")
+           :target (file+head "Referenzen/%<%Y%m%d%H%M%S>-${slug}.org" "#+TITLE: ${title}\n#+CATEGORY: Backrezepte\n#+FILETAGS: :referenzen:backen:")
            :unnarrowed t)))
   (org-roam-dailies-directory org-roam-directory)
   (org-roam-dailies-capture-templates
    '(("d" "Daily" plain
       "%?"
       :target (file+head "Dailies/%<%Y-%m-%d>.org" "#+TITLE: Daily-Eintrag %<%Y-%m-%d>\n#+CATEGORY: Daily\n#+FILETAGS: :daily:\n#+begin: clocktable :scope agenda :block %<%Y-%m-%d> :link t\n|Headline   | Time |\n|------------+------|\n| *Total time* | *0:00* |\n#+end: clocktable\n") :unnarrowed t)
-     ("t" "Diary" plain "%?" :target
-      (file+head "Diary/%<%Y-%m-%d>.org.gpg" "#+TITLE: Tagebucheintrag %<%Y-%m-%d>\n#+CATEGORY: Diary\n#+FILETAGS: :diary:") :unnarrowed t)))
+     ("t" "Tagebucheintrag" plain "%?" :target
+      (file+head "Tagebuch/%<%Y-%m-%d>.org.gpg" "#+TITLE: Tagebucheintrag %<%Y-%m-%d>\n#+CATEGORY: Diary\n#+FILETAGS: :diary:") :unnarrowed t)))
   :config
   (setq org-agenda-files
         (append org-agenda-files
