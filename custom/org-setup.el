@@ -27,7 +27,7 @@
 
   (defun my/skip-recurring-todos ()
     (let ((subtree-end (save-excursion (org-end-of-subtree t))))
-      (if (not (re-search-forward ":recurring:" subtree-end t))
+      (if (not (re-search-forward ":wiederkehrend:" subtree-end t))
           nil     ; tag found, skip it
         subtree-end)))
 
@@ -213,7 +213,7 @@ capture was not aborted."
            "* TODO ${title}\n:PROPERTIES:\n:ID:        %(org-id-new)\n:CREATED_AT: %U\n:END:\n\n%?"
            :target (file+head "next_actions.org" "#+TITLE: 1 Next Actions") :unnarrowed t)
           ("w" "Wiederkehrendes Todo" plain
-           "* TODO ${title} :recurring:\n:PROPERTIES:\n:ID:        %(org-id-new)\n:CREATED_AT: %U\n:END:\n\n%?"
+           "* TODO ${title} :wiederkehrend:\n:PROPERTIES:\n:ID:        %(org-id-new)\n:CREATED_AT: %U\n:END:\n\n%?"
            :target (file+head "next_actions.org" "#+TITLE: 1 Next Actions")
            :unnarrowed t)
           ("s" "Someday Maybe" plain
