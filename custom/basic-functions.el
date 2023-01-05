@@ -77,4 +77,17 @@ will be killed."
   (setq current-prefix-arg '(4))
   (call-interactively 'compile))
 
+(defun replace-string-in-directory (directory from-string to-string)
+  "Replace FROM-STRING with TO-STRING in all files in DIRECTORY."
+  (interactive "DDirectory: \nsFrom string: \nsTo string: ")
+  (let ((files (directory-files-recursively directory ".*")))
+    (dolist (file files)
+      (find-file file)
+      (goto-char (point-min))
+      (while (search-forward from-string nil t)
+        (replace-match to-string nil t))
+      (save-buffer)
+      (kill-buffer))))
+
+
 (provide 'basic-functions)
