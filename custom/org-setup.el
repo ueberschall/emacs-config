@@ -194,15 +194,15 @@ capture was not aborted."
      nil
      :templates
      '(("p" "Projekt" plain
-        "%?\n\n* Aufgaben :projekte:\n\n"
-        :target (file+head "Projekte/%<%Y%m%d%H%M%S>-${slug}.org" "#+TITLE: ${title}\n#+CATEGORY: ${title}\n#+FILETAGS: :projekte:")
+        "\n* Ziel\n\n%?\n\n* Aufgaben :projekte:\n\n"
+        :target (file+head "Projekte/${slug}.org" "#+TITLE: ${title}\n#+CATEGORY: ${title}\n#+FILETAGS: :projekte:")
         :unnarrowed t))))
   :init
   :hook (org-mode . org-roam-db-autosync-enable)
   :custom
   (org-roam-directory org-directory)
   (org-roam-file-exclude-regexp
-      (concat "^" (expand-file-name org-roam-directory) "/Archive/\\|.*\\.org\\.gpg"))
+      (concat "^" (expand-file-name org-roam-directory) "/Archiv/\\|.*\\.org\\.gpg"))
   (org-roam-completion-everywhere t)
   (org-roam-capture-templates
         '(("i" "Inbox" plain
@@ -221,8 +221,8 @@ capture was not aborted."
            :target (file+head "someday_maybe.org" "#+TITLE: 2 Someday Maybe\n#+FILETAGS: :someday_maybe:")
            :unnarrowed t)
           ("p" "Projekt" plain
-           "\n* Ziel :projekte:\n\n%?\n\n* Aufgaben :projekte:\n\n"
-           :target (file+head "Projekte/%<%Y%m%d%H%M%S>-${slug}.org" "#+TITLE: ${title}\n#+CATEGORY: ${title}\n#+FILETAGS: :projekte:")
+           "\n* Ziel\n\n%?\n\n* Aufgaben :projekte:\n\n"
+           :target (file+head "Projekte/${slug}.org" "#+TITLE: ${title}\n#+CATEGORY: ${title}\n#+FILETAGS: :projekte:")
            :unnarrowed t)
           ("r" "Referenz" plain
            "%?"
@@ -230,7 +230,7 @@ capture was not aborted."
            :unnarrowed t)
           ("m" "Merge Request Review" plain
            "* Link\n\n %?\n\n* Aufgaben\n\n** TODO Anpassungen reviewen\n\n** TODO Kommentare diskutieren\n\n** TODO Approven"
-           :target (file+head "Projekte/%<%Y%m%d%H%M%S>-${slug}.org" "#+TITLE: ${title}\n#+CATEGORY: Merge Request\n#+FILETAGS: :projekte:mr_review:")
+           :target (file+head "Projekte/mr-${slug}.org" "#+TITLE: ${title}\n#+CATEGORY: Merge Request\n#+FILETAGS: :projekte:mr_review:")
            :unnarrowed t)
           ("k" "Kochrezept" plain
            "%?\n\n* Zutaten :kochen:\n\n* Zubereitung"
