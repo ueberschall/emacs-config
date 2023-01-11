@@ -57,6 +57,7 @@
 
   :init
   (add-hook 'org-mode-hook (lambda () (linum-mode -1)))
+  (add-hook 'org-agenda-mode-hook (lambda () (linum-mode -1)))
   (add-hook 'org-clock-in-hook (lambda ()
                                  (save-excursion
                                    (org-back-to-heading t)
@@ -100,7 +101,8 @@
    '(("A" "Persönliche Agenda View"
       ((tags "PRIORITY=\"A\""
                 ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
-                 (org-agenda-overriding-header "High-priority unfinished tasks:")))
+                 (org-agenda-overriding-header "High-priority unfinished tasks:")
+                 (org-agenda-remove-tags t)))
        (agenda "" ((org-agenda-span 7)
                    (org-agenda-start-on-weekday nil)
                    (org-agenda-remove-tags t)
