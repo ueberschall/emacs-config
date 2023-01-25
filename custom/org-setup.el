@@ -217,7 +217,7 @@ capture was not aborted."
            :target (file+head "next_actions.org" "#+TITLE: 1 Next Actions")
            :unnarrowed t)
           ("s" "Someday Maybe" plain
-           "* ${title} :someday_maybe:\n:PROPERTIES:\n:ID:        %(org-id-new)\n:CREATED_AT: %U\n:END:\n\n%?"
+           "* TODO ${title} :someday_maybe:\n:PROPERTIES:\n:ID:        %(org-id-new)\n:CREATED_AT: %U\n:END:\n\n%?"
            :target (file+head "someday_maybe.org" "#+TITLE: 2 Someday Maybe\n#+FILETAGS: :someday_maybe:")
            :unnarrowed t)
           ("p" "Projekt" plain
