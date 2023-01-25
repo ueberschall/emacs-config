@@ -57,6 +57,7 @@
 
   :init
   (add-hook 'org-mode-hook (lambda () (linum-mode -1)))
+  (add-hook 'org-agenda-mode-hook (lambda () (linum-mode -1)))
   (add-hook 'org-clock-in-hook (lambda ()
                                  (save-excursion
                                    (org-back-to-heading t)
@@ -92,14 +93,21 @@
   (org-todo-keywords
    '((sequence "TODO(t!)" "WAITING(w!)" "PROGRESSING(p!)" "|" "DONE(d!)" "CANCELLED(c!)")))
   (org-agenda-prefix-format
-   '((agenda . " - ")
-     (todo . " - ")))
+   '((todo . " - ")
+     (agenda . "%t: ")
+     (tags . " %i %-12:c")
+     (search . " %i %-12:c")))
   (org-agenda-custom-commands
    '(("A" "Persönliche Agenda View"
       ((tags "PRIORITY=\"A\""
                 ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
-                 (org-agenda-overriding-header "High-priority unfinished tasks:")))
-       (agenda "")
+                 (org-agenda-overriding-header "High-priority unfinished tasks:")
+                 (org-agenda-remove-tags t)))
+       (agenda "" ((org-agenda-span 7)
+                   (org-agenda-start-on-weekday nil)
+                   (org-agenda-remove-tags t)
+                   (org-agenda-time-grid nil)
+                   (org-agenda-entry-types '(:timestamp :sexp :deadline :scheduled))))
        (alltodo ""
                 ((org-agenda-files `(,(expand-file-name "next_actions.org" org-directory)))
                  (org-agenda-skip-function 'my/skip-recurring-todos)))
