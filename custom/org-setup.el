@@ -205,7 +205,7 @@ capture was not aborted."
         "\n* Ziel\n\n%?\n\n* Aufgaben :projekte:\n\n"
         :target (file+head "Projekte/${slug}.org" "#+TITLE: ${title}\n#+CATEGORY: ${title}\n#+FILETAGS: :projekte:")
         :unnarrowed t))))
-  :init
+  :init (my/archive-done-todos)
   :hook (org-mode . org-roam-db-autosync-enable)
   :custom
   (org-roam-directory org-directory)
@@ -259,7 +259,6 @@ capture was not aborted."
   (setq org-agenda-files
         (append org-agenda-files
                 (cl-set-difference (my/org-roam-project-note-list) (my/org-roam-archived-note-list) :test 'string=)))
-  (my/archive-done-todos)
   :bind (("C-c n l" . org-roam-buffer-toggle)
          ("C-c n f" . org-roam-node-find)
          ("C-c n p" . my/org-roam-find-project)
