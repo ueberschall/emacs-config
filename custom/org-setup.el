@@ -258,7 +258,10 @@ capture was not aborted."
   :config
   (setq org-agenda-files
         (append org-agenda-files
-                (cl-set-difference (my/org-roam-project-note-list) (my/org-roam-archived-note-list) :test 'string=)))
+                (cl-set-difference
+                 org-agenda-files
+                 (cl-set-difference (my/org-roam-project-note-list) (my/org-roam-archived-note-list) :test 'string=)
+                 :test 'string=)))
   (my/archive-done-todos)
   :bind (("C-c n l" . org-roam-buffer-toggle)
          ("C-c n f" . org-roam-node-find)
