@@ -55,6 +55,23 @@
          "/DONE" 'file))
       (save-buffer)))
 
+  (defcustom org-inline-image-background nil
+    "The color used as the default background for inline images.
+When nil, use the default face background."
+    :group 'org
+    :type '(choice color (const nil)))
+
+  (defun create-image-with-background-color (args)
+    "Specify background color of Org-mode inline image through modify `ARGS'."
+    (let* ((file (car args))
+           (type (cadr args))
+           (data-p (caddr args))
+           (props (cdddr args)))
+      ;; Get this return result style from `create-image'.
+      (append (list file type data-p)
+              (list :background (or org-inline-image-background (face-background 'default)))
+              props)))
+
   :init
   (add-hook 'org-mode-hook (lambda () (linum-mode -1)))
   (add-hook 'org-agenda-mode-hook (lambda () (linum-mode -1)))
@@ -73,17 +90,20 @@
                                     (org-dblock-update)
                                     (save-buffer)
                                     (kill-buffer))))
+  (advice-add 'create-image :filter-args
+              #'create-image-with-background-color)
   :custom
   (org-directory (expand-file-name "Notizen" (getenv "HOME")))
   (org-link-file-path-type 'relative)
   (org-agenda-files (list (expand-file-name "next_actions.org" org-directory)))
-  (org-use-sub-superscripts "{}")
+  (org-use-sub-superscripts nil)
   (org-tags-match-list-sublevels t)
   (org-support-shift-select t)
   (org-startup-indented t)
   (org-pretty-entities t)
   (org-hide-emphasis-markers t)
   (org-startup-with-inline-images t)
+  (org-inline-image-background "white")
   (org-image-actual-width t)
   (org-keep-stored-link-after-insertion t)
   (org-fontify-todo-headline t)
