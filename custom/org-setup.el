@@ -272,7 +272,7 @@ capture was not aborted."
   (org-roam-dailies-capture-templates
    '(("d" "Daily" plain
       "%?"
-      :target (file+head "Dailies/%<%Y-%m-%d>.org" "#+TITLE: Daily-Eintrag %<%Y-%m-%d>\n#+CATEGORY: Daily\n#+FILETAGS: :daily:\n#+begin: clocktable :scope agenda :block %<%Y-%m-%d> :link t\n|Headline   | Time |\n|------------+------|\n| *Total time* | *0:00* |\n#+end: clocktable\n") :unnarrowed t)
+      :target (file+head "Dailies/%<%Y-%m-%d>.org" "#+TITLE: Daily-Eintrag %<%Y-%m-%d>\n#+CATEGORY: Daily\n#+FILETAGS: :daily:\n#+begin: clocktable :scope agenda :block %<%Y-%m-%d> :link t\n|Headline   | Time |\n|------------+------|\n| *Total time* | *0:00* |\n#+end: clocktable\n\n* Arbeitszeiten") :unnarrowed t)
      ("t" "Tagebucheintrag" plain "%?" :target
       (file+head "Tagebuch/%<%Y-%m-%d>.org.gpg" "#+TITLE: Tagebucheintrag %<%Y-%m-%d>\n#+CATEGORY: Diary\n#+FILETAGS: :diary:") :unnarrowed t)))
   :config
