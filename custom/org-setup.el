@@ -25,12 +25,6 @@
           (org-metaup))
       (user-error nil)))
 
-  (defun my/skip-recurring-todos ()
-    (let ((subtree-end (save-excursion (org-end-of-subtree t))))
-      (if (not (re-search-forward ":wiederkehrend:" subtree-end t))
-          nil     ; tag found, skip it
-        subtree-end)))
-
   (defun my/archive-projects-org-file (archive-directory)
     (let ((current-file (buffer-file-name)))
       (goto-char (point-min))
@@ -87,10 +81,10 @@ When nil, use the default face background."
   :custom
   (org-directory (expand-file-name "Notizen" (getenv "HOME")))
   (org-link-file-path-type 'relative)
-  (org-agenda-files (let ((dir (expand-file-name "Projekte" org-directory)))
-                      (setq project-files (seq-filter (lambda (name) (not (member name '("." ".."))))
-                                                      (directory-files dir)))
-                      (push "next_actions.org" project-files)))
+  (org-agenda-files (append '("next_actions.org" "recurring_actions.org")
+                            (let ((dir (expand-file-name "Projekte" org-directory)))
+                              (setq project-files (seq-filter (lambda (name) (not (member name '("." ".."))))
+                                                              (directory-files dir))))))
   (org-use-sub-superscripts nil)
   (org-tags-match-list-sublevels t)
   (org-support-shift-select t)
@@ -124,8 +118,7 @@ When nil, use the default face background."
                    (org-agenda-time-grid nil)
                    (org-agenda-entry-types '(:timestamp :sexp :deadline :scheduled))))
        (alltodo ""
-                ((org-agenda-files `(,(expand-file-name "next_actions.org" org-directory)))
-                 (org-agenda-skip-function 'my/skip-recurring-todos)))
+                ((org-agenda-files `(,(expand-file-name "next_actions.org" org-directory)))))
        (tags-todo "projekte" ((org-agenda-hide-tags-regexp "projekte")))))
      ("D" "Daily" search ""
       ((org-agenda-files `(,(expand-file-name (concat (format-time-string "%Y-%m-%d") ".org")
@@ -228,8 +221,7 @@ capture was not aborted."
   :hook (org-mode . org-roam-db-autosync-enable)
   :custom
   (org-roam-directory org-directory)
-  (org-roam-file-exclude-regexp
-      (concat "^" (expand-file-name org-roam-directory) "/Archiv/\\|.*\\.org\\.gpg"))
+  (org-roam-file-exclude-regexp ".*\\.org\\.gpg")
   (org-roam-completion-everywhere t)
   (org-roam-capture-templates
         '(("i" "Inbox" plain
@@ -241,11 +233,11 @@ capture was not aborted."
            :target (file+head "next_actions.org" "#+TITLE: 1 Next Actions") :unnarrowed t)
           ("w" "Wiederkehrendes Todo" plain
            "* TODO ${title} :wiederkehrend:\n:PROPERTIES:\n:ID:        %(org-id-new)\n:CREATED_AT: %U\n:END:\n\n%?"
-           :target (file+head "next_actions.org" "#+TITLE: 1 Next Actions")
+           :target (file+head "recurring_actions.org" "#+TITLE: 2 Recurring Actions")
            :unnarrowed t)
           ("s" "Someday Maybe" plain
-           "* TODO ${title} :someday_maybe:\n:PROPERTIES:\n:ID:        %(org-id-new)\n:CREATED_AT: %U\n:END:\n\n%?"
-           :target (file+head "someday_maybe.org" "#+TITLE: 2 Someday Maybe\n#+FILETAGS: :someday_maybe:")
+           "* ${title} :someday_maybe:\n:PROPERTIES:\n:ID:        %(org-id-new)\n:CREATED_AT: %U\n:END:\n\n%?"
+           :target (file+head "someday_maybe.org" "#+TITLE: 3 Someday Maybe\n#+FILETAGS: :someday_maybe:")
            :unnarrowed t)
           ("p" "Projekt" plain
            "\n* Ziel\n\n%?\n\n* Aufgaben :projekte:\n\n"
@@ -255,17 +247,13 @@ capture was not aborted."
            "%?"
            :target (file+head "Referenzen/${slug}-%<%Y%m%d%H%M%S>.org" "#+TITLE: ${title}\n#+FILETAGS: :referenzen:")
            :unnarrowed t)
-          ("m" "Merge Request Review" plain
-           "* Link\n\n %?\n\n* Aufgaben\n\n** TODO Anpassungen reviewen\n\n** TODO Kommentare diskutieren\n\n** TODO Approven"
-           :target (file+head "Projekte/mr-${slug}.org" "#+TITLE: ${title}\n#+CATEGORY: Merge Request\n#+FILETAGS: :projekte:mr_review:")
-           :unnarrowed t)
           ("k" "Kochrezept" plain
            "%?\n\n* Zutaten :kochen:\n\n* Zubereitung"
-           :target (file+head "Referenzen/%<%Y%m%d%H%M%S>-${slug}.org" "#+TITLE: ${title}\n#+CATEGORY: Kochrezepte\n#+FILETAGS: :referenzen:kochen:")
+           :target (file+head "Referenzen/${slug}-%<%Y%m%d%H%M%S>.org" "#+TITLE: ${title}\n#+CATEGORY: Kochrezepte\n#+FILETAGS: :referenzen:kochen:")
            :unnarrowed t)
           ("b" "Backrezept" plain
            "%?\n\n* Zutaten :backen:\n\n* Zubereitung"
-           :target (file+head "Referenzen/%<%Y%m%d%H%M%S>-${slug}.org" "#+TITLE: ${title}\n#+CATEGORY: Backrezepte\n#+FILETAGS: :referenzen:backen:")
+           :target (file+head "Referenzen/${slug}-%<%Y%m%d%H%M%S>.org" "#+TITLE: ${title}\n#+CATEGORY: Backrezepte\n#+FILETAGS: :referenzen:backen:")
            :unnarrowed t)))
   (org-roam-dailies-directory org-roam-directory)
   (org-roam-dailies-capture-templates
