@@ -31,31 +31,21 @@
           nil     ; tag found, skip it
         subtree-end)))
 
-  (defun my/archive-projects-org-file ()
-    (interactive)
+  (defun my/archive-projects-org-file (archive-directory)
     (let ((current-file (buffer-file-name)))
       (goto-char (point-min))
       (if (re-search-forward "#\\+FILETAGS:.*:projekte.*:" nil t)
-          (insert (concat "archiviert:\n#+ARCHIVED_AT: " (format-time-string "[%Y-%m-%d %a %H:%M]")))
-        (display-warning "This file is not a projects org file!"))
-      (save-buffer)
-      (kill-buffer)
-      (setq org-agenda-files (delete current-file org-agenda-files))))
-
-  ;; Do not need the stuff from below
-  ;;
-  ;; (defun my/archive-done-todos ()
-  ;;   "Archive all done TODO items in the current org-mode buffer."
-  ;;   (interactive)
-  ;;   (save-excursion
-  ;;     (find-file (expand-file-name "next_actions.org" org-directory))
-  ;;     (let ((org-archive-location (expand-file-name (concat (format-time-string "%Y-%m-%d-%H-%M") ".org::") (expand-file-name "Archiv" org-directory))))
-  ;;       (org-map-entries
-  ;;        (lambda ()
-  ;;          (org-archive-subtree)
-  ;;          (setq org-map-continue-from (outline-previous-heading)))
-  ;;        "/DONE" 'file))
-  ;;     (save-buffer)))
+          (progn
+            (insert (concat "archiviert:\n#+ARCHIVED_AT: " (format-time-string "[%Y-%m-%d %a %H:%M]")))
+            (re-search-backward "#\\+TITLE:")
+            (end-of-line)
+            (insert " (Archiviert)")
+            (save-buffer)
+            (kill-buffer)
+            (make-directory archive-directory t)
+            (rename-file current-file (file-name-as-directory archive-directory) t)
+            (setq org-agenda-files (delete current-file org-agenda-files)))
+        (display-warning "This file is not a projects org file!"))))
 
   (defcustom org-inline-image-background nil
     "The color used as the default background for inline images.
@@ -97,7 +87,10 @@ When nil, use the default face background."
   :custom
   (org-directory (expand-file-name "Notizen" (getenv "HOME")))
   (org-link-file-path-type 'relative)
-  (org-agenda-files (list (expand-file-name "next_actions.org" org-directory)))
+  (org-agenda-files (let ((dir (expand-file-name "Projekte" org-directory)))
+                      (setq project-files (seq-filter (lambda (name) (not (member name '("." ".."))))
+                                                      (directory-files dir)))
+                      (push "next_actions.org" project-files)))
   (org-use-sub-superscripts nil)
   (org-tags-match-list-sublevels t)
   (org-support-shift-select t)
@@ -227,7 +220,11 @@ capture was not aborted."
         "\n* Ziel\n\n%?\n\n* Aufgaben :projekte:\n\n"
         :target (file+head "Projekte/${slug}.org" "#+TITLE: ${title}\n#+CATEGORY: ${title}\n#+FILETAGS: :projekte:")
         :unnarrowed t))))
-  :init (my/archive-done-todos)
+
+  (defun my/org-roam-archive-project ()
+    (interactive)
+    (my/archive-projects-org-file (expand-file-name "Archiv/Projekte" org-directory)))
+
   :hook (org-mode . org-roam-db-autosync-enable)
   :custom
   (org-roam-directory org-directory)
@@ -277,18 +274,10 @@ capture was not aborted."
       :target (file+head "Dailies/%<%Y-%m-%d>.org" "#+TITLE: Daily-Eintrag %<%Y-%m-%d>\n#+CATEGORY: Daily\n#+FILETAGS: :daily:\n#+begin: clocktable :scope agenda :block %<%Y-%m-%d> :link t\n|Headline   | Time |\n|------------+------|\n| *Total time* | *0:00* |\n#+end: clocktable\n\n* Arbeitszeiten") :unnarrowed t)
      ("t" "Tagebucheintrag" plain "%?" :target
       (file+head "Tagebuch/%<%Y-%m-%d>.org.gpg" "#+TITLE: Tagebucheintrag %<%Y-%m-%d>\n#+CATEGORY: Diary\n#+FILETAGS: :diary:") :unnarrowed t)))
-  :config
-  ;; (setq org-agenda-files
-  ;;       (append org-agenda-files
-  ;;               (cl-set-difference
-  ;;                (cl-set-difference (my/org-roam-project-note-list) (my/org-roam-archived-note-list) :test 'string=) org-agenda-files
-  ;;                :test 'string=)))
-  ;; Do not need the stuff below
-  ;;
-  ;; (my/archive-done-todos)
   :bind (("C-c n l" . org-roam-buffer-toggle)
          ("C-c n f" . org-roam-node-find)
          ("C-c n p" . my/org-roam-find-project)
+         ("C-c n a" . my/org-roam-archive-project)
          ("C-c n g" . org-roam-graph)
          ("C-c n i" . org-roam-node-insert)
          ("C-c n c" . org-roam-capture)
