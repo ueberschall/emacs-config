@@ -42,18 +42,20 @@
       (kill-buffer)
       (setq org-agenda-files (delete current-file org-agenda-files))))
 
-  (defun my/archive-done-todos ()
-    "Archive all done TODO items in the current org-mode buffer."
-    (interactive)
-    (save-excursion
-      (find-file (expand-file-name "next_actions.org" org-directory))
-      (let ((org-archive-location (expand-file-name (concat (format-time-string "%Y-%m-%d-%H-%M") ".org::") (expand-file-name "Archiv" org-directory))))
-        (org-map-entries
-         (lambda ()
-           (org-archive-subtree)
-           (setq org-map-continue-from (outline-previous-heading)))
-         "/DONE" 'file))
-      (save-buffer)))
+  ;; Do not need the stuff from below
+  ;;
+  ;; (defun my/archive-done-todos ()
+  ;;   "Archive all done TODO items in the current org-mode buffer."
+  ;;   (interactive)
+  ;;   (save-excursion
+  ;;     (find-file (expand-file-name "next_actions.org" org-directory))
+  ;;     (let ((org-archive-location (expand-file-name (concat (format-time-string "%Y-%m-%d-%H-%M") ".org::") (expand-file-name "Archiv" org-directory))))
+  ;;       (org-map-entries
+  ;;        (lambda ()
+  ;;          (org-archive-subtree)
+  ;;          (setq org-map-continue-from (outline-previous-heading)))
+  ;;        "/DONE" 'file))
+  ;;     (save-buffer)))
 
   (defcustom org-inline-image-background nil
     "The color used as the default background for inline images.
@@ -254,7 +256,7 @@ capture was not aborted."
            :unnarrowed t)
           ("r" "Referenz" plain
            "%?"
-           :target (file+head "Referenzen/%<%Y%m%d%H%M%S>-${slug}.org" "#+TITLE: ${title}\n#+FILETAGS: :referenzen:")
+           :target (file+head "Referenzen/${slug}-%<%Y%m%d%H%M%S>.org" "#+TITLE: ${title}\n#+FILETAGS: :referenzen:")
            :unnarrowed t)
           ("m" "Merge Request Review" plain
            "* Link\n\n %?\n\n* Aufgaben\n\n** TODO Anpassungen reviewen\n\n** TODO Kommentare diskutieren\n\n** TODO Approven"
@@ -276,12 +278,14 @@ capture was not aborted."
      ("t" "Tagebucheintrag" plain "%?" :target
       (file+head "Tagebuch/%<%Y-%m-%d>.org.gpg" "#+TITLE: Tagebucheintrag %<%Y-%m-%d>\n#+CATEGORY: Diary\n#+FILETAGS: :diary:") :unnarrowed t)))
   :config
-  (setq org-agenda-files
-        (append org-agenda-files
-                (cl-set-difference
-                 (cl-set-difference (my/org-roam-project-note-list) (my/org-roam-archived-note-list) :test 'string=) org-agenda-files
-                 :test 'string=)))
-  (my/archive-done-todos)
+  ;; (setq org-agenda-files
+  ;;       (append org-agenda-files
+  ;;               (cl-set-difference
+  ;;                (cl-set-difference (my/org-roam-project-note-list) (my/org-roam-archived-note-list) :test 'string=) org-agenda-files
+  ;;                :test 'string=)))
+  ;; Do not need the stuff below
+  ;;
+  ;; (my/archive-done-todos)
   :bind (("C-c n l" . org-roam-buffer-toggle)
          ("C-c n f" . org-roam-node-find)
          ("C-c n p" . my/org-roam-find-project)

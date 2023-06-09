@@ -13,11 +13,16 @@
 
 ;; Setup Emacs for all my workflows.
 (require 'basic-setup)
-(require 'cc-setup)
-(require 'python-setup)
-(require 'rust-setup)
-(require 'tex-setup)
+
+;; Right now the below setups are not necessary
+;;
+;; (require 'python-setup)
+;; (require 'cc-setup)
+;; (require 'rust-setup)
+;; (require 'tex-setup)
 
 ;; Load the functions for saving and restoring desktops.
 (require 'desktop-saving)
 (load-desktop desktop-base-file-name)
+
+(setq custom-file null-device)
