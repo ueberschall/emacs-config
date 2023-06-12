@@ -92,7 +92,6 @@ When nil, use the default face background."
   (org-startup-with-inline-images t)
   (org-image-actual-width 1000)
   (org-inline-image-background "white")
-  (org-image-actual-width t)
   (org-keep-stored-link-after-insertion t)
   (org-fontify-todo-headline t)
   (org-fontify-done-headline t)
