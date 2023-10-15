@@ -35,9 +35,6 @@
             (end-of-line)
             (insert " (Archiviert)")
             (save-buffer)
-            (kill-buffer)
-            (make-directory archive-directory t)
-            (rename-file current-file (file-name-as-directory archive-directory) t)
             (setq org-agenda-files (delete current-file org-agenda-files)))
         (display-warning "This file is not a projects org file!"))))
 
@@ -67,7 +64,8 @@ When nil, use the default face background."
                                    (let* ((element (org-element-at-point))
                                           (todo-state (org-element-property :todo-keyword element)))
                                      (unless (string= (substring-no-properties todo-state) "PROGRESSING")
-                                       (org-todo "PROGRESSING"))))))
+                                       (org-todo "PROGRESSING")))
+                                   (save-buffer))))
   (add-hook 'org-clock-out-hook (lambda ()
                                   (save-excursion
                                     (org-roam-dailies-goto-today "d")
@@ -81,7 +79,7 @@ When nil, use the default face background."
   :custom
   (org-directory (expand-file-name "Notizen" (getenv "HOME")))
   (org-link-file-path-type 'relative)
-  (org-agenda-files (append '("next_actions.org" "recurring_actions.org")
+  (org-agenda-files (append '("next_actions.org")
                             (let* ((dir (expand-file-name "Projekte" org-directory))
                                    (root (concat (file-name-as-directory dir) "."))
                                    (top (concat (file-name-as-directory dir) "..")))
