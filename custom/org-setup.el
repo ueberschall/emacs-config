@@ -224,37 +224,37 @@ capture was not aborted."
   (org-roam-file-exclude-regexp ".*\\.org\\.gpg")
   (org-roam-completion-everywhere t)
   (org-roam-capture-templates
-        '(("i" "Inbox" plain
-           "* ${title}\n:PROPERTIES:\n:CREATED_AT: %U\n:END:\n\n%?"
-           :target (file+head "inbox.org" "#+TITLE: 0 Inbox")
-           :unnarrowed t)
-          ("t" "Todo" plain
-           "* TODO ${title}\n:PROPERTIES:\n:ID:        %(org-id-new)\n:CREATED_AT: %U\n:END:\n\n%?"
-           :target (file+head "next_actions.org" "#+TITLE: 1 Next Actions") :unnarrowed t)
-          ("w" "Wiederkehrendes Todo" plain
-           "* TODO ${title} :wiederkehrend:\n:PROPERTIES:\n:ID:        %(org-id-new)\n:CREATED_AT: %U\n:END:\n\n%?"
-           :target (file+head "recurring_actions.org" "#+TITLE: 2 Recurring Actions")
-           :unnarrowed t)
-          ("s" "Someday Maybe" plain
-           "* ${title} :someday_maybe:\n:PROPERTIES:\n:ID:        %(org-id-new)\n:CREATED_AT: %U\n:END:\n\n%?"
-           :target (file+head "someday_maybe.org" "#+TITLE: 3 Someday Maybe\n#+FILETAGS: :someday_maybe:")
-           :unnarrowed t)
-          ("p" "Projekt" plain
-           "\n* Ziel\n\n%?\n\n* Aufgaben :projekte:\n\n"
-           :target (file+head "Projekte/${slug}.org" "#+TITLE: ${title}\n#+CATEGORY: ${title}\n#+FILETAGS: :projekte:")
-           :unnarrowed t)
-          ("r" "Referenz" plain
-           "%?"
-           :target (file+head "Referenzen/${slug}-%<%Y%m%d%H%M%S>.org" "#+TITLE: ${title}\n#+FILETAGS: :referenzen:")
-           :unnarrowed t)
-          ("k" "Kochrezept" plain
-           "%?\n\n* Zutaten :kochen:\n\n* Zubereitung"
-           :target (file+head "Referenzen/${slug}-%<%Y%m%d%H%M%S>.org" "#+TITLE: ${title}\n#+CATEGORY: Kochrezepte\n#+FILETAGS: :referenzen:kochen:")
-           :unnarrowed t)
-          ("b" "Backrezept" plain
-           "%?\n\n* Zutaten :backen:\n\n* Zubereitung"
-           :target (file+head "Referenzen/${slug}-%<%Y%m%d%H%M%S>.org" "#+TITLE: ${title}\n#+CATEGORY: Backrezepte\n#+FILETAGS: :referenzen:backen:")
-           :unnarrowed t)))
+   '(("i" "Inbox" plain
+      "* ${title}\n:PROPERTIES:\n:CREATED_AT: %U\n:END:\n\n%?"
+      :target (file+head "inbox.org" "#+TITLE: 0 Inbox")
+      :unnarrowed t)
+     ("t" "Todo" plain
+      "* TODO ${title}\n:PROPERTIES:\n:ID:        %(org-id-new)\n:CREATED_AT: %U\n:END:\n\n%?"
+      :target (file+head "next_actions.org" "#+TITLE: 1 Next Actions") :unnarrowed t)
+     ("w" "Wiederkehrendes Todo" plain
+      "* TODO ${title} :wiederkehrend:\n:PROPERTIES:\n:ID:        %(org-id-new)\n:CREATED_AT: %U\n:END:\n\n%?"
+      :target (file+head "next_actions.org" "#+TITLE: 1 Next Actions")
+      :unnarrowed t)
+     ("s" "Someday Maybe" plain
+      "* ${title} :someday_maybe:\n:PROPERTIES:\n:ID:        %(org-id-new)\n:CREATED_AT: %U\n:END:\n\n%?"
+      :target (file+head "someday_maybe.org" "#+TITLE: 2 Someday Maybe\n#+FILETAGS: :someday_maybe:")
+      :unnarrowed t)
+     ("p" "Projekt" plain
+      "\n* Ziel\n\n%?\n\n* Aufgaben :projekte:\n\n"
+      :target (file+head "Projekte/${slug}.org" "#+TITLE: ${title}\n#+CATEGORY: ${title}\n#+FILETAGS: :projekte:")
+      :unnarrowed t)
+     ("r" "Referenz" plain
+      "%?"
+      :target (file+head "Referenzen/${slug}-%<%Y%m%d%H%M%S>.org" "#+TITLE: ${title}\n#+FILETAGS: :referenzen:")
+      :unnarrowed t)
+     ("k" "Kochrezept" plain
+      "%?\n\n* Zutaten :kochen:\n\n* Zubereitung"
+      :target (file+head "Referenzen/${slug}-%<%Y%m%d%H%M%S>.org" "#+TITLE: ${title}\n#+CATEGORY: Kochrezepte\n#+FILETAGS: :referenzen:kochen:")
+      :unnarrowed t)
+     ("b" "Backrezept" plain
+      "%?\n\n* Zutaten :backen:\n\n* Zubereitung"
+      :target (file+head "Referenzen/${slug}-%<%Y%m%d%H%M%S>.org" "#+TITLE: ${title}\n#+CATEGORY: Backrezepte\n#+FILETAGS: :referenzen:backen:")
+      :unnarrowed t)))
   (org-roam-dailies-directory org-roam-directory)
   (org-roam-dailies-capture-templates
    '(("d" "Daily" plain
