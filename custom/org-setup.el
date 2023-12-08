@@ -73,7 +73,8 @@ When nil, use the default face background."
                                     (search-forward "#+begin: clocktable")
                                     (org-dblock-update)
                                     (save-buffer)
-                                    (kill-buffer))))
+                                    (kill-buffer))
+                                  (save-buffer)))
   (advice-add 'create-image :filter-args
               #'create-image-with-background-color)
   :custom
