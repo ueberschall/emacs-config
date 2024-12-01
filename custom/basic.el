@@ -35,8 +35,7 @@
 ;; Set the default font to Ubuntu-Mono.
 (set-face-attribute 'default nil :font "Ubuntu Mono-16")
 
-;; Set the directory for backups of buffers and intervall time between
-;; two successive savings
+;; Set the directory for backups of buffers and intervall time between two successive savings
 (setq
  backup-by-copying t
  backup-directory-alist `(("." . ,(expand-file-name ".backups" (getenv "HOME"))))
@@ -305,7 +304,7 @@
 
 (use-package flycheck)
 
-(require 'org-setup)
+(require 'org)
 
 ;;---------------------------------Hooks------------------------------------------------
 
@@ -337,4 +336,4 @@
 (global-unset-key (kbd "C-x c")) ;; Recommended in Helm tutorial, see http://tuhdo.github.io/helm-intro.html
 (global-unset-key (kbd "C-x f"))
 
-(provide 'basic-setup)
+(provide 'basic)

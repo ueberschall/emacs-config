@@ -46,4 +46,4 @@
                              (save-and-kill-outdated-buffers 30)
                              (session-save)))
 
-(provide 'desktop-saving)
+(provide 'desktop)

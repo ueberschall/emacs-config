@@ -1,1 +1,1 @@
-This is my personal Emacs configuration which I use to do my daily programming work with C++, Python and others. It is a fork of https://github.com/tuhdo/tuhdo.github.io which is originally intended to provide a configuration to use Emacs as C/C++ development environment.
+This is my personal configuration for Emacs which I use mostly for organizing my tasks and productivity management. It is a fork of https://github.com/tuhdo/tuhdo.github.io which is originally intended to provide a configuration to use Emacs as C/C++ development environment.
