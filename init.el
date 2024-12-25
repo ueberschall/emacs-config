@@ -11,7 +11,7 @@
 (add-to-list 'load-path (expand-file-name "custom" user-emacs-directory))
 
 (require 'basic)
-(require 'org)
+(require 'my-org)
 (require 'desktop)
 
 (session-restore)

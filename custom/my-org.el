@@ -281,4 +281,4 @@ capture was not aborted."
 
 ;;------------------------------------------------------------------
 
-(provide 'org-setup)
+(provide 'my-org)
