@@ -80,4 +80,4 @@
   :bind (:map elpy-mode-map
               ("C-c p d" . realgud:pdb)))
 
-(provide 'python-setup)
+(provide 'python)

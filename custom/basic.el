@@ -215,7 +215,7 @@
   :init
   (helm-mode 1)
   :config
-  (require 'helm-config)
+  ;; (require 'helm-config)
   (setq helm-echo-input-in-header-line t)
 
   (defun helm-hide-minibuffer-maybe ()

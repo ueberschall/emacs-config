@@ -127,7 +127,7 @@ When nil, use the default face background."
   :config
   (org-babel-do-load-languages
    'org-babel-load-languages
-   '((python . t) (emacs-lisp . t) (ein . t)))
+   '((emacs-lisp . t)))
   :bind (("C-c l" . org-store-link)
          ("C-c a" . org-agenda)
          :map org-mode-map
