@@ -39,7 +39,7 @@
 (setq
  backup-by-copying t
  backup-directory-alist `(("." . ,(expand-file-name ".backups" (getenv "HOME"))))
- auto-save-timeout 180)
+ auto-save-timeout 30)
 
 ;; Activate a couple of useful minor modes.
 (global-linum-mode t)  ;; Display row numbers.
@@ -168,11 +168,6 @@
          ("M-RET m" . srefactor-lisp-format-sexp)
          ("M-RET d" . srefactor-lisp-format-defun)
          ("M-RET b" . srefactor-lisp-format-buffer)))
-
-;; Use the Cyberpunk-Theme (because it is cool as hell!!)
-(use-package cyberpunk-theme
-  :config
-  (add-hook 'after-init-hook (lambda () (load-theme 'cyberpunk t))))
 
 ;; Configure treemacs
 (use-package treemacs)
@@ -303,6 +298,12 @@
   :bind (("C-x 1" . zygospore-toggle-delete-other-windows)))
 
 ;; (use-package flycheck)
+
+;; Use the Cyberpunk-Theme (because it is cool as hell!!)
+(use-package cyberpunk-theme
+  :config
+  (add-hook 'after-init-hook (lambda () (load-theme 'cyberpunk t))))
+
 
 ;;---------------------------------Hooks------------------------------------------------
 

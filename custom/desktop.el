@@ -8,11 +8,7 @@
 (defun session-save ()
   "Save an emacs session."
   (interactive)
-  (if (saved-session)
-      (if (y-or-n-p "Overwrite existing desktop? ")
-	      (desktop-save-in-desktop-dir)
-	    (message "Session not saved."))
-    (desktop-save-in-desktop-dir)))
+  (desktop-save-in-desktop-dir))
 
 (defun delete-desktop ()
   "Delete desktop file without setting desktop-dirname to nil"
@@ -30,13 +26,6 @@
   (if (saved-session)
       (desktop-read)
     (message "No desktop found.")))
-
-(defun load-desktop (base-name)
-  "Load the desktop file 'base-name'"
-  (setq desktop-base-file-name base-name)
-  (if (saved-session)
-	  (if (y-or-n-p "Restore desktop? ")
-		  (session-restore))))
 
 (add-hook 'desktop-after-read-hook 'delete-desktop)
 
