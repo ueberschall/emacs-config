@@ -178,42 +178,42 @@
 (use-package treemacs)
 
 ;; Configure company
-(use-package company
-  :init
-  (setq-default company-backends
-                '(company-files
-                  (company-capf company-dabbrev)))
-  :hook ((prog-mode . company-mode)
-         (text-mode . company-mode))
-  :config
-  (setq company-tooltip-align-annotations t
-        company-tooltip-flip-when-above t
-        company-tooltip-limit 10
-        company-tooltip-minimum 10
-        company-idle-delay 0
-        company-dabbrev-ignore-case nil
-        company-dabbrev-other-buffers 'all
-        company-dabbrev-downcase nil
-        company-files-exclusions '(".git/"))
-  :bind (("<C-tab>" . company-complete)
-         :map company-active-map
-         ("C-n" . company-select-next)
-         ("C-p" . company-select-previous))
-  :custom-face
-  (company-tooltip
-   ((t (:background "black" :foreground "white"))))
-  (company-tooltip-selection
-   ((t (:background "DodgerBlue" :foreground "yellow3" :weight bold))))
-  (company-tooltip-common ((t (:weight bold :foreground "DodgerBlue"))))
-  (company-tooltip-common-selection ((t (:weight bold :foreground "white"))))
-  (company-scrollbar-fg ((t (:background "ivory4"))))
-  (company-scrollbar-bg ((t (:background "ivory3"))))
-  (company-tooltip-annotation ((t (:foreground "DarkCyan")))))
+;; (use-package company
+;;   :init
+;;   (setq-default company-backends
+;;                 '(company-files
+;;                   (company-capf company-dabbrev)))
+;;   :hook ((prog-mode . company-mode)
+;;          (text-mode . company-mode))
+;;   :config
+;;   (setq company-tooltip-align-annotations t
+;;         company-tooltip-flip-when-above t
+;;         company-tooltip-limit 10
+;;         company-tooltip-minimum 10
+;;         company-idle-delay 0
+;;         company-dabbrev-ignore-case nil
+;;         company-dabbrev-other-buffers 'all
+;;         company-dabbrev-downcase nil
+;;         company-files-exclusions '(".git/"))
+;;   :bind (("<C-tab>" . company-complete)
+;;          :map company-active-map
+;;          ("C-n" . company-select-next)
+;;          ("C-p" . company-select-previous))
+;;   :custom-face
+;;   (company-tooltip
+;;    ((t (:background "black" :foreground "white"))))
+;;   (company-tooltip-selection
+;;    ((t (:background "DodgerBlue" :foreground "yellow3" :weight bold))))
+;;   (company-tooltip-common ((t (:weight bold :foreground "DodgerBlue"))))
+;;   (company-tooltip-common-selection ((t (:weight bold :foreground "white"))))
+;;   (company-scrollbar-fg ((t (:background "ivory4"))))
+;;   (company-scrollbar-bg ((t (:background "ivory3"))))
+;;   (company-tooltip-annotation ((t (:foreground "DarkCyan")))))
 
 ;; Configure projectile
-(use-package projectile
-  :config (projectile-mode 1)
-  :bind (("C-?" . projectile-find-other-file)))
+;; (use-package projectile
+;;   :config (projectile-mode 1)
+;;   :bind (("C-?" . projectile-find-other-file)))
 
 ;; Configure helm
 (use-package helm
@@ -277,12 +277,12 @@
   (helm-buffer-modified ((nil (:foreground "RosyBrown")))))
 
 ;; Configure helm-projectile
-(use-package helm-projectile
-  :after helm
-  :init
-  (helm-projectile-on)
-  (setq projectile-completion-system 'helm)
-  (setq projectile-indexing-method 'alien))
+;; (use-package helm-projectile
+;;   :after helm
+;;   :init
+;;   (helm-projectile-on)
+;;   (setq projectile-completion-system 'helm)
+;;   (setq projectile-indexing-method 'alien))
 
 (use-package helm-wikipedia
   :after helm
@@ -302,13 +302,11 @@
 (use-package zygospore
   :bind (("C-x 1" . zygospore-toggle-delete-other-windows)))
 
-(use-package flycheck)
-
-(require 'org)
+;; (use-package flycheck)
 
 ;;---------------------------------Hooks------------------------------------------------
 
-(add-hook 'after-init-hook (lambda () (server-start)))
+;; (add-hook 'after-init-hook (lambda () (server-start)))
 (add-hook 'prog-mode-hook (lambda () (setq show-trailing-whitespace 1)))
 (add-hook 'doc-view-mode-hook (lambda () (linum-mode -1)))
 

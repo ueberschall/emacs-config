@@ -11,6 +11,7 @@
 (add-to-list 'load-path (expand-file-name "custom" user-emacs-directory))
 
 (require 'basic)
+(require 'org)
 (require 'desktop)
 
 (load-desktop desktop-base-file-name)
