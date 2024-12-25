@@ -14,6 +14,6 @@
 (require 'org)
 (require 'desktop)
 
-(load-desktop desktop-base-file-name)
+(session-restore)
 
 (setq custom-file null-device)
