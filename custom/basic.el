@@ -42,7 +42,7 @@
  auto-save-timeout 30)
 
 ;; Activate a couple of useful minor modes.
-(global-linum-mode t)  ;; Display row numbers.
+;;(global-linum-mode t)  ;; Display row numbers.
 (column-number-mode 1) ;; Display column number of point.
 (electric-pair-mode 1) ;; Automatic closing of parentheses.
 (winner-mode 1) ;; Window actions can be undone.
@@ -78,72 +78,31 @@
 
 ;;---------------------------------Package Management-----------------------------------
 
-(defun download-dired+-from-emacswiki ()
-  "Dired+ has to be downloaded from EmacsWiki."
-  (let* ((diredplus-file (expand-file-name "dired+/dired+.el" user-emacs-directory))
-         (diredplus-dir (file-name-directory diredplus-file)))
-    (if (file-exists-p diredplus-file)
-        (message "Dired+ does already exist")
-      (unless (file-directory-p diredplus-dir)
-        (make-directory diredplus-dir))
-      (url-copy-file "https://www.emacswiki.org/emacs/download/dired%2b.el"
-                     diredplus-file))))
-
-(defun download-modelineposn-from-emacswiki ()
-  "modeline-posn has to be downloaded from the EmacsWiki."
-  (let* ((modeline-file (expand-file-name "modeline-posn/modeline-posn.el" user-emacs-directory))
-         (modeline-dir (file-name-directory modeline-file)))
-    (if (file-exists-p modeline-file)
-        (message "Modeline-Posn does already exist")
-      (unless (file-directory-p modeline-dir)
-        (make-directory modeline-dir))
-      (url-copy-file "https://www.emacswiki.org/emacs/download/modeline-posn.el"
-                     modeline-file))))
-
-(defun download-openwith-from-emacswiki ()
-  "openwith has to be downloaded from the EmacsWiki."
-  (let* ((openwith-file (expand-file-name "openwith/openwith.el" user-emacs-directory))
-         (openwith-dir (file-name-directory openwith-file)))
-    (if (file-exists-p openwith-file)
-        (message "Openwith does already exist")
-      (unless (file-directory-p openwith-dir)
-        (make-directory openwith-dir))
-      (url-copy-file "https://www.metalevel.at/misc/openwith.el"
-                     openwith-file))))
-
 ;; Initialize package manager
-(require 'package)
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
-(add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/"))
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name
+        "straight/repos/straight.el/bootstrap.el"
+        (or (bound-and-true-p straight-base-dir)
+            user-emacs-directory)))
+      (bootstrap-version 7))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
 
-(unless (y-or-n-p "Skip packages refresh")
-  ;; Make sure that 'use-package' is installed.
-  (unless (package-installed-p 'use-package)
-    (package-initialize)
-    (package-refresh-contents)
-    (package-install 'use-package))
-  ;; Make sure that every package which is loaded by use-package is actually installed.
-  (setq use-package-always-ensure t)
-  (setq use-package-always-pin "melpa")
-  (download-dired+-from-emacswiki)
-  (download-modelineposn-from-emacswiki)
-  (download-openwith-from-emacswiki))
-
-;; modeline-posn cannot be configured using use-package.
-(add-to-list 'load-path (expand-file-name "modeline-posn" user-emacs-directory))
-(require 'modeline-posn)
-
-;; openwith cannot be configured using use-package.
-(add-to-list 'load-path (expand-file-name "openwith" user-emacs-directory))
-(require 'openwith)
-(openwith-mode t)
-(setq openwith-associations '(("\\.pdf\\'" "xreader" (file))))
-
-(require 'use-package)
+(straight-use-package 'use-package)
 
 ;; Configure Dired+
 (use-package dired+
-  :load-path "dired+"
+  :straight t
+  ;; :init
+  ;; (download-dired+-from-emacswiki)
+  ;; :load-path "dired+"
   :config (diredp-toggle-find-file-reuse-dir 1)
   :bind (:map dired-mode-map
               ("<C-right>" . windmove-right)
@@ -151,26 +110,41 @@
               ("<C-up>" . windmove-up)
               ("<C-down>" . windmove-down)))
 
-(use-package exec-path-from-shell)
+(use-package modeline-posn
+  :straight t)
+
+(use-package openwith
+  :straight t
+  :custom
+  (openwith-associations '(("\\.pdf\\'" "xreader" (file))))
+  :config
+  (openwith-mode t))
+
+(use-package exec-path-from-shell
+  :straight t)
 
 ;; Configure ace-window
 (use-package ace-window
+  :straight t
   :bind (("C-c w" . ace-window)))
 
 ;; Configure magit
 (use-package magit
+  :straight t
   :bind (("C-x g" . magit-status)
          ("C-x M-g" . magit-dispatch-popup)))
 
 ;; Configure srefactor-lisp
 (use-package srefactor
+  :straight t
   :bind (("M-RET o" . srefactor-lisp-one-line)
          ("M-RET m" . srefactor-lisp-format-sexp)
          ("M-RET d" . srefactor-lisp-format-defun)
          ("M-RET b" . srefactor-lisp-format-buffer)))
 
 ;; Configure treemacs
-(use-package treemacs)
+(use-package treemacs
+  :straight t)
 
 ;; Configure company
 ;; (use-package company
@@ -212,6 +186,7 @@
 
 ;; Configure helm
 (use-package helm
+  :straight t
   :init
   (helm-mode 1)
   :config
@@ -295,12 +270,14 @@
               ("<C-down>" . windmove-down)))
 
 (use-package zygospore
+  :straight t
   :bind (("C-x 1" . zygospore-toggle-delete-other-windows)))
 
 ;; (use-package flycheck)
 
 ;; Use the Cyberpunk-Theme (because it is cool as hell!!)
 (use-package cyberpunk-theme
+  :straight t
   :config
   (add-hook 'after-init-hook (lambda () (load-theme 'cyberpunk t))))
 

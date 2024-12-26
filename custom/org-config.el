@@ -4,8 +4,8 @@
 
 ;; Configure org
 (use-package org
+  :straight t
   :mode ("\\.org$" . org-mode)
-
   :demand t
 
   :preface
@@ -143,12 +143,14 @@ When nil, use the default face background."
 
 ;; Show hidden emphasis markers
 (use-package org-appear
+  :straight t
   :after org
   :hook (org-mode . org-appear-mode)
   :custom
   (org-appear-autolinks nil))
 
 (use-package org-superstar
+  :straight t
   :after org
   :hook (org-mode . org-superstar-mode)
   :custom
@@ -158,6 +160,7 @@ When nil, use the default face background."
   (org-superstar-special-todo-items t))
 
 (use-package org-roam
+  :straight t
   :after org
   :preface
   (defun my/org-roam-filter-by-tag (tag-name)
@@ -221,6 +224,7 @@ capture was not aborted."
 
   :hook (org-mode . org-roam-db-autosync-enable)
   :custom
+  (org-roam-database-connector 'sqlite-builtin)
   (org-roam-directory org-directory)
   (org-roam-file-exclude-regexp ".*\\.org\\.gpg")
   (org-roam-completion-everywhere t)

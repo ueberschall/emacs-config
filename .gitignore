@@ -6,6 +6,7 @@ auto-save-list/*
 elpa/*
 ede-projects*
 semanticdb/*
+straight/*
 bookmarks
 session.*
 dired+/*
