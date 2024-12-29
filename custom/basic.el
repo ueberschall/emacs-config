@@ -42,7 +42,6 @@
  auto-save-timeout 30)
 
 ;; Activate a couple of useful minor modes.
-;;(global-linum-mode t)  ;; Display row numbers.
 (column-number-mode 1) ;; Display column number of point.
 (electric-pair-mode 1) ;; Automatic closing of parentheses.
 (winner-mode 1) ;; Window actions can be undone.
@@ -260,9 +259,6 @@
 
 ;; Configure shell
 (use-package shell
-  :init
-  (add-hook 'shell-mode-hook (lambda ()
-                               (linum-mode -1)))
   :bind (:map shell-mode-map
               ("<C-right>" . windmove-right)
               ("<C-left>" . windmove-left)
@@ -284,8 +280,8 @@
 
 ;;---------------------------------Hooks------------------------------------------------
 
-;; (add-hook 'after-init-hook (lambda () (server-start)))
 (add-hook 'prog-mode-hook (lambda () (setq show-trailing-whitespace 1)))
+(add-hook 'prog-mode-hook #'display-line-numbers-mode)
 (add-hook 'doc-view-mode-hook (lambda () (linum-mode -1)))
 
 ;;-------------------------------Global key bindings-------------------------------------

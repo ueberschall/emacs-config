@@ -56,8 +56,6 @@ When nil, use the default face background."
               props)))
 
   :init
-  (add-hook 'org-mode-hook (lambda () (linum-mode -1)))
-  (add-hook 'org-agenda-mode-hook (lambda () (linum-mode -1)))
   (add-hook 'org-clock-in-hook (lambda ()
                                  (save-excursion
                                    (org-back-to-heading t)
@@ -222,7 +220,7 @@ capture was not aborted."
     (interactive)
     (my/archive-projects-org-file (expand-file-name "Archiv/Projekte" org-directory)))
 
-  :hook (org-mode . org-roam-db-autosync-enable)
+  ;;:hook (org-mode . org-roam-db-autosync-enable)
   :custom
   (org-roam-database-connector 'sqlite-builtin)
   (org-roam-directory org-directory)
