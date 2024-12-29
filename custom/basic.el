@@ -287,7 +287,13 @@
 
 (add-hook 'prog-mode-hook (lambda () (setq show-trailing-whitespace 1)))
 (add-hook 'prog-mode-hook #'display-line-numbers-mode)
-(add-hook 'doc-view-mode-hook (lambda () (linum-mode -1)))
+(add-hook 'after-make-frame-functions
+          (lambda (frame)
+            (with-selected-frame frame
+              (when (display-graphic-p)
+                (set-frame-font "Ubuntu Mono-16" nil t)
+                (load-theme 'cyberpunk-theme t)))))
+
 
 ;;-------------------------------Global key bindings-------------------------------------
 
