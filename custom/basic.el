@@ -35,19 +35,24 @@
 ;; Set the default font to Ubuntu-Mono.
 (set-face-attribute 'default nil :font "Ubuntu Mono-16")
 
-;; Set the directory for backups of buffers and intervall time between two successive savings
+;; Instruct auto-save-mode to save to the current file, not a backup file
 (setq
- backup-by-copying t
- backup-directory-alist `(("." . ,(expand-file-name ".backups" (getenv "HOME"))))
- auto-save-timeout 30)
+ auto-save-default nil
+ make-backup-files nil)
 
 ;; Activate a couple of useful minor modes.
+(global-auto-revert-mode 1) ;; Refresh buffers with changed local files.
+(auto-save-visited-mode 1) ;; Auto-save files at an interval.
 (column-number-mode 1) ;; Display column number of point.
 (electric-pair-mode 1) ;; Automatic closing of parentheses.
 (winner-mode 1) ;; Window actions can be undone.
 (global-visual-line-mode 1) ;; Visual line mode is activated globally
 (show-paren-mode 1) ;; Display paired parentheses.
+
 (setq show-paren-delay 0)
+
+;; Revert Dired and other buffers.
+(setq global-auto-revert-non-file-buffers t)
 
 ;; Make 'yes-or-no' queries easier to confirm.
 (defalias 'yes-or-no-p 'y-or-n-p)
