@@ -157,6 +157,10 @@ When nil, use the default face background."
    '(("TODO" . 9744) ("WAITING" . 8987) ("PROGRESSING" . 8599) ("DONE" . 9745) ("CANCELLED" . 9747)))
   (org-superstar-special-todo-items t))
 
+;; Necessary for org-roam to work
+(use-package sqlite3
+  :straight t)
+
 (use-package org-roam
   :straight t
   :after org
@@ -222,7 +226,8 @@ capture was not aborted."
 
   ;;:hook (org-mode . org-roam-db-autosync-enable)
   :custom
-  (org-roam-database-connector 'sqlite-builtin)
+  ;;(org-roam-database-connector 'sqlite-builtin)
+  (org-roam-db-location (expand-file-name "org-roam.db" user-emacs-directory))
   (org-roam-directory org-directory)
   (org-roam-file-exclude-regexp ".*\\.org\\.gpg")
   (org-roam-completion-everywhere t)

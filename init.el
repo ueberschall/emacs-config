@@ -6,6 +6,7 @@
 ;;   (load custom-file))
 
 (setq byte-compile-warnings '(cl-functions))
+(setq native-comp-eln-load-path '("/home/zufall/.emacs-eln-cache/"))
 
 ;; Add the 'custom' directory to the load path. 
 (add-to-list 'load-path (expand-file-name "custom" user-emacs-directory))
