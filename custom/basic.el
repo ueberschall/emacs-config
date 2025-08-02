@@ -184,83 +184,82 @@
 ;;   (company-tooltip-annotation ((t (:foreground "DarkCyan")))))
 
 ;; Configure projectile
-;; (use-package projectile
-;;   :config (projectile-mode 1)
-;;   :bind (("C-?" . projectile-find-other-file)))
+(use-package projectile
+  :config (projectile-mode 1)
+  :bind (("C-?" . projectile-find-other-file)))
 
 ;; Configure helm
-;; (use-package helm
-;;  :straight t
-;;  :init
-;;  (helm-mode 1)
-;;  :config
-;; (require 'helm-config)
-;;  (setq helm-echo-input-in-header-line t)
+(use-package helm
+  :straight t
+  :init
+  (helm-mode 1)
+  :config
+  (setq helm-echo-input-in-header-line t)
 
-;;  (defun helm-hide-minibuffer-maybe ()
-;;    (when (with-helm-buffer helm-echo-input-in-header-line)
-;;      (let ((ov (make-overlay (point-min) (point-max) nil nil t)))
-;;        (overlay-put ov 'window (selected-window))
-;;        (overlay-put ov 'face (let ((bg-color (face-background 'default nil)))
-;;                                `(:background ,bg-color :foreground ,bg-color)))
-;;        (setq-local cursor-type nil))))
+  (defun helm-hide-minibuffer-maybe ()
+    (when (with-helm-buffer helm-echo-input-in-header-line)
+      (let ((ov (make-overlay (point-min) (point-max) nil nil t)))
+        (overlay-put ov 'window (selected-window))
+        (overlay-put ov 'face (let ((bg-color (face-background 'default nil)))
+                                `(:background ,bg-color :foreground ,bg-color)))
+        (setq-local cursor-type nil))))
 
-;;  (add-hook 'helm-minibuffer-set-up-hook 'helm-hide-minibuffer-maybe)
+  (add-hook 'helm-minibuffer-set-up-hook 'helm-hide-minibuffer-maybe)
 
-;;  (setq helm-split-window-in-side-p t
-;;        helm-mode-fuzzy-match t
-;;        helm-buffers-fuzzy-matching t
-;;        helm-M-x-fuzzy-match t
-;;        helm-imenu-fuzzy-match t
-;;        helm-lisp-fuzzy-completion t
-;;        helm-locate-fuzzy-match t)
+  (setq helm-split-window-in-side-p t
+        helm-mode-fuzzy-match t
+        helm-buffers-fuzzy-matching t
+        helm-M-x-fuzzy-match t
+        helm-imenu-fuzzy-match t
+        helm-lisp-fuzzy-completion t
+        helm-locate-fuzzy-match t)
 
-;;  (when (executable-find "curl")
-;;    (setq helm-google-suggest-use-curl-p t))
+  (when (executable-find "curl")
+    (setq helm-google-suggest-use-curl-p t))
 
-;;  (helm-autoresize-mode -1)
+  (helm-autoresize-mode -1)
 
-;;  (define-key 'help-command (kbd "C-f") 'helm-apropos)
-;;  (define-key 'help-command (kbd "r") 'helm-info-emacs)
-;;  (define-key 'help-command (kbd "C-l") 'helm-locate-library)
-;;  (define-key minibuffer-local-map (kbd "M-p") 'helm-minibuffer-history)
-;;  (define-key minibuffer-local-map (kbd "M-n") 'helm-minibuffer-history)
+  (define-key 'help-command (kbd "C-f") 'helm-apropos)
+  (define-key 'help-command (kbd "r") 'helm-info-emacs)
+  (define-key 'help-command (kbd "C-l") 'helm-locate-library)
+  (define-key minibuffer-local-map (kbd "M-p") 'helm-minibuffer-history)
+  (define-key minibuffer-local-map (kbd "M-n") 'helm-minibuffer-history)
 
-;;  :bind (("C-c h" . helm-command-prefix)
-;;         ("M-x" . helm-M-x)
-;;         ("M-y" . helm-show-kill-ring)
-;;         ("C-x b" . helm-buffers-list)
-;;         ("C-x C-f" . helm-find-files)
-;;         ("C-c r" . helm-recentf)
-;;         ("C-h SPC" . helm-all-mark-rings)
-;;         ("C-c h o" . helm-occur)
-;;         ("C-c h g" . helm-google-suggest)
-;;         ("C-c h x" . helm-register)
-;;         :map helm-map
-;;         ("<tab>" . helm-execute-persistent-action)
-;;         ("C-i" . helm-execute-persistent-action)
-;;         ("C-z" . helm-select-action)
-;;         :map helm-grep-mode-map
-;;         ("<return>" . helm-grep-mode-jump-other-window)
-;;         ("n" . helm-grep-mode-jump-other-window-forward)
-;;         ("p" . helm-grep-mode-jump-other-window-backward))
+  :bind (("C-c h" . helm-command-prefix)
+         ("M-x" . helm-M-x)
+         ("M-y" . helm-show-kill-ring)
+         ("C-x b" . helm-buffers-list)
+         ("C-x C-f" . helm-find-files)
+         ("C-c r" . helm-recentf)
+         ("C-h SPC" . helm-all-mark-rings)
+         ("C-c h o" . helm-occur)
+         ("C-c h g" . helm-google-suggest)
+         ("C-c h x" . helm-register)
+         :map helm-map
+         ("<tab>" . helm-execute-persistent-action)
+         ("C-i" . helm-execute-persistent-action)
+         ("C-z" . helm-select-action)
+         :map helm-grep-mode-map
+         ("<return>" . helm-grep-mode-jump-other-window)
+         ("n" . helm-grep-mode-jump-other-window-forward)
+         ("p" . helm-grep-mode-jump-other-window-backward))
 
-;;  :custom-face
-;;  (helm-source-header ((nil (:foreground "dark magenta" (:weight bold (:background black (:font "Ubuntu-Mono 14")))))))
-;;  (helm-selection ((nil (:foreground "white" (:background "SpringGreen4")))))
-;;  (helm-buffer-modified ((nil (:foreground "RosyBrown")))))
+ :custom-face
+ (helm-source-header ((nil (:foreground "dark magenta" (:weight bold (:background black (:font "Ubuntu-Mono 14")))))))
+ (helm-selection ((nil (:foreground "white" (:background "SpringGreen4")))))
+ (helm-buffer-modified ((nil (:foreground "RosyBrown")))))
 
 ;; Configure helm-projectile
 ;; (use-package helm-projectile
 ;;   :after helm
 ;;   :init
-;;   (helm-projectile-on)
+;;   (helm-projectile-mode 1)
 ;;   (setq projectile-completion-system 'helm)
 ;;   (setq projectile-indexing-method 'alien))
 
-;;(use-package helm-wikipedia
-;;  :after helm
-;;  :bind ("C-c h w" . helm-wikipedia-suggest))
+(use-package helm-wikipedia
+ :after helm
+ :bind ("C-c h w" . helm-wikipedia-suggest))
 
 ;; Configure shell
 (use-package shell
